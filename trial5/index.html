@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <!-- libraries-->
+    <link rel="icon" type="image/x-icon" href="thumbnail.png">
+    <script type="text/javascript" src="/assets/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/d3js/3.3.11/d3.v3.min.js"></script>
+    <script type="text/javascript" src="/assets/angular/1.2.3/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/3.0.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="/assets/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <!-- custom files-->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="/bower_components/tinycolor/tinycolor.js"></script>
+  </head>
+  <body ng-app="color" ng-controller="coloreditor">
+    <div class="demo">
+      <nav class="navbar navbar-default">
+        <div class="navbar-header"><a class="navbar-brand">Demo Bar</a></div>
+      </nav>
+      <div class="btn btn-default">Default</div>
+      <div class="btn btn-primary">Primary</div>
+      <div class="btn btn-success">Success</div>
+      <div class="btn btn-warning">Warning</div>
+      <div class="btn btn-danger">Danger</div>
+      <div class="btn btn-info">Information</div>
+    </div>
+    <div class="search">
+      <form class="form">
+        <div class="input-group">
+          <input type="text" class="form-control"><span class="input-group-btn">
+            <div class="btn btn-default">Search</div></span>
+        </div>
+      </form>
+    </div>
+    <div class="tags"><i class="glyphicon glyphicon-tag"></i><a href="#" ng-repeat="tag in tags" class="tag">{{tag}}</a><a href="#" class="tag">more ...</a></div><br><br>
+    <h3>Featuring</h3>
+    <div class="palettes">
+      <div ng-repeat="pal in featurePals" class="palette">
+        <div class="name">{{pal.name}}</div>
+        <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
+        <div class="palette-color">
+          <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" class="color"></div>
+        </div>
+        <div class="tag">cloud,blah,qwer</div>
+      </div>
+    </div><br><br>
+    <h3>All Palettes</h3>
+    <div class="palettes">
+      <div ng-repeat="pal in pals" class="palette">
+        <div class="name">{{pal.name}}</div>
+        <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
+        <div class="palette-color">
+          <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" class="color"></div>
+        </div>
+        <div class="tag">cloud,blah,qwer</div>
+      </div>
+    </div><br><br><br>
+  </body>
+</html>

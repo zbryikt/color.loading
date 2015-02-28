@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <!-- libraries-->
+    <link rel="icon" type="image/x-icon" href="thumbnail.png">
+    <script type="text/javascript" src="/assets/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/d3js/3.3.11/d3.v3.min.js"></script>
+    <script type="text/javascript" src="/assets/angular/1.2.3/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/3.0.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="/assets/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <!-- custom files-->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="/bower_components/tinycolor/tinycolor.js"></script>
+  </head>
+  <body ng-app="color" ng-controller="coloreditor">
+    <form style="margin:10px 20px" class="form-inline">
+      <div class="form-group">
+        <label>hue</label>
+        <input type="input" ng-model="cur.h" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>saturation</label>
+        <input type="input" ng-model="cur.s" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>lightness</label>
+        <input type="input" ng-model="cur.l" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>&nbsp;</label>
+        <div ng-click="add()" class="btn btn-primary form-control">Add Color</div>
+      </div>
+    </form>
+    <div class="color-bricks">
+      <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}}" class="color-brick"></div>
+    </div>
+  </body>
+</html>

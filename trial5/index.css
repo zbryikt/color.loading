@@ -1,0 +1,73 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%; }
+
+h3 {
+  text-align: center; }
+
+.demo {
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 1024px;
+  margin: 20px auto;
+  background: url(transparent.png); }
+
+.search {
+  margin: 70px auto 10px;
+  width: 1120px; }
+
+.tags {
+  text-align: center;
+  margin-bottom: 20px; }
+  .tags i.glyphicon {
+    vertical-align: middle;
+    color: #999;
+    font-size: 12px; }
+  .tags .tag {
+    margin: 0 5px; }
+
+.palettes {
+  text-align: center; }
+
+.palette {
+  width: 300px;
+  display: inline-block;
+  margin: 20px;
+  text-align: right; }
+  .palette .name, .palette .like {
+    display: inline-block; }
+  .palette .name {
+    float: left; }
+  .palette .like {
+    color: #aaa;
+    -ms-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+    -o-transform: scale(0.9);
+    transform: scale(0.9);
+    font-size: 12px; }
+    .palette .like i.glyphicon {
+      vertical-align: text-top;
+      margin-right: 3px; }
+  .palette .name, .palette .tag {
+    text-align: left;
+    font-family: calibri; }
+  .palette .tag {
+    display: none;
+    font-size: 12px;
+    text-align: right; }
+
+.palette-color {
+  border-radius: 3px;
+  overflow: hidden;
+  width: 100%;
+  height: 44px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+
+.color {
+  height: 100%;
+  display: inline-block; }

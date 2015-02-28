@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <!-- libraries-->
+    <link rel="icon" type="image/x-icon" href="thumbnail.png">
+    <script type="text/javascript" src="/assets/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/d3js/3.3.11/d3.v3.min.js"></script>
+    <script type="text/javascript" src="/assets/angular/1.2.3/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/3.0.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="/assets/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <!-- custom files-->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="/bower_components/tinycolor/tinycolor.js"></script>
+  </head>
+  <body ng-app="color" ng-controller="main" ng-mousemove="move($event)" onmousewheel="scroll(event)">
+    <svg id="svg" width="600px" height="600px" viewBox="0 0 600 600" preserveAspectRatio="xMidYMin" style="margin:auto;display:block">
+      <circle cx="300" cy="300" r="200" fill="url('#gradient')"></circle>
+    </svg>
+    <div ng-attr-style="left:{{x}}px;top:{{y}}px" ng-click="click($event)" class="pointer"></div>
+    <div id="colorbricks">
+      <div ng-repeat="c in pal.order" ng-attr-style="background:{{c.hex}};color:{{c.textColor}}" ng-click="choose(c)" ng-class="{'active':c.active}" class="colorbrick">
+        <div class="text">{{c.hex}}</div>
+        <div ng-attr-style="background:{{c.hex}}" class="link"></div>
+      </div>
+    </div>
+    <div id="colorfield" ng-attr-style="background:{{edit.hex}}" ng-click="click($event)">
+      <div style="top:120px" class="slider">
+        <div ng-attr-style="left: {{edit.hsl.h / 3.6}}%" class="ptr"></div>
+      </div>
+      <div style="top:150px" class="slider">
+        <div ng-attr-style="left: {{edit.hsl.s * 100}}%" class="ptr"></div>
+      </div>
+      <div style="top:180px" class="slider">
+        <div ng-attr-style="left: {{edit.hsl.l * 100}}%" class="ptr"></div>
+      </div>
+      <div id="footfield"><span>R</span>
+        <input type="text" style="display:inline-block;max-width:120px;margin:5px;" class="form-control input-sm"><span>G</span>
+        <input type="text" style="display:inline-block;max-width:120px;margin:5px;" class="form-control input-sm"><span>B</span>
+        <input type="text" style="display:inline-block;max-width:120px;margin:5px;" class="form-control input-sm">
+      </div>
+    </div>
+    <div id="autocolors">
+      <div id="complement" ng-attr-style="background:{{edit.comp}}" ng-click="click($event, edit.comp, true)" class="autocolor"></div>
+      <div id="triad1" ng-attr-style="background:{{edit.triad1}}" ng-click="click($event, edit.triad1, true)" class="autocolor"></div>
+      <div id="triad2" ng-attr-style="background:{{edit.triad2}}" ng-click="click($event, edit.triad2, true)" class="autocolor"></div>
+      <div id="triad3" ng-attr-style="background:{{edit.triad3}}" ng-click="click($event, edit.triad3, true)" class="autocolor"></div>
+      <div id="complement" ng-attr-style="background:{{edit.comp}}" ng-click="click($event, edit.comp, true)" class="autocolor"></div>
+      <div id="triad1" ng-attr-style="background:{{edit.triad1}}" ng-click="click($event, edit.triad1, true)" class="autocolor"></div>
+      <div id="triad2" ng-attr-style="background:{{edit.triad2}}" ng-click="click($event, edit.triad2, true)" class="autocolor"></div>
+      <div id="triad3" ng-attr-style="background:{{edit.triad3}}" ng-click="click($event, edit.triad3, true)" class="autocolor"></div>
+      <div id="analog1" ng-attr-style="background:{{edit.analog1}}" ng-click="click($event, edit.analog1, true)" class="autocolor"></div>
+      <div id="analog2" ng-attr-style="background:{{edit.analog2}}" ng-click="click($event, edit.analog2, true)" class="autocolor"></div>
+      <div id="analog3" ng-attr-style="background:{{edit.analog3}}" ng-click="click($event, edit.analog3, true)" class="autocolor"></div>
+      <div id="analog4" ng-attr-style="background:{{edit.analog4}}" ng-click="click($event, edit.analog4, true)" class="autocolor"></div>
+      <div id="analog5" ng-attr-style="background:{{edit.analog5}}" ng-click="click($event, edit.analog5, true)" class="autocolor"></div>
+      <div id="random" ng-attr-style="background:{{edit.random}}" ng-click="click($event, edit.random, true)" class="autocolor"></div>
+      <div style="width:100%" class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+          <input ng-model="url" type="text" class="form-control">
+          <input type="text" ng-model="pal.name" class="form-control">
+          <div ng-click="pal.save()" class="btn btn-success"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

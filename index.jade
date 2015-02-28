@@ -1,0 +1,125 @@
+doctype html
+//- basic libraries: jquery(1.10.2), d3js(3.3.11), angularjs(1.2.3), bootstrap(3.0)/semantic-ui(0.9.3/0.9.5)
+- var use = { cdn: false, og: false, favicon: true }
+- var lib = { jquery: true, d3js: true, angular: true, bootstrap: true, semantic: false }
+- var assets = "/assets"
+- var thumbnail = "thumbnail.png"
+- var favicon = "thumbnail.png"
+html(lang="en")
+  head(prefix="og: http://ogp.me/ns#")
+    meta(charset="utf-8")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title template
+    // libraries
+    include library.jade
+    // custom files
+    link(rel="stylesheet",type="text/css",href="index.css")
+    script(type="text/javascript",src="index.js")
+    script(type="text/javascript",src="/bower_components/tinycolor/tinycolor.js")
+  body(ng-app="color",ng-controller="main",ng-mousemove="move($event)",onmousewheel="scroll(event)")
+    #nav-top
+      nav.navbar.navbar-default(role="navigation")
+        .container-fluid
+          .navbar-header
+            a.navbar-brand(href="#")
+              | LOADING.IO
+          .collapse.navbar-collapse
+            ul.nav.navbar-nav
+              li: a#nav-examples(href="#examples") EXAMPLES
+              li: a#nav-compatibility(href="#compatibility") COMPATIBILITY
+              li: a#nav-comment(href="#comment") CONTACT
+              li: a#nav-more(href="#") MORE
+            ul.nav.navbar-nav.pull-right
+              li.anim.profile.invis(ng-class="{'invis':!username}"): a(href="#")
+                .avatar
+                  img(ng-src="http://graph.facebook.com/{{uid}}/picture?type=small",ng-show="uid")
+                .name {{username}}
+              li: a(href="#") &#x2764;
+              //li: a(href="http://github.com/zbryikt/loading/") GITHUB
+              //-
+                li.logon(ng-show="!accessToken"): a(href="#",ng-click="login()") LOGIN
+                li.logon.ng-hide(ng-show="accessToken"): a(href="#",ng-click="logout()") LOGOUT
+
+    #root
+      #editor
+        #wheel
+          svg#svg(width="400px",height="400px",viewBox="0 0 400 400",preserveAspectRatio="xMidYMin",style="display:block;")
+            defs
+            radialgradient#gradient(cx="50%",y="50%",fx="50%",fy="50%",r="50%",spreadMethod="pad")
+              stop(offset="0%",stop-color="rgba(128,128,128,1)",stop-opacity="1")
+              stop(offset="100%",stop-color="rgba(128,128,128,1)",stop-opacity="0")
+            g.hue(transform="translate(200 200)")
+            g.sat(transform="translate(200 200)")
+            g.lit(transform="translate(200 200)")
+            g.fin(transform="translate(200 200)")
+            g.ptrs(transform="translate(200 200)")
+              circle#hue.ptr
+              circle#sat.ptr
+              circle#lit.ptr
+        #current
+          .colorblocks
+            h3
+              | Your Palette 
+              small: i.glyphicon.glyphicon-edit
+            .colorblock(ng-repeat="c in cc",ng-attr-style="background:{{c}}")
+
+          h3 References
+          .palettes(style="text-align:left")
+            .palette.sm(ng-repeat="pal in refs")
+              .name
+                | {{pal.name}}
+              .like
+                i.glyphicon.glyphicon-heart
+                | 5
+              .palette-color
+                .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%")
+              .tag cloud,blah,qwer
+
+      .clearfix
+      hr 
+      //-
+        .row
+          .col-sm-5
+            svg#svg(width="400px",height="400px",viewBox="0 0 600 600",preserveAspectRatio="xMidYMin",style="display:block;")
+              defs
+              radialgradient#gradient(cx="50%",y="50%",fx="50%",fy="50%",r="50%",spreadMethod="pad")
+                stop(offset="0%",stop-color="rgba(128,128,128,1)",stop-opacity="1")
+                stop(offset="100%",stop-color="rgba(128,128,128,1)",stop-opacity="0")
+              g.hue(transform="translate(300 300)")
+              g.sat(transform="translate(300 300)")
+              g.lit(transform="translate(300 300)")
+              g.fin(transform="translate(300 300)")
+              g.ptrs(transform="translate(300 300)")
+                circle#hue.ptr
+                circle#sat.ptr
+                circle#lit.ptr
+          .col-sm-7
+            .colorblocks
+              h3
+                | Your Palette 
+                small: i.glyphicon.glyphicon-edit
+              .colorblock(ng-repeat="c in cc",ng-attr-style="background:{{c}}")
+            h3 References
+            .palettes(style="text-align:left")
+              .palette.sm(ng-repeat="pal in refs")
+                .name
+                  | {{pal.name}}
+                .like
+                  i.glyphicon.glyphicon-heart
+                  | 5
+                .palette-color
+                  .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%")
+                .tag cloud,blah,qwer
+
+
+      h3 All Palettes
+      .palettes
+        .palette(ng-repeat="pal in pals")
+          .name
+            | {{pal.name}}
+          .like
+            i.glyphicon.glyphicon-heart
+            | 5
+          .palette-color
+            .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%")
+          .tag cloud,blah,qwer

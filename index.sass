@@ -1,0 +1,96 @@
+@import basic
+
+html,body
+  width: 100%
+  height: 100%
+
+#root
+  margin: 20px auto
+  padding-top: 90px
+  @media (min-width: 1064px)
+    max-width: 1024px
+
+#nav-top
+  width: 100%
+  height: 90px
+  background: none
+  position: fixed
+  @include transition(background 0.3s ease-out,opacity 0.3s ease-out)
+  z-index: 11
+  &.dim
+    background: rgba(0,0,0,0.5)
+
+nav.navbar-default
+  background: none
+  border: none
+  color: #444
+  max-width: 1024px
+  margin: 20px auto
+  font-family: "century gothic", arial
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3)
+  .navbar-brand, .navbar-nav > li > a
+    color: #444
+    font-family: "century gothic", arial
+    letter-spacing: 1px
+    &:hover
+      color: #999
+      text-shadow: 0 0 5px rgba(255,255,128,0.7)
+
+
+.palettes
+  text-align: center
+
+.palette
+  width: 300px
+  display: inline-block
+  margin: 20px 40px 20px 0
+  text-align: right
+  .name, .like
+    display: inline-block
+  .name
+    float: left
+  .like
+    color: #aaa
+    @include transform(scale(0.9))
+    font-size: 12px
+    i.glyphicon
+      vertical-align: text-top
+      margin-right: 3px
+  .name, .tag
+    text-align: left
+    font-family: calibri
+  .tag
+    display: none
+    font-size: 12px
+    text-align: right
+
+.palette.sm
+  width: 200px
+.palette-color
+  border-radius: 3px
+  overflow: hidden
+  width: 100%
+  height: 44px
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3)
+
+.color
+  height: 100%
+  display: inline-block
+
+.colorblock
+  width: 64px
+  height: 48px
+  margin: 5px
+  display: inline-block
+
+#editor
+  width: 1024px
+  height: 420px
+
+#wheel
+  float: left
+  width: 400px
+  margin: 10px 40px 0 20px
+#current
+  float: right
+  width: 520px

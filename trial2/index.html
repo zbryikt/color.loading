@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <!-- libraries-->
+    <link rel="icon" type="image/x-icon" href="thumbnail.png">
+    <script type="text/javascript" src="/assets/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/d3js/3.3.11/d3.v3.min.js"></script>
+    <script type="text/javascript" src="/assets/angular/1.2.3/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bootstrap/3.0.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="/assets/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <!-- custom files-->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="/bower_components/tinycolor/tinycolor.js"></script>
+  </head>
+  <body ng-app="color" ng-controller="main" ng-mousemove="move($event)" onmousewheel="scroll(event)">
+    <svg id="svg" width="600px" height="600px" viewBox="0 0 600 600" preserveAspectRatio="xMidYMin" style="margin:auto;display:block">
+      <defs></defs>
+      <radialgradient id="gradient" cx="50%" y="50%" fx="50%" fy="50%" r="50%" spreadMethod="pad">
+        <stop offset="0%" stop-color="rgba(128,128,128,1)" stop-opacity="1"></stop>
+        <stop offset="100%" stop-color="rgba(128,128,128,1)" stop-opacity="0"></stop>
+      </radialgradient>
+      <g transform="translate(300 300)" class="hue"></g>
+      <g transform="translate(300 300)" class="sat"></g>
+      <g transform="translate(300 300)" class="lit"></g>
+      <g transform="translate(300 300)" class="fin"></g>
+      <g transform="translate(300 300)" class="ptrs">
+        <circle id="hue" class="ptr"></circle>
+        <circle id="sat" class="ptr"></circle>
+        <circle id="lit" class="ptr"></circle>
+      </g>
+    </svg>
+  </body>
+</html>

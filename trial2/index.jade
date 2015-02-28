@@ -1,0 +1,72 @@
+doctype html
+//- basic libraries: jquery(1.10.2), d3js(3.3.11), angularjs(1.2.3), bootstrap(3.0)/semantic-ui(0.9.3/0.9.5)
+- var use = { cdn: false, og: false, favicon: true }
+- var lib = { jquery: true, d3js: true, angular: true, bootstrap: true, semantic: false }
+- var assets = "/assets"
+- var thumbnail = "thumbnail.png"
+- var favicon = "thumbnail.png"
+html(lang="en")
+  head(prefix="og: http://ogp.me/ns#")
+    meta(charset="utf-8")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title template
+    // libraries
+    include ../library.jade
+    // custom files
+    link(rel="stylesheet",type="text/css",href="index.css")
+    script(type="text/javascript",src="index.js")
+    script(type="text/javascript",src="/bower_components/tinycolor/tinycolor.js")
+  body(ng-app="color",ng-controller="main",ng-mousemove="move($event)",onmousewheel="scroll(event)")
+    svg#svg(width="600px",height="600px",viewBox="0 0 600 600",preserveAspectRatio="xMidYMin",style="margin:auto;display:block")
+      defs
+      radialgradient#gradient(cx="50%",y="50%",fx="50%",fy="50%",r="50%",spreadMethod="pad")
+        stop(offset="0%",stop-color="rgba(128,128,128,1)",stop-opacity="1")
+        stop(offset="100%",stop-color="rgba(128,128,128,1)",stop-opacity="0")
+
+      g.hue(transform="translate(300 300)")
+      g.sat(transform="translate(300 300)")
+      g.lit(transform="translate(300 300)")
+      g.fin(transform="translate(300 300)")
+      g.ptrs(transform="translate(300 300)")
+        circle#hue.ptr
+        circle#sat.ptr
+        circle#lit.ptr
+      //-circle(cx="300",cy="300",r="200",fill="url('#gradient')")
+    //-
+      .pointer(ng-attr-style="left:{{x}}px;top:{{y}}px",ng-click="click($event)")
+      //-#colorbricks
+        .colorbrick(ng-repeat="c in pal.order",ng-attr-style="background:{{c.hex}};color:{{c.textColor}}",ng-click="choose(c)",ng-class="{'active':c.active}")
+          .text {{c.hex}}
+          .link(ng-attr-style="background:{{c.hex}}")
+      #colorfield(ng-attr-style="background:{{edit.hex}}",ng-click="click($event)")
+        .slider(style="top:120px"): .ptr(ng-attr-style="left: {{edit.hsl.h / 3.6}}%")
+        .slider(style="top:150px"): .ptr(ng-attr-style="left: {{edit.hsl.s * 100}}%")
+        .slider(style="top:180px"): .ptr(ng-attr-style="left: {{edit.hsl.l * 100}}%")
+        #footfield
+          span R
+          input.form-control.input-sm(type="text",style="display:inline-block;max-width:120px;margin:5px;")
+          span G
+          input.form-control.input-sm(type="text",style="display:inline-block;max-width:120px;margin:5px;")
+          span B
+          input.form-control.input-sm(type="text",style="display:inline-block;max-width:120px;margin:5px;")
+      #autocolors
+        #complement.autocolor(ng-attr-style="background:{{edit.comp}}",ng-click="click($event, edit.comp, true)")
+        #triad1.autocolor(ng-attr-style="background:{{edit.triad1}}",ng-click="click($event, edit.triad1, true)")
+        #triad2.autocolor(ng-attr-style="background:{{edit.triad2}}",ng-click="click($event, edit.triad2, true)")
+        #triad3.autocolor(ng-attr-style="background:{{edit.triad3}}",ng-click="click($event, edit.triad3, true)")
+      //-
+        #complement.autocolor(ng-attr-style="background:{{edit.comp}}",ng-click="click($event, edit.comp, true)")
+        #triad1.autocolor(ng-attr-style="background:{{edit.triad1}}",ng-click="click($event, edit.triad1, true)")
+        #triad2.autocolor(ng-attr-style="background:{{edit.triad2}}",ng-click="click($event, edit.triad2, true)")
+        #triad3.autocolor(ng-attr-style="background:{{edit.triad3}}",ng-click="click($event, edit.triad3, true)")
+        #analog1.autocolor(ng-attr-style="background:{{edit.analog1}}",ng-click="click($event, edit.analog1, true)")
+        #analog2.autocolor(ng-attr-style="background:{{edit.analog2}}",ng-click="click($event, edit.analog2, true)")
+        #analog3.autocolor(ng-attr-style="background:{{edit.analog3}}",ng-click="click($event, edit.analog3, true)")
+        #analog4.autocolor(ng-attr-style="background:{{edit.analog4}}",ng-click="click($event, edit.analog4, true)")
+        #analog5.autocolor(ng-attr-style="background:{{edit.analog5}}",ng-click="click($event, edit.analog5, true)")
+        #random.autocolor(ng-attr-style="background:{{edit.random}}",ng-click="click($event, edit.random, true)")
+        .row(style="width:100%")
+          .col-sm-offset-2.col-sm-8
+            input.form-control(ng-model="url",type="text")
+            input.form-control(type="text",ng-model="pal.name")
+            .btn.btn-success(ng-click="pal.save()")

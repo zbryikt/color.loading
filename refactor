@@ -1,0 +1,66 @@
+/*
+pallist
+
+pal: 
+  hash
+  order
+  save
+  load
+  name
+  id
+
+edit
+  hsl
+  bind
+
+pal = palette.init data
+*/
+
+palette = (data = "") ->
+  ret = {}
+  ret.order = [@entry.create(hex) for hex in data.split("-")]
+  ret.prototype = palette
+  for item in ret.order => ret.hash[item.hex] = item
+  ret
+
+palette <<< do
+  add: (entry) -> if entry =>
+    if @hash[entry.hex] => return @hash[entry.hex].blink!
+    @hash[entry.hex] = entry
+    @order.push entry
+    
+  remove: (entry) ->
+  entry: do
+    create: (data) -> @update null, data
+    update: (entry = {}, data = null) ->
+      if !data => tc = tinycolor {h: parseInt(Math.random!*360), s: Math.random!, l: Math.random!}
+      else => tc = tinycolor data
+      entry <<< do
+        blink: ->
+      entry
+        ..obj = tc
+        ..hsl = tc.toHsl!
+        ..hex = tc.toHexString!toUpperCase!
+        ..textColor = (if tc.isDark! => 'rgba(255,255,255,0.5)' else 'rgba(0,0,0,0.5)')
+
+edit = do
+  cursor: x: 0, y: 0
+  bound: null
+  entry: palette.entry.create!
+  bind: (entry) -> 
+    @bound = entry
+    entry.active = true
+  unbind: -> if @bound =>
+    @bound.active = false
+    @bound = false
+  mousemove: (e) ->
+    [w,h] = [$(window).width!, $(window).height!]
+
+    $scope.move = (e) ->
+      [w,h] = [$(window).width!, $(window).height!]
+      if e.which == 1 =>
+        $scope.x = e.clientX - 5
+        $scope.y = e.clientY - 5
+        $scope.edit.hsl.h = 360 * e.clientX / w
+        $scope.edit.hsl.s = e.clientY / h
+        $scope.update!
