@@ -21,7 +21,7 @@ angular.module \ld.color <[]>
     $scope.pals = ldc-random.palette 100
     $scope.refs = ldc-random.palette 4
     $scope.feature-pals = ldc-random.palette 4
-    $scope.cc = [i for i from 0 to parseInt(Math.random!*1) + 5]map ->
+    $scope.cc = [i for i from 0 to parseInt(Math.random!*0) + 0]map ->
       tc = tinycolor r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
       tc.toHexString!
 
@@ -37,6 +37,7 @@ angular.module \ld.color <[]>
             ..enter!append \path .attr \class, it.name
             ..exit!remove!
           @update it
+      add: -> $scope.cc.push tinycolor({h: @hue, s: @r2l(@sat), l: @r2l(@lit)}).toHexString!
       update: ->
         d3.select "\#svg g.#{it.name}" .selectAll "path.#{it.name}" .attr do
           d: @ring it.r1, it.r2

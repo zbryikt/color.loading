@@ -40,6 +40,10 @@
       </nav>
     </div>
     <div id="root">
+      <div id="landing"><br>
+        <h2>Semantic Colors, Programmable Palettes.</h2>
+        <p>Color wheel, code codes, palette... We use them all the day. But we never make them ease to use. It's not true from now on.</p><br><br>
+      </div>
       <div id="editor">
         <div id="wheel">
           <svg id="svg" width="400px" height="400px" viewBox="0 0 400 400" preserveAspectRatio="xMidYMin" style="display:block;">
@@ -56,6 +60,10 @@
               <circle id="hue" class="ptr"></circle>
               <circle id="sat" class="ptr"></circle>
               <circle id="lit" class="ptr"></circle>
+            </g>
+            <g ng-click="wheel.add()" class="color-btns">
+              <circle cx="200" cy="200" r="60" fill="#999"></circle>
+              <text X="200" Y="200" dominant-baseline="middle" text-anchor="middle">ADD</text>
             </g>
           </svg>
         </div>

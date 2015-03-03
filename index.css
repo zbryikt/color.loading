@@ -3,8 +3,8 @@ html, body {
   height: 100%; }
 
 #root {
-  margin: 20px auto;
-  padding-top: 90px; }
+  margin: 0px auto 20px;
+  padding-top: 70px; }
   @media (min-width: 1064px) {
     #root {
       max-width: 1024px; } }
@@ -115,4 +115,7 @@ svg {
   user-select: none; }
 
 g.hue path.hue, g.sat path.sat, g.lit path.lit {
+  cursor: pointer; }
+
+g.color-btns {
   cursor: pointer; }

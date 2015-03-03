@@ -43,7 +43,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   $scope.featurePals = ldcRandom.palette(4);
   $scope.cc = (function(){
     var i$, to$, results$ = [];
-    for (i$ = 0, to$ = parseInt(Math.random() * 1) + 5; i$ <= to$; ++i$) {
+    for (i$ = 0, to$ = parseInt(Math.random() * 0) + 0; i$ <= to$; ++i$) {
       i = i$;
       results$.push(i);
     }
@@ -77,6 +77,13 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
         x$.exit().remove();
         return this$.update(it);
       });
+    },
+    add: function(){
+      return $scope.cc.push(tinycolor({
+        h: this.hue,
+        s: this.r2l(this.sat),
+        l: this.r2l(this.lit)
+      }).toHexString());
     },
     update: function(it){
       var this$ = this;
