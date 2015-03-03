@@ -102,3 +102,17 @@ nav.navbar-default {
 #current {
   float: right;
   width: 520px; }
+
+circle.ptr {
+  cursor: pointer; }
+
+svg {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+g.hue path.hue, g.sat path.sat, g.lit path.lit {
+  cursor: pointer; }

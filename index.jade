@@ -16,7 +16,7 @@ html(lang="en")
     link(rel="stylesheet",type="text/css",href="index.css")
     script(type="text/javascript",src="index.js")
     script(type="text/javascript",src="/bower_components/tinycolor/tinycolor.js")
-  body(ng-app="color",ng-controller="main",ng-mousemove="move($event)",onmousewheel="scroll(event)")
+  body(ng-app="ld.color",ng-controller="ldc-editor",ng-mousemove="wheel.move($event)",onmousewheel="scroll(event)")
     #nav-top
       nav.navbar.navbar-default(role="navigation")
         .container-fluid
