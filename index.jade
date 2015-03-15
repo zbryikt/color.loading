@@ -66,13 +66,48 @@ html(lang="en")
             g.color-btns(ng-click="wheel.add()")
               circle(cx="200",cy="200",r="60",fill="#999")
               text(X="200",Y="200",dominant-baseline="middle",text-anchor="middle") ADD
+          //-.pull-right
+            | or, input directly:
+            br
+            input.form-control.input-sm(placeholder="e.g., #facebc",style="width:100px")
+
         #current
           .colorblocks
             h3
               | Your Palette 
-              small: i.glyphicon.glyphicon-edit
-            .colorblock(ng-repeat="c in cc",ng-attr-style="background:{{c}}")
+              small
+                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
+                  i.glyphicon.glyphicon-edit
+                  | &nbsp;rename
+                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
+                  i.glyphicon.glyphicon-floppy-disk
+                  | &nbsp;save
+                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
+                  i.glyphicon.glyphicon-link
+                  | &nbsp;share
+                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
+                  i.glyphicon.glyphicon-random
+                  | &nbsp;random
+            .blockcontainer.palette-color(style="width:456px;display:inline-block")
+              .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",ng-click="setActive($index)")
+            #addcolorblock.colorblock(style="margin-top:0;width:44px;height:44px",ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
 
+          .row(style="border-bottom:1px solid #ddd;padding:5px 0 10px")
+            .col-sm-4
+              label color code
+              input.form-control(placeholder="e.g., #facebc")
+            .col-sm-4
+              label semantic
+              select.form-control
+                option danger
+                option warning
+                option info
+                option success
+                option primary
+                option default
+            .col-sm-2
+              label &nbsp;
+              .btn.btn-danger.form-control delete
           h3 References
           .palettes(style="text-align:left")
             .palette.sm(ng-repeat="pal in refs")

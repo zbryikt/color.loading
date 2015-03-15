@@ -41,6 +41,20 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   $scope.pals = ldcRandom.palette(100);
   $scope.refs = ldcRandom.palette(4);
   $scope.featurePals = ldcRandom.palette(4);
+  $scope.active = 0;
+  $scope.$watch('active', function(){
+    return console.log('ok', $scope.active);
+  });
+  $scope.setActive = function(it){
+    var tc, ref$;
+    $scope.active = it;
+    tc = $scope.cc[$scope.active].toHsl();
+    ref$ = $scope.wheel;
+    ref$.hue = tc.h;
+    ref$.sat = $scope.wheel.l2r(tc.s * 100);
+    ref$.lit = $scope.wheel.l2r(tc.l * 100);
+    return $scope.wheel.updateAll();
+  };
   $scope.cc = (function(){
     var i$, to$, results$ = [];
     for (i$ = 0, to$ = parseInt(Math.random() * 0) + 0; i$ <= to$; ++i$) {
@@ -50,12 +64,30 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     return results$;
   }()).map(function(){
     var tc;
-    tc = tinycolor({
+    return tc = tinycolor({
       r: parseInt(Math.random() * 256),
       g: parseInt(Math.random() * 256),
       b: parseInt(Math.random() * 256)
     });
-    return tc.toHexString();
+  });
+  $scope.updatePalette = function(){
+    var w;
+    w = $scope.wheel;
+    $scope.cc[$scope.active] = tinycolor({
+      h: w.hue,
+      s: w.r2l(w.sat),
+      l: w.r2l(w.lit)
+    });
+    return $scope.wheel.updatePtr();
+  };
+  $scope.$watch('wheel.hue', function(){
+    return $scope.updatePalette();
+  });
+  $scope.$watch('wheel.sat', function(){
+    return $scope.updatePalette();
+  });
+  $scope.$watch('wheel.lit', function(){
+    return $scope.updatePalette();
   });
   $scope.wheel = {
     hue: 50,
@@ -70,20 +102,38 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
         res$.push(ridx$);
       }
       this.point = res$;
-      return this.config.map(function(it){
+      this.config.map(function(it){
         var x$;
         x$ = d3.select("#svg g." + it.name).selectAll('path').data(this$.point);
         x$.enter().append('path').attr('class', it.name);
         x$.exit().remove();
         return this$.update(it);
       });
+      return this.updatePtr();
     },
-    add: function(){
-      return $scope.cc.push(tinycolor({
-        h: this.hue,
-        s: this.r2l(this.sat),
-        l: this.r2l(this.lit)
-      }).toHexString());
+    add: function(rand){
+      var c;
+      rand == null && (rand = false);
+      if (rand) {
+        c = tinycolor({
+          h: parseInt(Math.random() * 360),
+          s: parseInt(Math.random() * 100),
+          l: parseInt(Math.random() * 100)
+        });
+        $scope.cc.push(c);
+        return $scope.setActive($scope.cc.length - 1);
+      } else {
+        c = tinycolor({
+          h: this.hue,
+          s: this.r2l(this.sat),
+          l: this.r2l(this.lit)
+        });
+        if ($scope.cc.map(function(it){
+          return it.toHexString();
+        }).indexOf(c.toHexString()) === -1) {
+          return $scope.cc.push(c);
+        }
+      }
     },
     update: function(it){
       var this$ = this;
@@ -118,6 +168,9 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     },
     r2l: function(it){
       return parseInt(100 * Math.abs((it + 3600) % 360 - 180) / 180);
+    },
+    l2r: function(it){
+      return (it * 180 / 100 + 180) % 360;
     },
     config: [
       {
@@ -171,6 +224,12 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
         }
       }
     ],
+    updateAll: function(){
+      this.update(this.config[1]);
+      this.update(this.config[2]);
+      this.update(this.config[3]);
+      return this.updatePtr();
+    },
     updatePtr: function(){
       var i$, ref$, len$, cfg, results$ = [], this$ = this;
       for (i$ = 0, len$ = (ref$ = this.config).length; i$ < len$; ++i$) {
@@ -238,10 +297,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
           this.hue = ang;
           this.sat = 180 - 180 * (r / this.config[3].r1);
         }
-        this.update(this.config[1]);
-        this.update(this.config[2]);
-        this.update(this.config[3]);
-        return this.updatePtr();
+        return this.updateAll();
       }
     }
   };

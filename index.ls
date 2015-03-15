@@ -21,10 +21,23 @@ angular.module \ld.color <[]>
     $scope.pals = ldc-random.palette 100
     $scope.refs = ldc-random.palette 4
     $scope.feature-pals = ldc-random.palette 4
+    $scope.active = 0
+    $scope.$watch 'active' -> console.log \ok, $scope.active
+    $scope.setActive = ->
+      $scope.active = it
+      tc = $scope.cc[$scope.active].toHsl!
+      $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
+      $scope.wheel.update-all!
     $scope.cc = [i for i from 0 to parseInt(Math.random!*0) + 0]map ->
       tc = tinycolor r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
-      tc.toHexString!
 
+    $scope.update-palette = ->
+      w = $scope.wheel
+      $scope.cc[$scope.active] = tinycolor h: w.hue, s: w.r2l(w.sat), l: w.r2l(w.lit)
+      $scope.wheel.update-ptr!
+    $scope.$watch 'wheel.hue' -> $scope.update-palette!
+    $scope.$watch 'wheel.sat' -> $scope.update-palette!
+    $scope.$watch 'wheel.lit' -> $scope.update-palette!
     $scope.wheel = do
       hue: 50
       sat: 100
@@ -37,7 +50,15 @@ angular.module \ld.color <[]>
             ..enter!append \path .attr \class, it.name
             ..exit!remove!
           @update it
-      add: -> $scope.cc.push tinycolor({h: @hue, s: @r2l(@sat), l: @r2l(@lit)}).toHexString!
+        @update-ptr!
+      add: (rand = false)-> 
+        if rand =>
+          c = tinycolor {h: parseInt(Math.random!*360), s: parseInt(Math.random!*100), l: parseInt(Math.random!*100)}
+          $scope.cc.push c
+          $scope.setActive $scope.cc.length - 1
+        else
+          c = tinycolor({h: @hue, s: @r2l(@sat), l: @r2l(@lit)})
+          if $scope.cc.map(-> it.toHexString!).indexOf( c.toHexString! ) == -1 => $scope.cc.push c
       update: ->
         d3.select "\#svg g.#{it.name}" .selectAll "path.#{it.name}" .attr do
           d: @ring it.r1, it.r2
@@ -58,6 +79,7 @@ angular.module \ld.color <[]>
           "M#p1x #p1y L#p2x #p2y L#p4x #p4y L#p3x #p3y Z"
         )
       r2l: -> parseInt(100 * Math.abs(((it + 3600) % 360) - 180) / 180) # radian to lit/sat
+      l2r: -> (( it * 180 / 100 ) + 180) % 360
       config: 
         * { 
             name: \hue, r1: 195, r2: 175
@@ -82,6 +104,11 @@ angular.module \ld.color <[]>
             fill: (w,d) ~> "hsl(#{w.hue},#{w.r2l(w.sat)}%,#{w.r2l(w.lit)}%)"
             stroke: (w,d) ~> "hsl(#{w.hue},#{w.r2l(w.sat)}%,#{w.r2l(w.lit)}%)"
           }
+      update-all: ->
+        @update @config.1
+        @update @config.2
+        @update @config.3
+        @update-ptr!
       update-ptr: ->
         for cfg in @config => if cfg.rad =>
           d3.select "\##{cfg.name}.ptr" .attr do
@@ -115,10 +142,7 @@ angular.module \ld.color <[]>
             if r >= @config.3.r1 => r = @config.3.r1
             @hue = ang
             @sat = 180 - 180 * (r / @config.3.r1)
-          @update @config.1
-          @update @config.2
-          @update @config.3
-          @update-ptr!
+          @update-all!
 
     $scope.wheel.init!
 
