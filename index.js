@@ -135,6 +135,14 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
         }
       }
     },
+    'delete': function(idx){
+      idx == null && (idx = -1);
+      if ($scope.cc.length > 1) {
+        return $scope.cc.splice(idx >= 0
+          ? idx
+          : $scope.active, 1);
+      }
+    },
     update: function(it){
       var this$ = this;
       return d3.select("#svg g." + it.name).selectAll("path." + it.name).attr({

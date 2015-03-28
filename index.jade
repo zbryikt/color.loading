@@ -88,8 +88,8 @@ html(lang="en")
                 .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
                   i.glyphicon.glyphicon-random
                   | &nbsp;random
-            .blockcontainer.palette-color(style="width:456px;display:inline-block")
-              .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",ng-click="setActive($index)")
+            #cur-palette.blockcontainer.palette-color(style="width:456px;display:inline-block")
+              .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",ng-click="setActive($index)",ng-class="{'active':$index==active,'dark':c.isDark()}")
             #addcolorblock.colorblock(style="margin-top:0;width:44px;height:44px",ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
 
           .row(style="border-bottom:1px solid #ddd;padding:5px 0 10px")
@@ -107,7 +107,7 @@ html(lang="en")
                 option default
             .col-sm-2
               label &nbsp;
-              .btn.btn-danger.form-control delete
+              .btn.btn-danger.form-control(ng-click="wheel.delete()") delete
           h3 References
           .palettes(style="text-align:left")
             .palette.sm(ng-repeat="pal in refs")

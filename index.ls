@@ -59,6 +59,9 @@ angular.module \ld.color <[]>
         else
           c = tinycolor({h: @hue, s: @r2l(@sat), l: @r2l(@lit)})
           if $scope.cc.map(-> it.toHexString!).indexOf( c.toHexString! ) == -1 => $scope.cc.push c
+      delete: (idx = -1) -> if $scope.cc.length > 1 =>
+        $scope.cc.splice ( if idx >= 0 => idx else $scope.active ), 1
+
       update: ->
         d3.select "\#svg g.#{it.name}" .selectAll "path.#{it.name}" .attr do
           d: @ring it.r1, it.r2
