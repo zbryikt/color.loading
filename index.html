@@ -74,10 +74,15 @@
                 <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;save</div>
                 <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i>&nbsp;share</div>
                 <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i>&nbsp;random</div></small></h3>
-            <div id="cur-palette" style="width:456px;display:inline-block" class="blockcontainer palette-color">
-              <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-click="setActive($index)" ng-class="{'active':$index==active,'dark':c.isDark()}" class="color"></div>
+            <div id="cur-palette">
+              <div id="addcolorblock" ng-click="wheel.add(true)" class="colorblock"><i class="glyphicon glyphicon-plus"></i></div>
+              <div style="width:456px;display:inline-block" class="blockcontainer palette-color">
+                <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-click="setActive($index)" ng-class="{'active':$index==active,'dark':c.isDark()}" class="color">
+                  <div class="semantic"><i ng-show="c.semantic.value=='warning'" class="glyphicon glyphicon-exclamation-sign"></i><i ng-show="c.semantic.value=='info'" class="glyphicon glyphicon-info-sign"></i><i ng-show="c.semantic.value=='success'" class="glyphicon glyphicon-ok-sign"></i><i ng-show="c.semantic.value=='danger'" class="glyphicon glyphicon-remove-sign"></i><i ng-show="c.semantic.value=='primary'" class="glyphicon glyphicon-asterisk"></i><i ng-show="c.semantic.value=='default'" class="glyphicon glyphicon-record"></i></div>
+                </div>
+              </div>
+              <div id="cur-palette-ptr" ng-attr-style="left:{{curpos}}px" ng-class="{'dark':cc[active].isDark()}"></div>
             </div>
-            <div id="addcolorblock" style="margin-top:0;width:44px;height:44px" ng-click="wheel.add(true)" class="colorblock"><i class="glyphicon glyphicon-plus"></i></div>
           </div>
           <div style="border-bottom:1px solid #ddd;padding:5px 0 10px" class="row">
             <div class="col-sm-4">
@@ -86,13 +91,7 @@
             </div>
             <div class="col-sm-4">
               <label>semantic</label>
-              <select class="form-control">
-                <option>danger</option>
-                <option>warning</option>
-                <option>info</option>
-                <option>success</option>
-                <option>primary</option>
-                <option>default</option>
+              <select ng-model="semantic.value" ng-options="opt as opt.label for opt in semantic.options" class="form-control">
               </select>
             </div>
             <div class="col-sm-2">

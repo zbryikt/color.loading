@@ -22,9 +22,31 @@ angular.module \ld.color <[]>
     $scope.refs = ldc-random.palette 4
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
-    $scope.$watch 'active' -> console.log \ok, $scope.active
+    $scope.semantic = do
+      options: 
+        * label: \danger, value: \danger
+        * label: \warning, value: \warning
+        * label: \info, value: \info
+        * label: \success, value: \success
+        * label: \primary, value: \primary
+        * label: \default, value: \default
+        * label: \none, value: \none
+      watch: ->
+        c = $scope.cc[$scope.active]
+        s = $scope.semantic.value
+        v = ((s or {}).target or {})
+        u = ((c or {}).semantic or {})
+        v.semantic = null
+        u.target = null
+        s.target = c
+        c.semantic = s
+    $scope.semantic.value = $scope.semantic.options[* - 1]
+    $scope.$watch 'semantic.value', $scope.semantic.watch
+    $scope.curpos = parseInt((456 / ($scope.cc or [1]).length) * (0.5))
     $scope.setActive = ->
       $scope.active = it
+      $scope.semantic.value = $scope.cc[$scope.active].semantic or $scope.semantic.options[* - 1]
+      $scope.curpos = parseInt((456 / $scope.cc.length) * (it + 0.5))
       tc = $scope.cc[$scope.active].toHsl!
       $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
       $scope.wheel.update-all!
@@ -33,7 +55,7 @@ angular.module \ld.color <[]>
 
     $scope.update-palette = ->
       w = $scope.wheel
-      $scope.cc[$scope.active] = tinycolor h: w.hue, s: w.r2l(w.sat), l: w.r2l(w.lit)
+      $scope.cc[$scope.active] <<< tinycolor h: w.hue, s: w.r2l(w.sat), l: w.r2l(w.lit)
       $scope.wheel.update-ptr!
     $scope.$watch 'wheel.hue' -> $scope.update-palette!
     $scope.$watch 'wheel.sat' -> $scope.update-palette!
@@ -119,7 +141,8 @@ angular.module \ld.color <[]>
             cx: ~> ( cfg.r1 + cfg.r2 ) / 2 * Math.cos cfg.rad @
             cy: ~> ( cfg.r1 + cfg.r2 ) / 2 * Math.sin cfg.rad @
             fill: \none
-            stroke: \#444
+            stroke: ~> 
+              if cfg.name == \lit and Math.abs(@lit - 180) < 90 => \#fff  else \#444
       pre-which: 0
       target: 0
       move: (e) ->

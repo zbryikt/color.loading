@@ -37,17 +37,56 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
   });
 }));
 x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldcRandom){
-  var i, this$ = this;
+  var ref$, i, this$ = this;
   $scope.pals = ldcRandom.palette(100);
   $scope.refs = ldcRandom.palette(4);
   $scope.featurePals = ldcRandom.palette(4);
   $scope.active = 0;
-  $scope.$watch('active', function(){
-    return console.log('ok', $scope.active);
-  });
+  $scope.semantic = {
+    options: [
+      {
+        label: 'danger',
+        value: 'danger'
+      }, {
+        label: 'warning',
+        value: 'warning'
+      }, {
+        label: 'info',
+        value: 'info'
+      }, {
+        label: 'success',
+        value: 'success'
+      }, {
+        label: 'primary',
+        value: 'primary'
+      }, {
+        label: 'default',
+        value: 'default'
+      }, {
+        label: 'none',
+        value: 'none'
+      }
+    ],
+    watch: function(){
+      var c, s, v, u;
+      c = $scope.cc[$scope.active];
+      s = $scope.semantic.value;
+      v = (s || {}).target || {};
+      u = (c || {}).semantic || {};
+      v.semantic = null;
+      u.target = null;
+      s.target = c;
+      return c.semantic = s;
+    }
+  };
+  $scope.semantic.value = (ref$ = $scope.semantic.options)[ref$.length - 1];
+  $scope.$watch('semantic.value', $scope.semantic.watch);
+  $scope.curpos = parseInt((456 / ($scope.cc || [1]).length) * 0.5);
   $scope.setActive = function(it){
-    var tc, ref$;
+    var ref$, tc;
     $scope.active = it;
+    $scope.semantic.value = $scope.cc[$scope.active].semantic || (ref$ = $scope.semantic.options)[ref$.length - 1];
+    $scope.curpos = parseInt((456 / $scope.cc.length) * (it + 0.5));
     tc = $scope.cc[$scope.active].toHsl();
     ref$ = $scope.wheel;
     ref$.hue = tc.h;
@@ -73,11 +112,11 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   $scope.updatePalette = function(){
     var w;
     w = $scope.wheel;
-    $scope.cc[$scope.active] = tinycolor({
+    import$($scope.cc[$scope.active], tinycolor({
       h: w.hue,
       s: w.r2l(w.sat),
       l: w.r2l(w.lit)
-    });
+    }));
     return $scope.wheel.updatePtr();
   };
   $scope.$watch('wheel.hue', function(){
@@ -248,7 +287,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
             cx: fn1$,
             cy: fn2$,
             fill: 'none',
-            stroke: '#444'
+            stroke: fn3$
           }));
         }
       }
@@ -261,6 +300,13 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       }
       function fn2$(){
         return (cfg.r1 + cfg.r2) / 2 * Math.sin(cfg.rad(this$));
+      }
+      function fn3$(){
+        if (cfg.name === 'lit' && Math.abs(this$.lit - 180) < 90) {
+          return '#fff';
+        } else {
+          return '#444';
+        }
       }
     },
     preWhich: 0,

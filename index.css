@@ -81,7 +81,8 @@ nav.navbar-default {
   height: 44px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
   .palette-color .color {
-    position: relative; }
+    position: relative;
+    cursor: pointer; }
 
 @-webkit-keyframes jump {
   0% {
@@ -113,7 +114,7 @@ nav.navbar-default {
     margin-bottom: 8px; } }
 #cur-palette .color.active:after {
   position: absolute;
-  display: block;
+  display: none;
   left: 50%;
   bottom: -10px;
   margin-left: -8px;
@@ -135,6 +136,51 @@ nav.navbar-default {
 #cur-palette .color.active.dark:after {
   color: #ddd; }
 
+#cur-palette .semantic {
+  position: absolute; }
+
+#cur-palette .color i {
+  color: #000;
+  opacity: 0.5;
+  margin: 4px; }
+
+#cur-palette .color.dark i {
+  color: #fff; }
+
+#cur-palette {
+  position: relative; }
+
+#cur-palette-ptr {
+  position: absolute;
+  width: 100px;
+  color: #222;
+  -ms-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+  -moz-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+  -webkit-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+  -o-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out, left 0.3s ease-in-out; }
+  #cur-palette-ptr:after {
+    position: absolute;
+    bottom: -8px;
+    margin-left: -8px;
+    -ms-transition: margin-bottom 1s ease-out;
+    -moz-transition: margin-bottom 1s ease-out;
+    -webkit-transition: margin-bottom 1s ease-out;
+    -o-transition: margin-bottom 1s ease-out;
+    transition: margin-bottom 1s ease-out;
+    -ms-animation: jump 1s infinite ease-in-out;
+    -moz-animation: jump 1s infinite ease-in-out;
+    -webkit-animation: jump 1s infinite ease-in-out;
+    -o-animation: jump 1s infinite ease-in-out;
+    animation: jump 1s infinite ease-in-out;
+    display: block;
+    font-family: "Glyphicons Halflings";
+    -webkit-font-smoothing: antialiased;
+    content: "";
+    text-shadow: 0 1px 2px black; }
+  #cur-palette-ptr.dark {
+    color: #bbb; }
+
 .color {
   height: 100%;
   display: inline-block; }
@@ -148,12 +194,19 @@ nav.navbar-default {
 
 #addcolorblock {
   text-align: center;
-  color: #ddd;
+  color: #999;
   line-height: 44px;
-  font-size: 24px;
-  border: 1px dotted #ccc;
+  font-size: 16px;
+  border: 1px dashed #ccc;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
-  cursor: pointer; }
+  cursor: pointer;
+  position: absolute;
+  left: -34px;
+  margin-top: 0;
+  width: 24px;
+  height: 44px;
+  padding-left: 1px; }
 
 #editor {
   width: 1024px;

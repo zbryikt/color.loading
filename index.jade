@@ -88,9 +88,19 @@ html(lang="en")
                 .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
                   i.glyphicon.glyphicon-random
                   | &nbsp;random
-            #cur-palette.blockcontainer.palette-color(style="width:456px;display:inline-block")
-              .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",ng-click="setActive($index)",ng-class="{'active':$index==active,'dark':c.isDark()}")
-            #addcolorblock.colorblock(style="margin-top:0;width:44px;height:44px",ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
+            #cur-palette
+              #addcolorblock.colorblock(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
+              .blockcontainer.palette-color(style="width:456px;display:inline-block")
+                .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",
+                       ng-click="setActive($index)",ng-class="{'active':$index==active,'dark':c.isDark()}")
+                  .semantic
+                    i.glyphicon.glyphicon-exclamation-sign(ng-show="c.semantic.value=='warning'")
+                    i.glyphicon.glyphicon-info-sign(ng-show="c.semantic.value=='info'")
+                    i.glyphicon.glyphicon-ok-sign(ng-show="c.semantic.value=='success'")
+                    i.glyphicon.glyphicon-remove-sign(ng-show="c.semantic.value=='danger'")
+                    i.glyphicon.glyphicon-asterisk(ng-show="c.semantic.value=='primary'")
+                    i.glyphicon.glyphicon-record(ng-show="c.semantic.value=='default'")
+              #cur-palette-ptr(ng-attr-style="left:{{curpos}}px",ng-class="{'dark':cc[active].isDark()}")
 
           .row(style="border-bottom:1px solid #ddd;padding:5px 0 10px")
             .col-sm-4
@@ -98,13 +108,15 @@ html(lang="en")
               input.form-control(placeholder="e.g., #facebc")
             .col-sm-4
               label semantic
-              select.form-control
-                option danger
-                option warning
-                option info
-                option success
-                option primary
-                option default
+              select.form-control(ng-model="semantic.value",ng-options="opt as opt.label for opt in semantic.options")
+                //-
+                  option(value="danger") danger
+                  option(value="warning") warning
+                  option(value="info") info
+                  option(value="success") success
+                  option(value="primary") primary
+                  option(value="default") default
+                  option(value="0") none
             .col-sm-2
               label &nbsp;
               .btn.btn-danger.form-control(ng-click="wheel.delete()") delete
