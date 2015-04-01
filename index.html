@@ -70,10 +70,14 @@
         <div id="current">
           <div class="colorblocks">
             <h3>Your Palette <small>
-                <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-edit"></i>&nbsp;rename</div>
-                <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;save</div>
-                <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i>&nbsp;share</div>
-                <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i>&nbsp;random</div></small></h3>
+                <div style="vertical-align:text-bottom" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-edit"></i>
+                </div>
+                <div style="margin-right: 64px;margin-top: 5px" class="pull-right">
+                  <div style="vertical-align:text-bottom;border:none" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i>
+                  </div>
+                  <div style="vertical-align:text-bottom;border:none" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i>
+                  </div>
+                </div></small></h3>
             <div id="cur-palette">
               <div id="addcolorblock" ng-click="wheel.add(true)" class="colorblock"><i class="glyphicon glyphicon-plus"></i></div>
               <div style="width:456px;display:inline-block" class="blockcontainer palette-color">
@@ -87,7 +91,7 @@
           <div style="border-bottom:1px solid #ddd;padding:5px 0 10px" class="row">
             <div class="col-sm-4">
               <label>color code</label>
-              <input placeholder="e.g., #facebc" class="form-control">
+              <input placeholder="e.g., #facebc" ng-model="colorcode" class="form-control">
             </div>
             <div class="col-sm-4">
               <label>semantic</label>

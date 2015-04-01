@@ -42,6 +42,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   $scope.refs = ldcRandom.palette(4);
   $scope.featurePals = ldcRandom.palette(4);
   $scope.active = 0;
+  $scope.colorcode = null;
   $scope.semantic = {
     options: [
       {
@@ -117,8 +118,22 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       s: w.r2l(w.sat),
       l: w.r2l(w.lit)
     }));
-    return $scope.wheel.updatePtr();
+    $scope.wheel.updatePtr();
+    return $scope.colorcode = $scope.cc[$scope.active].toHexString();
   };
+  $scope.$watch('colorcode', function(){
+    var ret, tc, ref$;
+    ret = /^#[a-fA-F0-9]{6}$/.exec($scope.colorcode);
+    if (ret && $scope.cc[$scope.active].toHexString() !== $scope.colorcode) {
+      import$($scope.cc[$scope.active], tinycolor($scope.colorcode));
+      tc = $scope.cc[$scope.active].toHsl();
+      ref$ = $scope.wheel;
+      ref$.hue = tc.h;
+      ref$.sat = $scope.wheel.l2r(tc.s * 100);
+      ref$.lit = $scope.wheel.l2r(tc.l * 100);
+      return $scope.wheel.updateAll();
+    }
+  });
   $scope.$watch('wheel.hue', function(){
     return $scope.updatePalette();
   });
@@ -177,9 +192,12 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     'delete': function(idx){
       idx == null && (idx = -1);
       if ($scope.cc.length > 1) {
-        return $scope.cc.splice(idx >= 0
+        $scope.cc.splice(idx >= 0
           ? idx
           : $scope.active, 1);
+        return $scope.setActive($scope.active < $scope.cc.length - 1
+          ? $scope.active
+          : $scope.cc.length - 1);
       }
     },
     update: function(it){

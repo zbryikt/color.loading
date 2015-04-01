@@ -78,14 +78,15 @@ html(lang="en")
               small
                 .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
                   i.glyphicon.glyphicon-edit
-                  | &nbsp;rename
-                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
-                  i.glyphicon.glyphicon-floppy-disk
-                  | &nbsp;save
-                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
-                  i.glyphicon.glyphicon-link
-                  | &nbsp;share
-                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
+                  //-| &nbsp;rename
+                .pull-right(style="margin-right: 64px;margin-top: 5px")
+                  .btn.btn-xs.btn-default(style="vertical-align:text-bottom;border:none")
+                    i.glyphicon.glyphicon-floppy-disk
+                    //-| &nbsp;save
+                  .btn.btn-xs.btn-default(style="vertical-align:text-bottom;border:none")
+                    i.glyphicon.glyphicon-link
+                    //-| &nbsp;share
+                //-.btn.btn-xs.btn-default(style="vertical-align:text-bottom")
                   i.glyphicon.glyphicon-random
                   | &nbsp;random
             #cur-palette
@@ -105,7 +106,7 @@ html(lang="en")
           .row(style="border-bottom:1px solid #ddd;padding:5px 0 10px")
             .col-sm-4
               label color code
-              input.form-control(placeholder="e.g., #facebc")
+              input.form-control(placeholder="e.g., #facebc",ng-model="colorcode")
             .col-sm-4
               label semantic
               select.form-control(ng-model="semantic.value",ng-options="opt as opt.label for opt in semantic.options")

@@ -22,6 +22,7 @@ angular.module \ld.color <[]>
     $scope.refs = ldc-random.palette 4
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
+    $scope.colorcode = null
     $scope.semantic = do
       options: 
         * label: \danger, value: \danger
@@ -57,6 +58,15 @@ angular.module \ld.color <[]>
       w = $scope.wheel
       $scope.cc[$scope.active] <<< tinycolor h: w.hue, s: w.r2l(w.sat), l: w.r2l(w.lit)
       $scope.wheel.update-ptr!
+      $scope.colorcode = $scope.cc[$scope.active].toHexString!
+    $scope.$watch 'colorcode' ->
+      ret = /^#[a-fA-F0-9]{6}$/.exec $scope.colorcode
+      if ret and $scope.cc[$scope.active].toHexString! != $scope.colorcode =>
+        $scope.cc[$scope.active] <<< tinycolor $scope.colorcode
+        tc = $scope.cc[$scope.active].toHsl!
+        $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
+        $scope.wheel.update-all!
+
     $scope.$watch 'wheel.hue' -> $scope.update-palette!
     $scope.$watch 'wheel.sat' -> $scope.update-palette!
     $scope.$watch 'wheel.lit' -> $scope.update-palette!
@@ -83,6 +93,7 @@ angular.module \ld.color <[]>
           if $scope.cc.map(-> it.toHexString!).indexOf( c.toHexString! ) == -1 => $scope.cc.push c
       delete: (idx = -1) -> if $scope.cc.length > 1 =>
         $scope.cc.splice ( if idx >= 0 => idx else $scope.active ), 1
+        $scope.setActive if $scope.active < $scope.cc.length - 1 => $scope.active else $scope.cc.length - 1
 
       update: ->
         d3.select "\#svg g.#{it.name}" .selectAll "path.#{it.name}" .attr do
