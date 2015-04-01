@@ -373,7 +373,14 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       }
     }
   };
-  return $scope.wheel.init();
+  $scope.wheel.init();
+  return $(window).scroll(function(){
+    if ($(document.body).scrollTop() < 60) {
+      return $('#nav-top').removeClass('dim');
+    } else if ($(document.body).scrollTop() > 60) {
+      return $('#nav-top').addClass('dim');
+    }
+  });
 }));
 scroll = function(e){
   var s;

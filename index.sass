@@ -15,10 +15,16 @@ html,body
   height: 90px
   background: none
   position: fixed
-  @include transition(background 0.3s ease-out,opacity 0.3s ease-out)
+  @include transition(all 0.3s ease-out) 
+  //background 0.3s ease-out,opacity 0.3s ease-out)
+  nav.navbar-default
+    @include transition(all 0.3s ease-out) 
   z-index: 11
   &.dim
-    background: rgba(0,0,0,0.5)
+    height: 50px
+    background: rgba(255,255,255,0.9)
+    nav.navbar-default
+      margin: 5px auto
 
 nav.navbar-default
   background: none
@@ -169,6 +175,13 @@ nav.navbar-default
 #current
   float: right
   width: 520px
+#current .title
+  .btn-default
+    border: none
+    vertical-align: bottom
+  .pull-right
+    margin-right: 64px
+    margin-top: 5px
 
 circle.ptr
   cursor: pointer

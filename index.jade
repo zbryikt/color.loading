@@ -73,22 +73,22 @@ html(lang="en")
 
         #current
           .colorblocks
-            h3
+            h3.title
               | Your Palette 
               small
-                .btn.btn-xs.btn-default(style="vertical-align:text-bottom")
+                .btn.btn-xs.btn-default
                   i.glyphicon.glyphicon-edit
                   //-| &nbsp;rename
-                .pull-right(style="margin-right: 64px;margin-top: 5px")
-                  .btn.btn-xs.btn-default(style="vertical-align:text-bottom;border:none")
+                .pull-right
+                  .btn.btn-xs.btn-default
                     i.glyphicon.glyphicon-floppy-disk
                     //-| &nbsp;save
-                  .btn.btn-xs.btn-default(style="vertical-align:text-bottom;border:none")
+                  .btn.btn-xs.btn-default
                     i.glyphicon.glyphicon-link
                     //-| &nbsp;share
-                //-.btn.btn-xs.btn-default(style="vertical-align:text-bottom")
-                  i.glyphicon.glyphicon-random
-                  | &nbsp;random
+                  .btn.btn-xs.btn-default
+                    i.glyphicon.glyphicon-random
+                    //-| &nbsp;random
             #cur-palette
               #addcolorblock.colorblock(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
               .blockcontainer.palette-color(style="width:456px;display:inline-block")

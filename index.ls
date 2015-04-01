@@ -182,6 +182,10 @@ angular.module \ld.color <[]>
           @update-all!
 
     $scope.wheel.init!
+    $(window)scroll ->
+      if $(document.body)scroll-top! < 60 => $(\#nav-top)removeClass \dim
+      else if $(document.body)scroll-top! > 60 => $(\#nav-top)addClass \dim
+
 
 scroll = (e) ->
   s = angular.element("body").scope!
