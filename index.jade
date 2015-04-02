@@ -47,8 +47,8 @@ html(lang="en")
         p Color wheel, code codes, palette... We use them all the day. But we never make them ease to use. It's not true from now on.
         br
         br
-
       #editor
+        #mask
         #wheel
           svg#svg(width="400px",height="400px",viewBox="0 0 400 400",preserveAspectRatio="xMidYMin",style="display:block;")
             defs
@@ -103,7 +103,7 @@ html(lang="en")
                     i.glyphicon.glyphicon-record(ng-show="c.semantic.value=='default'")
               #cur-palette-ptr(ng-attr-style="left:{{curpos}}px",ng-class="{'dark':cc[active].isDark()}")
 
-          .row(style="border-bottom:1px solid #ddd;padding:5px 0 10px")
+          #cur-config.row
             .col-sm-4
               label color code
               input.form-control(placeholder="e.g., #facebc",ng-model="colorcode")
@@ -122,7 +122,7 @@ html(lang="en")
               label &nbsp;
               .btn.btn-danger.form-control(ng-click="wheel.delete()") delete
           h3 References
-          .palettes(style="text-align:left")
+          #ref-palettes.palettes(style="text-align:left")
             .palette.sm(ng-repeat="pal in refs")
               .name
                 | {{pal.name}}
@@ -130,45 +130,11 @@ html(lang="en")
                 i.glyphicon.glyphicon-heart
                 | 5
               .palette-color
-                .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%")
+                .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
               .tag cloud,blah,qwer
 
       .clearfix
       hr 
-      //-
-        .row
-          .col-sm-5
-            svg#svg(width="400px",height="400px",viewBox="0 0 600 600",preserveAspectRatio="xMidYMin",style="display:block;")
-              defs
-              radialgradient#gradient(cx="50%",y="50%",fx="50%",fy="50%",r="50%",spreadMethod="pad")
-                stop(offset="0%",stop-color="rgba(128,128,128,1)",stop-opacity="1")
-                stop(offset="100%",stop-color="rgba(128,128,128,1)",stop-opacity="0")
-              g.hue(transform="translate(300 300)")
-              g.sat(transform="translate(300 300)")
-              g.lit(transform="translate(300 300)")
-              g.fin(transform="translate(300 300)")
-              g.ptrs(transform="translate(300 300)")
-                circle#hue.ptr
-                circle#sat.ptr
-                circle#lit.ptr
-          .col-sm-7
-            .colorblocks
-              h3
-                | Your Palette 
-                small: i.glyphicon.glyphicon-edit
-              .colorblock(ng-repeat="c in cc",ng-attr-style="background:{{c}}")
-            h3 References
-            .palettes(style="text-align:left")
-              .palette.sm(ng-repeat="pal in refs")
-                .name
-                  | {{pal.name}}
-                .like
-                  i.glyphicon.glyphicon-heart
-                  | 5
-                .palette-color
-                  .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%")
-                .tag cloud,blah,qwer
-
 
       h3 All Palettes
       .palettes
@@ -176,8 +142,9 @@ html(lang="en")
           .name
             | {{pal.name}}
           .like
+            i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
             i.glyphicon.glyphicon-heart
             | 5
           .palette-color
-            .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%")
+            .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
           .tag cloud,blah,qwer

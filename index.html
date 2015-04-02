@@ -45,6 +45,7 @@
         <p>Color wheel, code codes, palette... We use them all the day. But we never make them ease to use. It's not true from now on.</p><br><br>
       </div>
       <div id="editor">
+        <div id="mask"></div>
         <div id="wheel">
           <svg id="svg" width="400px" height="400px" viewBox="0 0 400 400" preserveAspectRatio="xMidYMin" style="display:block;">
             <defs></defs>
@@ -90,7 +91,7 @@
               <div id="cur-palette-ptr" ng-attr-style="left:{{curpos}}px" ng-class="{'dark':cc[active].isDark()}"></div>
             </div>
           </div>
-          <div style="border-bottom:1px solid #ddd;padding:5px 0 10px" class="row">
+          <div id="cur-config" class="row">
             <div class="col-sm-4">
               <label>color code</label>
               <input placeholder="e.g., #facebc" ng-model="colorcode" class="form-control">
@@ -106,12 +107,12 @@
             </div>
           </div>
           <h3>References</h3>
-          <div style="text-align:left" class="palettes">
+          <div id="ref-palettes" style="text-align:left" class="palettes">
             <div ng-repeat="pal in refs" class="palette sm">
               <div class="name">{{pal.name}}</div>
               <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
               <div class="palette-color">
-                <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" class="color"></div>
+                <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
               </div>
               <div class="tag">cloud,blah,qwer</div>
             </div>
@@ -124,9 +125,9 @@
       <div class="palettes">
         <div ng-repeat="pal in pals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
+          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
           <div class="palette-color">
-            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" class="color"></div>
+            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
           </div>
           <div class="tag">cloud,blah,qwer</div>
         </div>

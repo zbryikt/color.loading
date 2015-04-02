@@ -66,6 +66,14 @@ angular.module \ld.color <[]>
         tc = $scope.cc[$scope.active].toHsl!
         $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
         $scope.wheel.update-all!
+    $scope.setcolor = -> $scope.colorcode = it.toHexString!
+    $scope.setpalette = (pal) -> 
+      for i from 0 til pal.length
+        if $scope.cc.length <= i => 
+          $scope.cc.push tinycolor pal[i].toHexString!
+        else $scope.cc[i] <<< tinycolor pal[i].toHexString!
+      if $scope.cc.length > pal.length => $scope.cc.splice pal.length
+      $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 
     $scope.$watch 'wheel.hue' -> $scope.update-palette!
     $scope.$watch 'wheel.sat' -> $scope.update-palette!
@@ -183,8 +191,11 @@ angular.module \ld.color <[]>
 
     $scope.wheel.init!
     $(window)scroll ->
-      if $(document.body)scroll-top! < 60 => $(\#nav-top)removeClass \dim
-      else if $(document.body)scroll-top! > 60 => $(\#nav-top)addClass \dim
+      scroll-top = $(document.body)scroll-top!
+      if scroll-top < 60 => $(\#nav-top)removeClass \dim
+      else => $(\#nav-top)addClass \dim
+      if scroll-top < 380 => $(\#editor)removeClass \dim
+      else => $(\#editor)addClass \dim
 
 
 scroll = (e) ->

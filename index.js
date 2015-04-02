@@ -134,6 +134,26 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       return $scope.wheel.updateAll();
     }
   });
+  $scope.setcolor = function(it){
+    return $scope.colorcode = it.toHexString();
+  };
+  $scope.setpalette = function(pal){
+    var i$, to$, i;
+    for (i$ = 0, to$ = pal.length; i$ < to$; ++i$) {
+      i = i$;
+      if ($scope.cc.length <= i) {
+        $scope.cc.push(tinycolor(pal[i].toHexString()));
+      } else {
+        import$($scope.cc[i], tinycolor(pal[i].toHexString()));
+      }
+    }
+    if ($scope.cc.length > pal.length) {
+      $scope.cc.splice(pal.length);
+    }
+    return $scope.setActive($scope.active < $scope.cc.length
+      ? $scope.active
+      : $scope.cc.length - 1);
+  };
   $scope.$watch('wheel.hue', function(){
     return $scope.updatePalette();
   });
@@ -375,10 +395,17 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   };
   $scope.wheel.init();
   return $(window).scroll(function(){
-    if ($(document.body).scrollTop() < 60) {
-      return $('#nav-top').removeClass('dim');
-    } else if ($(document.body).scrollTop() > 60) {
-      return $('#nav-top').addClass('dim');
+    var scrollTop;
+    scrollTop = $(document.body).scrollTop();
+    if (scrollTop < 60) {
+      $('#nav-top').removeClass('dim');
+    } else {
+      $('#nav-top').addClass('dim');
+    }
+    if (scrollTop < 380) {
+      return $('#editor').removeClass('dim');
+    } else {
+      return $('#editor').addClass('dim');
     }
   });
 }));

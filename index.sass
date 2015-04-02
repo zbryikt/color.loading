@@ -69,6 +69,8 @@ nav.navbar-default
     display: none
     font-size: 12px
     text-align: right
+  .glyphicon-chevron-up
+    cursor: pointer
 
 .palette.sm
   width: 200px
@@ -81,6 +83,7 @@ nav.navbar-default
   .color
     position: relative
     cursor: pointer
+    @include transition(width 0.3s ease-in-out)
 
 @include keyframes(jump)
   0%
@@ -101,7 +104,7 @@ nav.navbar-default
     -webkit-font-smoothing: antialiased
     content: "\e113"
     color: #222
-    @include transition(margin-bottom 1s ease-out)
+    @include transition(margin-bottom 1s ease-out, width 0.3s ease-in-out)
     @include animation(jump 1s infinite ease-in-out)
 #cur-palette .color.active.dark
   &:after
@@ -168,6 +171,7 @@ nav.navbar-default
   width: 1024px
   height: 420px
 
+
 #wheel
   float: left
   width: 400px
@@ -175,6 +179,7 @@ nav.navbar-default
 #current
   float: right
   width: 520px
+  @include transition(all 0.5s ease-in-out)
 #current .title
   .btn-default
     border: none
@@ -182,6 +187,9 @@ nav.navbar-default
   .pull-right
     margin-right: 64px
     margin-top: 5px
+
+#ref-palettes .palette
+  width: 210px
 
 circle.ptr
   cursor: pointer
@@ -193,3 +201,51 @@ g.hue path.hue, g.sat path.sat, g.lit path.lit
 
 g.color-btns
   cursor: pointer
+
+#editor
+  h3, #cur-config, .palette-color
+    @include transition(all 0.3s ease-in-out)
+   
+  h3
+    height: 32px
+    margin: 10px 0 10px
+  #cur-config
+    height: 75px
+    border-bottom: 1px solid #ddd
+    padding: 5px 0 10px
+
+#editor.dim
+  #mask
+    position: fixed
+    width: 100%
+    height: 105px
+    background: rgba(255,255,255,0.9)
+    border:
+      top: 1px solid #ccc
+      bottom: 1px solid #ccc
+    z-index: 9
+    top: 50px
+    left: 0
+    box-shadow: 0 1px 3px rgba(255,255,255,0.2)
+  #current
+    position: fixed
+    top: 60px
+    left: 460px
+    max-width: 1024px
+    z-index: 10
+
+  h3, #cur-config
+    height: 0
+    margin: 0
+    overflow: hidden
+
+  #cur-config
+    padding: 0
+    border: none
+
+  .palette
+    width: 84px
+    .palette-color
+      height: 24px
+    .name, .like
+      display: none

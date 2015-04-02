@@ -79,6 +79,8 @@ nav.navbar-default {
     display: none;
     font-size: 12px;
     text-align: right; }
+  .palette .glyphicon-chevron-up {
+    cursor: pointer; }
 
 .palette.sm {
   width: 200px; }
@@ -91,7 +93,12 @@ nav.navbar-default {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
   .palette-color .color {
     position: relative;
-    cursor: pointer; }
+    cursor: pointer;
+    -ms-transition: width 0.3s ease-in-out;
+    -moz-transition: width 0.3s ease-in-out;
+    -webkit-transition: width 0.3s ease-in-out;
+    -o-transition: width 0.3s ease-in-out;
+    transition: width 0.3s ease-in-out; }
 
 @-webkit-keyframes jump {
   0% {
@@ -131,11 +138,11 @@ nav.navbar-default {
   -webkit-font-smoothing: antialiased;
   content: "";
   color: #222;
-  -ms-transition: margin-bottom 1s ease-out;
-  -moz-transition: margin-bottom 1s ease-out;
-  -webkit-transition: margin-bottom 1s ease-out;
-  -o-transition: margin-bottom 1s ease-out;
-  transition: margin-bottom 1s ease-out;
+  -ms-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+  -moz-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+  -webkit-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+  -o-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+  transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
   -ms-animation: jump 1s infinite ease-in-out;
   -moz-animation: jump 1s infinite ease-in-out;
   -webkit-animation: jump 1s infinite ease-in-out;
@@ -228,7 +235,12 @@ nav.navbar-default {
 
 #current {
   float: right;
-  width: 520px; }
+  width: 520px;
+  -ms-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; }
 
 #current .title .btn-default {
   border: none;
@@ -236,6 +248,9 @@ nav.navbar-default {
 #current .title .pull-right {
   margin-right: 64px;
   margin-top: 5px; }
+
+#ref-palettes .palette {
+  width: 210px; }
 
 circle.ptr {
   cursor: pointer; }
@@ -253,3 +268,48 @@ g.hue path.hue, g.sat path.sat, g.lit path.lit {
 
 g.color-btns {
   cursor: pointer; }
+
+#editor h3, #editor #cur-config, #editor .palette-color {
+  -ms-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out; }
+#editor h3 {
+  height: 32px;
+  margin: 10px 0 10px; }
+#editor #cur-config {
+  height: 75px;
+  border-bottom: 1px solid #ddd;
+  padding: 5px 0 10px; }
+
+#editor.dim #mask {
+  position: fixed;
+  width: 100%;
+  height: 105px;
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  z-index: 9;
+  top: 50px;
+  left: 0;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2); }
+#editor.dim #current {
+  position: fixed;
+  top: 60px;
+  left: 460px;
+  max-width: 1024px;
+  z-index: 10; }
+#editor.dim h3, #editor.dim #cur-config {
+  height: 0;
+  margin: 0;
+  overflow: hidden; }
+#editor.dim #cur-config {
+  padding: 0;
+  border: none; }
+#editor.dim .palette {
+  width: 84px; }
+  #editor.dim .palette .palette-color {
+    height: 24px; }
+  #editor.dim .palette .name, #editor.dim .palette .like {
+    display: none; }
