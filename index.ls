@@ -66,14 +66,27 @@ angular.module \ld.color <[]>
         tc = $scope.cc[$scope.active].toHsl!
         $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
         $scope.wheel.update-all!
-    $scope.setcolor = -> $scope.colorcode = it.toHexString!
+    $scope.setcolor = (tc, pal=null) ->
+      $scope.colorcode = tc.toHexString!
+      if pal and $scope.refs.indexOf(pal)== -1 => 
+        $scope.refs.splice 0,1
+        $scope.refs.push pal
     $scope.setpalette = (pal) -> 
       for i from 0 til pal.length
         if $scope.cc.length <= i => 
           $scope.cc.push tinycolor pal[i].toHexString!
         else $scope.cc[i] <<< tinycolor pal[i].toHexString!
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
+      if pal and $scope.refs.indexOf(pal)== -1 => 
+        $scope.refs.splice 0,1
+        $scope.refs.push pal
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
+    $scope.random-cc = ->
+      random-palette = ldc-random.palette 1
+      $scope.setpalette random-palette.0
+
+    $scope.random-refs = -> 
+      $scope.refs = ldc-random.palette 4
 
     $scope.$watch 'wheel.hue' -> $scope.update-palette!
     $scope.$watch 'wheel.sat' -> $scope.update-palette!

@@ -75,7 +75,7 @@
                 <div class="pull-right">
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i></div>
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
-                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
+                  <div class="btn btn-xs btn-default"><i ng-click="randomCc()" class="glyphicon glyphicon-random"></i></div>
                 </div></small></h3>
             <div class="editor-palette">
               <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
@@ -92,16 +92,19 @@
               <label>color code</label>
               <input placeholder="e.g., #facebc" ng-model="colorcode" class="form-control">
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
               <label>semantic</label>
               <select ng-model="semantic.value" ng-options="opt as opt.label for opt in semantic.options" class="form-control"></select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
               <label>&nbsp;</label>
               <div ng-click="wheel.delete()" class="btn btn-danger form-control">delete</div>
             </div>
           </div>
-          <h3>References</h3>
+          <h3>References<small>
+              <div class="pull-right">
+                <div class="btn btn-xs btn-default"><i ng-click="randomRefs()" class="glyphicon glyphicon-random"></i></div>
+              </div></small></h3>
           <div class="palettes ref">
             <div ng-repeat="pal in refs" class="palette sm">
               <div class="name">{{pal.name}}</div>
@@ -143,7 +146,7 @@
           <div class="name">{{pal.name}}</div>
           <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
           <div class="palette-color">
-            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
+            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
           <div class="tag">cloud,blah,qwer</div>
         </div>

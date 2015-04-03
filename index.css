@@ -80,7 +80,7 @@ nav.navbar-default {
     cursor: pointer; }
 
 .palette.sm {
-  width: 200px; }
+  width: 210px; }
 
 .palette-color {
   border-radius: 3px;
@@ -225,10 +225,10 @@ nav.navbar-default {
   -webkit-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out; }
-  #editor-detail .title .btn-default {
+  #editor-detail h3 .btn-default {
     border: none;
     vertical-align: bottom; }
-  #editor-detail .title .pull-right {
+  #editor-detail h3 .pull-right {
     margin-right: 64px;
     margin-top: 5px; }
 
@@ -261,8 +261,9 @@ g.color-btns {
   transition: all 0.3s ease-in-out; }
 #editor h3 {
   height: 32px;
-  margin: 10px 0 10px; }
+  margin: 15px 0 0; }
 #editor #cur-config {
+  width: 486px;
   height: 75px;
   border-bottom: 1px solid #ddd;
   padding: 5px 0 10px; }

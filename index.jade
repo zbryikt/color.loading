@@ -80,7 +80,7 @@ html(lang="en")
                 .pull-right
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-link
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-random
+                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-random(ng-click="randomCc()")
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
               .blockcontainer.palette-color(style="width:456px;display:inline-block")
@@ -99,13 +99,18 @@ html(lang="en")
             .col-sm-4
               label color code
               input.form-control(placeholder="e.g., #facebc",ng-model="colorcode")
-            .col-sm-4
+            .col-sm-5
               label semantic
               select.form-control(ng-model="semantic.value",ng-options="opt as opt.label for opt in semantic.options")
-            .col-sm-2
+            .col-sm-3
               label &nbsp;
               .btn.btn-danger.form-control(ng-click="wheel.delete()") delete
-          h3 References
+          h3
+            | References
+            small
+              .pull-right
+                .btn.btn-xs.btn-default: i.glyphicon.glyphicon-random(ng-click="randomRefs()")
+
           .palettes.ref
             .palette.sm(ng-repeat="pal in refs")
               .name
@@ -155,5 +160,5 @@ html(lang="en")
             i.glyphicon.glyphicon-heart
             | 5
           .palette-color
-            .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
+            .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
           .tag cloud,blah,qwer

@@ -134,8 +134,13 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       return $scope.wheel.updateAll();
     }
   });
-  $scope.setcolor = function(it){
-    return $scope.colorcode = it.toHexString();
+  $scope.setcolor = function(tc, pal){
+    pal == null && (pal = null);
+    $scope.colorcode = tc.toHexString();
+    if (pal && $scope.refs.indexOf(pal) === -1) {
+      $scope.refs.splice(0, 1);
+      return $scope.refs.push(pal);
+    }
   };
   $scope.setpalette = function(pal){
     var i$, to$, i;
@@ -150,9 +155,21 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     if ($scope.cc.length > pal.length) {
       $scope.cc.splice(pal.length);
     }
+    if (pal && $scope.refs.indexOf(pal) === -1) {
+      $scope.refs.splice(0, 1);
+      $scope.refs.push(pal);
+    }
     return $scope.setActive($scope.active < $scope.cc.length
       ? $scope.active
       : $scope.cc.length - 1);
+  };
+  $scope.randomCc = function(){
+    var randomPalette;
+    randomPalette = ldcRandom.palette(1);
+    return $scope.setpalette(randomPalette[0]);
+  };
+  $scope.randomRefs = function(){
+    return $scope.refs = ldcRandom.palette(4);
   };
   $scope.$watch('wheel.hue', function(){
     return $scope.updatePalette();
