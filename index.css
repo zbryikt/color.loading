@@ -49,9 +49,6 @@ nav.navbar-default {
       color: #999;
       text-shadow: 0 0 5px rgba(255, 255, 128, 0.7); }
 
-.palettes {
-  text-align: center; }
-
 .palette {
   width: 300px;
   display: inline-block;
@@ -128,87 +125,74 @@ nav.navbar-default {
     margin-bottom: 0; }
   100% {
     margin-bottom: 8px; } }
-#cur-palette .color.active:after {
-  position: absolute;
-  display: none;
-  left: 50%;
-  bottom: -10px;
-  margin-left: -8px;
-  font-family: "Glyphicons Halflings";
-  -webkit-font-smoothing: antialiased;
-  content: "";
-  color: #222;
-  -ms-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
-  -moz-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
-  -webkit-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
-  -o-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
-  transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
-  -ms-animation: jump 1s infinite ease-in-out;
-  -moz-animation: jump 1s infinite ease-in-out;
-  -webkit-animation: jump 1s infinite ease-in-out;
-  -o-animation: jump 1s infinite ease-in-out;
-  animation: jump 1s infinite ease-in-out; }
-
-#cur-palette .color.active.dark:after {
-  color: #ddd; }
-
-#cur-palette .semantic {
-  position: absolute; }
-
-#cur-palette .color i {
-  color: #000;
-  opacity: 0.5;
-  margin: 4px; }
-
-#cur-palette .color.dark i {
-  color: #fff; }
-
-#cur-palette {
+.editor-palette {
   position: relative; }
-
-#cur-palette-ptr {
-  position: absolute;
-  width: 100px;
-  color: #222;
-  -ms-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
-  -moz-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
-  -webkit-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
-  -o-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
-  transition: color 0.3s ease-in-out, left 0.3s ease-in-out; }
-  #cur-palette-ptr:after {
+  .editor-palette .color.active:after {
     position: absolute;
-    bottom: -8px;
+    display: none;
+    left: 50%;
+    bottom: -10px;
     margin-left: -8px;
-    -ms-transition: margin-bottom 1s ease-out;
-    -moz-transition: margin-bottom 1s ease-out;
-    -webkit-transition: margin-bottom 1s ease-out;
-    -o-transition: margin-bottom 1s ease-out;
-    transition: margin-bottom 1s ease-out;
+    font-family: "Glyphicons Halflings";
+    -webkit-font-smoothing: antialiased;
+    content: "";
+    color: #222;
+    -ms-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+    -moz-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+    -webkit-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+    -o-transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
+    transition: margin-bottom 1s ease-out, width 0.3s ease-in-out;
     -ms-animation: jump 1s infinite ease-in-out;
     -moz-animation: jump 1s infinite ease-in-out;
     -webkit-animation: jump 1s infinite ease-in-out;
     -o-animation: jump 1s infinite ease-in-out;
-    animation: jump 1s infinite ease-in-out;
-    display: block;
-    font-family: "Glyphicons Halflings";
-    -webkit-font-smoothing: antialiased;
-    content: "";
-    text-shadow: 0 1px 2px black; }
-  #cur-palette-ptr.dark {
-    color: #bbb; }
+    animation: jump 1s infinite ease-in-out; }
+  .editor-palette .color.active.dark:after {
+    color: #ddd; }
+  .editor-palette .semantic {
+    position: absolute; }
+  .editor-palette .color i {
+    color: #000;
+    opacity: 0.5;
+    margin: 4px; }
+  .editor-palette .color.dark i {
+    color: #fff; }
+  .editor-palette .cursor {
+    position: absolute;
+    width: 100px;
+    color: #222;
+    -ms-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+    -moz-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+    -webkit-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+    -o-transition: color 0.3s ease-in-out, left 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, left 0.3s ease-in-out; }
+    .editor-palette .cursor:after {
+      position: absolute;
+      bottom: -8px;
+      margin-left: -8px;
+      -ms-transition: margin-bottom 1s ease-out;
+      -moz-transition: margin-bottom 1s ease-out;
+      -webkit-transition: margin-bottom 1s ease-out;
+      -o-transition: margin-bottom 1s ease-out;
+      transition: margin-bottom 1s ease-out;
+      -ms-animation: jump 1s infinite ease-in-out;
+      -moz-animation: jump 1s infinite ease-in-out;
+      -webkit-animation: jump 1s infinite ease-in-out;
+      -o-animation: jump 1s infinite ease-in-out;
+      animation: jump 1s infinite ease-in-out;
+      display: block;
+      font-family: "Glyphicons Halflings";
+      -webkit-font-smoothing: antialiased;
+      content: "";
+      text-shadow: 0 1px 2px black; }
+    .editor-palette .cursor.dark {
+      color: #bbb; }
 
 .color {
   height: 100%;
   display: inline-block; }
 
-.colorblock {
-  width: 64px;
-  height: 48px;
-  margin: 5px;
-  display: inline-block;
-  vertical-align: bottom; }
-
-#addcolorblock {
+.add-color {
   text-align: center;
   color: #999;
   line-height: 44px;
@@ -233,7 +217,7 @@ nav.navbar-default {
   width: 400px;
   margin: 10px 40px 0 20px; }
 
-#current {
+#editor-detail {
   float: right;
   width: 520px;
   -ms-transition: all 0.5s ease-in-out;
@@ -241,16 +225,16 @@ nav.navbar-default {
   -webkit-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out; }
+  #editor-detail .title .btn-default {
+    border: none;
+    vertical-align: bottom; }
+  #editor-detail .title .pull-right {
+    margin-right: 64px;
+    margin-top: 5px; }
 
-#current .title .btn-default {
-  border: none;
-  vertical-align: bottom; }
-#current .title .pull-right {
-  margin-right: 64px;
-  margin-top: 5px; }
-
-#ref-palettes .palette {
-  width: 210px; }
+.palette.ref {
+  width: 210px;
+  text-align: left; }
 
 circle.ptr {
   cursor: pointer; }
@@ -283,7 +267,7 @@ g.color-btns {
   border-bottom: 1px solid #ddd;
   padding: 5px 0 10px; }
 
-#editor.dim #mask {
+#mask {
   position: fixed;
   width: 100%;
   height: 105px;
@@ -293,23 +277,50 @@ g.color-btns {
   z-index: 9;
   top: 50px;
   left: 0;
-  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2); }
-#editor.dim #current {
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
+  -ms-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; }
+  #mask.dim {
+    height: 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0);
+    border-bottom: 1px solid rgba(255, 255, 255, 0); }
+
+#editor-float {
   position: fixed;
-  top: 60px;
-  left: 460px;
-  max-width: 1024px;
-  z-index: 10; }
-#editor.dim h3, #editor.dim #cur-config {
-  height: 0;
-  margin: 0;
-  overflow: hidden; }
-#editor.dim #cur-config {
-  padding: 0;
-  border: none; }
-#editor.dim .palette {
-  width: 84px; }
-  #editor.dim .palette .palette-color {
-    height: 24px; }
-  #editor.dim .palette .name, #editor.dim .palette .like {
-    display: none; }
+  top: 50px;
+  left: 50%;
+  margin-left: -260px;
+  width: 520px;
+  height: 111px;
+  padding-top: 20px;
+  z-index: 10;
+  opacity: 1;
+  -ms-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; }
+  #editor-float.dim {
+    height: 0;
+    overflow: hidden;
+    opacity: 0; }
+  #editor-float h3, #editor-float #cur-config {
+    height: 0;
+    margin: 0;
+    overflow: hidden; }
+  #editor-float #cur-config {
+    padding: 0;
+    border: none; }
+  #editor-float .palette {
+    width: 84px; }
+    #editor-float .palette .palette-color {
+      height: 24px; }
+    #editor-float .palette .name, #editor-float .palette .like {
+      display: none; }
+  #editor-float .editor-palette .add-color, #editor-float .editor-palette .palette-color {
+    height: 32px;
+    line-height: 32px; }

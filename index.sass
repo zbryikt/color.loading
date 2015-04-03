@@ -43,7 +43,7 @@ nav.navbar-default
       text-shadow: 0 0 5px rgba(255,255,128,0.7)
 
 
-.palettes
+//.palettes
   text-align: center
 
 .palette
@@ -93,65 +93,63 @@ nav.navbar-default
   100%
     margin-bottom: 8px
 
-#cur-palette .color.active
-  &:after
-    position: absolute
-    display: none
-    left: 50%
-    bottom: -10px
-    margin-left: -8px
-    font-family: 'Glyphicons Halflings'
-    -webkit-font-smoothing: antialiased
-    content: "\e113"
-    color: #222
-    @include transition(margin-bottom 1s ease-out, width 0.3s ease-in-out)
-    @include animation(jump 1s infinite ease-in-out)
-#cur-palette .color.active.dark
-  &:after
-    color: #ddd
-#cur-palette .semantic
-  position: absolute
-#cur-palette .color i
-  color: #000
-  opacity: 0.5
-  margin: 4px
-#cur-palette .color.dark i
-  color: #fff
-
-#cur-palette
+.editor-palette
   position: relative
-
-#cur-palette-ptr
-  position: absolute
-  width: 100px
-  color: #222
-  @include transition(color 0.3s ease-in-out, left 0.3s ease-in-out)
-  &:after
+  .color.active
+    &:after
+      position: absolute
+      display: none
+      left: 50%
+      bottom: -10px
+      margin-left: -8px
+      font-family: 'Glyphicons Halflings'
+      -webkit-font-smoothing: antialiased
+      content: "\e113"
+      color: #222
+      @include transition(margin-bottom 1s ease-out, width 0.3s ease-in-out)
+      @include animation(jump 1s infinite ease-in-out)
+  .color.active.dark
+    &:after
+      color: #ddd
+  .semantic
     position: absolute
-    bottom: -8px
-    margin-left: -8px
-    @include transition(margin-bottom 1s ease-out)
-    @include animation(jump 1s infinite ease-in-out)
-    display: block
-    font-family: 'Glyphicons Halflings'
-    -webkit-font-smoothing: antialiased
-    content: "\e113"
-    text-shadow: 0 1px 2px rgba(0,0,0,1)
-  &.dark
-    color: #bbb
+  .color i
+    color: #000
+    opacity: 0.5
+    margin: 4px
+  .color.dark i
+    color: #fff
+  .cursor
+    position: absolute
+    width: 100px
+    color: #222
+    @include transition(color 0.3s ease-in-out, left 0.3s ease-in-out)
+    &:after
+      position: absolute
+      bottom: -8px
+      margin-left: -8px
+      @include transition(margin-bottom 1s ease-out)
+      @include animation(jump 1s infinite ease-in-out)
+      display: block
+      font-family: 'Glyphicons Halflings'
+      -webkit-font-smoothing: antialiased
+      content: "\e113"
+      text-shadow: 0 1px 2px rgba(0,0,0,1)
+    &.dark
+      color: #bbb
 
 .color
   height: 100%
   display: inline-block
 
-.colorblock
+//-.colorblock
   width: 64px
   height: 48px
   margin: 5px
   display: inline-block
   vertical-align: bottom
 
-#addcolorblock
+.add-color
   text-align: center
   color: #999
   line-height: 44px
@@ -176,20 +174,21 @@ nav.navbar-default
   float: left
   width: 400px
   margin: 10px 40px 0 20px
-#current
+#editor-detail
   float: right
   width: 520px
   @include transition(all 0.5s ease-in-out)
-#current .title
-  .btn-default
-    border: none
-    vertical-align: bottom
-  .pull-right
-    margin-right: 64px
-    margin-top: 5px
+  .title
+    .btn-default
+      border: none
+      vertical-align: bottom
+    .pull-right
+      margin-right: 64px
+      margin-top: 5px
 
-#ref-palettes .palette
+.palette.ref
   width: 210px
+  text-align: left
 
 circle.ptr
   cursor: pointer
@@ -214,25 +213,42 @@ g.color-btns
     border-bottom: 1px solid #ddd
     padding: 5px 0 10px
 
-#editor.dim
-  #mask
-    position: fixed
-    width: 100%
-    height: 105px
-    background: rgba(255,255,255,0.9)
-    border:
-      top: 1px solid #ccc
-      bottom: 1px solid #ccc
-    z-index: 9
-    top: 50px
-    left: 0
-    box-shadow: 0 1px 3px rgba(255,255,255,0.2)
-  #current
-    position: fixed
-    top: 60px
-    left: 460px
-    max-width: 1024px
-    z-index: 10
+
+#mask
+  position: fixed
+  width: 100%
+  height: 105px
+  background: rgba(255,255,255,0.9)
+  border:
+    top: 1px solid #ccc
+    bottom: 1px solid #ccc
+  z-index: 9
+  top: 50px
+  left: 0
+  box-shadow: 0 1px 3px rgba(255,255,255,0.2)
+  @include transition(all 0.5s ease-in-out)
+  &.dim
+    height: 0
+    overflow: hidden
+    border: 
+      top: 1px solid rgba(255,255,255,0)
+      bottom: 1px solid rgba(255,255,255,0)
+
+#editor-float
+  position: fixed
+  top: 50px
+  left: 50%
+  margin-left: -260px
+  width: 520px
+  height: 111px
+  padding-top: 20px
+  z-index: 10
+  opacity: 1
+  @include transition(all 0.5s ease-in-out)
+  &.dim
+    height: 0
+    overflow: hidden
+    opacity: 0
 
   h3, #cur-config
     height: 0
@@ -249,3 +265,8 @@ g.color-btns
       height: 24px
     .name, .like
       display: none
+
+  .editor-palette
+    .add-color, .palette-color
+      height: 32px
+      line-height: 32px

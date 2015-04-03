@@ -44,8 +44,8 @@
         <h2>Semantic Colors, Programmable Palettes.</h2>
         <p>Color wheel, code codes, palette... We use them all the day. But we never make them ease to use. It's not true from now on.</p><br><br>
       </div>
+      <div id="mask"></div>
       <div id="editor">
-        <div id="mask"></div>
         <div id="wheel">
           <svg id="svg" width="400px" height="400px" viewBox="0 0 400 400" preserveAspectRatio="xMidYMin" style="display:block;">
             <defs></defs>
@@ -68,27 +68,23 @@
             </g>
           </svg>
         </div>
-        <div id="current">
+        <div id="editor-detail">
           <div class="colorblocks">
             <h3 class="title">Your Palette <small>
-                <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-edit"></i>
-                </div>
+                <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-edit"></i></div>
                 <div class="pull-right">
-                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i>
-                  </div>
-                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i>
-                  </div>
-                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i>
-                  </div>
+                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i></div>
+                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
+                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
                 </div></small></h3>
-            <div id="cur-palette">
-              <div id="addcolorblock" ng-click="wheel.add(true)" class="colorblock"><i class="glyphicon glyphicon-plus"></i></div>
+            <div class="editor-palette">
+              <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
               <div style="width:456px;display:inline-block" class="blockcontainer palette-color">
                 <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-click="setActive($index)" ng-class="{'active':$index==active,'dark':c.isDark()}" class="color">
                   <div class="semantic"><i ng-show="c.semantic.value=='warning'" class="glyphicon glyphicon-exclamation-sign"></i><i ng-show="c.semantic.value=='info'" class="glyphicon glyphicon-info-sign"></i><i ng-show="c.semantic.value=='success'" class="glyphicon glyphicon-ok-sign"></i><i ng-show="c.semantic.value=='danger'" class="glyphicon glyphicon-remove-sign"></i><i ng-show="c.semantic.value=='primary'" class="glyphicon glyphicon-asterisk"></i><i ng-show="c.semantic.value=='default'" class="glyphicon glyphicon-record"></i></div>
                 </div>
               </div>
-              <div id="cur-palette-ptr" ng-attr-style="left:{{curpos}}px" ng-class="{'dark':cc[active].isDark()}"></div>
+              <div ng-attr-style="left:{{curpos}}px" ng-class="{'dark':cc[active].isDark()}" class="cursor"></div>
             </div>
           </div>
           <div id="cur-config" class="row">
@@ -98,8 +94,7 @@
             </div>
             <div class="col-sm-4">
               <label>semantic</label>
-              <select ng-model="semantic.value" ng-options="opt as opt.label for opt in semantic.options" class="form-control">
-              </select>
+              <select ng-model="semantic.value" ng-options="opt as opt.label for opt in semantic.options" class="form-control"></select>
             </div>
             <div class="col-sm-2">
               <label>&nbsp;</label>
@@ -107,7 +102,28 @@
             </div>
           </div>
           <h3>References</h3>
-          <div id="ref-palettes" style="text-align:left" class="palettes">
+          <div class="palettes ref">
+            <div ng-repeat="pal in refs" class="palette sm">
+              <div class="name">{{pal.name}}</div>
+              <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
+              <div class="palette-color">
+                <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
+              </div>
+              <div class="tag">cloud,blah,qwer</div>
+            </div>
+          </div>
+        </div>
+        <div id="editor-float">
+          <div class="editor-palette">
+            <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
+            <div style="width:456px;display:inline-block" class="blockcontainer palette-color">
+              <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-click="setActive($index)" ng-class="{'active':$index==active,'dark':c.isDark()}" class="color">
+                <div class="semantic"><i ng-show="c.semantic.value=='warning'" class="glyphicon glyphicon-exclamation-sign"></i><i ng-show="c.semantic.value=='info'" class="glyphicon glyphicon-info-sign"></i><i ng-show="c.semantic.value=='success'" class="glyphicon glyphicon-ok-sign"></i><i ng-show="c.semantic.value=='danger'" class="glyphicon glyphicon-remove-sign"></i><i ng-show="c.semantic.value=='primary'" class="glyphicon glyphicon-asterisk"></i><i ng-show="c.semantic.value=='default'" class="glyphicon glyphicon-record"></i></div>
+              </div>
+            </div>
+            <div ng-attr-style="left:{{curpos}}px" ng-class="{'dark':cc[active].isDark()}" class="cursor"></div>
+          </div>
+          <div class="palettes ref">
             <div ng-repeat="pal in refs" class="palette sm">
               <div class="name">{{pal.name}}</div>
               <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>

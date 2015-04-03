@@ -194,8 +194,10 @@ angular.module \ld.color <[]>
       scroll-top = $(document.body)scroll-top!
       if scroll-top < 60 => $(\#nav-top)removeClass \dim
       else => $(\#nav-top)addClass \dim
-      if scroll-top < 380 => $(\#editor)removeClass \dim
-      else => $(\#editor)addClass \dim
+      if scroll-top < 380 => $(\#editor-float)addClass \dim
+      else => $(\#editor-float)removeClass \dim
+      if scroll-top < 380 => $(\#mask)addClass \dim
+      else => $(\#mask)removeClass \dim
 
 
 scroll = (e) ->

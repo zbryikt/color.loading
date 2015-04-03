@@ -403,9 +403,14 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       $('#nav-top').addClass('dim');
     }
     if (scrollTop < 380) {
-      return $('#editor').removeClass('dim');
+      $('#editor-float').addClass('dim');
     } else {
-      return $('#editor').addClass('dim');
+      $('#editor-float').removeClass('dim');
+    }
+    if (scrollTop < 380) {
+      return $('#mask').addClass('dim');
+    } else {
+      return $('#mask').removeClass('dim');
     }
   });
 }));
