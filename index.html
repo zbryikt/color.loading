@@ -70,12 +70,13 @@
         </div>
         <div id="editor-detail">
           <div class="colorblocks">
-            <h3 class="title">Your Palette <small>
-                <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-edit"></i></div>
+            <h3 class="title"><span id="name" contenteditable="true">Your Palette</span><small>
+                <div class="btn btn-xs btn-default"><i onclick="$('#name').focus();" class="glyphicon glyphicon-edit"></i></div>
                 <div class="pull-right">
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i></div>
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
                   <div class="btn btn-xs btn-default"><i ng-click="randomCc()" class="glyphicon glyphicon-random"></i></div>
+                  <div class="btn btn-xs btn-default"><i ng-click="undo()" class="glyphicon glyphicon-arrow-left"></i></div>
                 </div></small></h3>
             <div class="editor-palette">
               <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
@@ -116,7 +117,7 @@
             </div>
           </div>
         </div>
-        <div id="editor-float">
+        <div id="editor-float" class="dim">
           <div class="editor-palette">
             <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
             <div style="width:456px;display:inline-block" class="blockcontainer palette-color">

@@ -14,12 +14,13 @@ angular.module \ld.color <[]>
         c.width = (100 - primary-size)/count
         ret.push c
       ret[parseInt(Math.random!*ret.length)].width = 20 + ((100 - primary-size) / count)
-      ret.name = "#{@name[parseInt(Math.random!*name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
+      ret.name = "#{@name[parseInt(Math.random!*@name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
       ret
     
   ..controller \ldc-editor, <[$scope ldc-random]> ++ ($scope, ldc-random) ->
     $scope.pals = ldc-random.palette 100
     $scope.refs = ldc-random.palette 4
+    $scope.history = []
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
     $scope.colorcode = null
@@ -62,6 +63,7 @@ angular.module \ld.color <[]>
     $scope.$watch 'colorcode' ->
       ret = /^#[a-fA-F0-9]{6}$/.exec $scope.colorcode
       if ret and $scope.cc[$scope.active].toHexString! != $scope.colorcode =>
+        $scope.history.push([] <<< $scope.cc) # need deep dupe and push after stable
         $scope.cc[$scope.active] <<< tinycolor $scope.colorcode
         tc = $scope.cc[$scope.active].toHsl!
         $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
@@ -71,20 +73,28 @@ angular.module \ld.color <[]>
       if pal and $scope.refs.indexOf(pal)== -1 => 
         $scope.refs.splice 0,1
         $scope.refs.push pal
-    $scope.setpalette = (pal) -> 
+    $scope.setpalette = (pal, isUndo = false) -> 
+      if !isUndo => 
+        $scope.history.push([] <<< $scope.cc) # need deep dupe
+        if pal and $scope.refs.indexOf(pal)== -1 => 
+          $scope.refs.splice 0,1
+          $scope.refs.push pal
       for i from 0 til pal.length
         if $scope.cc.length <= i => 
           $scope.cc.push tinycolor pal[i].toHexString!
         else $scope.cc[i] <<< tinycolor pal[i].toHexString!
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
-      if pal and $scope.refs.indexOf(pal)== -1 => 
-        $scope.refs.splice 0,1
-        $scope.refs.push pal
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
+
+    $scope.undo = ->
+      console.log $scope.history.length
+      console.log $scope.history
+      if $scope.history.length =>
+        $scope.setpalette $scope.history[* - 1], true
+        $scope.history.splice ($scope.history.length - 1), 1
     $scope.random-cc = ->
       random-palette = ldc-random.palette 1
       $scope.setpalette random-palette.0
-
     $scope.random-refs = -> 
       $scope.refs = ldc-random.palette 4
 

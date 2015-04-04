@@ -31,7 +31,7 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
         ret.push(c);
       }
       ret[parseInt(Math.random() * ret.length)].width = 20 + (100 - primarySize) / count;
-      ret.name = this.name[parseInt(Math.random() * name.length)] + " / " + this.noun[parseInt(Math.random() * this.noun.length)];
+      ret.name = this.name[parseInt(Math.random() * this.name.length)] + " / " + this.noun[parseInt(Math.random() * this.noun.length)];
       return ret;
     }
   });
@@ -40,6 +40,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   var ref$, i, this$ = this;
   $scope.pals = ldcRandom.palette(100);
   $scope.refs = ldcRandom.palette(4);
+  $scope.history = [];
   $scope.featurePals = ldcRandom.palette(4);
   $scope.active = 0;
   $scope.colorcode = null;
@@ -125,6 +126,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     var ret, tc, ref$;
     ret = /^#[a-fA-F0-9]{6}$/.exec($scope.colorcode);
     if (ret && $scope.cc[$scope.active].toHexString() !== $scope.colorcode) {
+      $scope.history.push(import$([], $scope.cc));
       import$($scope.cc[$scope.active], tinycolor($scope.colorcode));
       tc = $scope.cc[$scope.active].toHsl();
       ref$ = $scope.wheel;
@@ -142,8 +144,16 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       return $scope.refs.push(pal);
     }
   };
-  $scope.setpalette = function(pal){
+  $scope.setpalette = function(pal, isUndo){
     var i$, to$, i;
+    isUndo == null && (isUndo = false);
+    if (!isUndo) {
+      $scope.history.push(import$([], $scope.cc));
+      if (pal && $scope.refs.indexOf(pal) === -1) {
+        $scope.refs.splice(0, 1);
+        $scope.refs.push(pal);
+      }
+    }
     for (i$ = 0, to$ = pal.length; i$ < to$; ++i$) {
       i = i$;
       if ($scope.cc.length <= i) {
@@ -155,13 +165,18 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     if ($scope.cc.length > pal.length) {
       $scope.cc.splice(pal.length);
     }
-    if (pal && $scope.refs.indexOf(pal) === -1) {
-      $scope.refs.splice(0, 1);
-      $scope.refs.push(pal);
-    }
     return $scope.setActive($scope.active < $scope.cc.length
       ? $scope.active
       : $scope.cc.length - 1);
+  };
+  $scope.undo = function(){
+    var ref$;
+    console.log($scope.history.length);
+    console.log($scope.history);
+    if ($scope.history.length) {
+      $scope.setpalette((ref$ = $scope.history)[ref$.length - 1], true);
+      return $scope.history.splice($scope.history.length - 1, 1);
+    }
   };
   $scope.randomCc = function(){
     var randomPalette;
