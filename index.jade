@@ -82,8 +82,8 @@ html(lang="en")
                 .pull-right
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-link
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-random(ng-click="randomCc()")
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-arrow-left(ng-click="undo()")
+                  .btn.btn-xs.btn-default(ng-click="randomCc()"): i.glyphicon.glyphicon-random
+                  .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':history.length==0}"): i.glyphicon.glyphicon-arrow-left
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
               .blockcontainer.palette-color(style="width:456px;display:inline-block")

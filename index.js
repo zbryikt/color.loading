@@ -37,7 +37,7 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
   });
 }));
 x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldcRandom){
-  var ref$, i, this$ = this;
+  var ref$, i, copyPalette, this$ = this;
   $scope.pals = ldcRandom.palette(100);
   $scope.refs = ldcRandom.palette(4);
   $scope.history = [];
@@ -111,6 +111,14 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       b: parseInt(Math.random() * 256)
     });
   });
+  copyPalette = function(pal){
+    var i$, len$, item, results$ = [];
+    for (i$ = 0, len$ = pal.length; i$ < len$; ++i$) {
+      item = pal[i$];
+      results$.push(import$(tinycolor(item.toHexString()), item));
+    }
+    return results$;
+  };
   $scope.updatePalette = function(){
     var w;
     w = $scope.wheel;
@@ -126,7 +134,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     var ret, tc, ref$;
     ret = /^#[a-fA-F0-9]{6}$/.exec($scope.colorcode);
     if (ret && $scope.cc[$scope.active].toHexString() !== $scope.colorcode) {
-      $scope.history.push(import$([], $scope.cc));
+      $scope.history.push(copyPalette($scope.cc));
       import$($scope.cc[$scope.active], tinycolor($scope.colorcode));
       tc = $scope.cc[$scope.active].toHsl();
       ref$ = $scope.wheel;
@@ -148,7 +156,7 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
     var i$, to$, i;
     isUndo == null && (isUndo = false);
     if (!isUndo) {
-      $scope.history.push(import$([], $scope.cc));
+      $scope.history.push(copyPalette($scope.cc));
       if (pal && $scope.refs.indexOf(pal) === -1) {
         $scope.refs.splice(0, 1);
         $scope.refs.push(pal);
@@ -171,8 +179,6 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
   };
   $scope.undo = function(){
     var ref$;
-    console.log($scope.history.length);
-    console.log($scope.history);
     if ($scope.history.length) {
       $scope.setpalette((ref$ = $scope.history)[ref$.length - 1], true);
       return $scope.history.splice($scope.history.length - 1, 1);

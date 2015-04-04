@@ -75,8 +75,8 @@
                 <div class="pull-right">
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i></div>
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
-                  <div class="btn btn-xs btn-default"><i ng-click="randomCc()" class="glyphicon glyphicon-random"></i></div>
-                  <div class="btn btn-xs btn-default"><i ng-click="undo()" class="glyphicon glyphicon-arrow-left"></i></div>
+                  <div ng-click="randomCc()" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
+                  <div ng-click="undo()" ng-class="{'disabled':history.length==0}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-arrow-left"></i></div>
                 </div></small></h3>
             <div class="editor-palette">
               <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
