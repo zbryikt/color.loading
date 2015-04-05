@@ -105,6 +105,7 @@ angular.module \ld.color <[]>
       $scope.setpalette random-palette.0
     $scope.random-refs = -> 
       $scope.refs = ldc-random.palette 4
+    $scope.makeRandomPalettes = -> $scope.randomPals = ldc-random.palette 30
 
     $scope.$watch 'wheel.hue' -> $scope.update-palette!
     $scope.$watch 'wheel.sat' -> $scope.update-palette!

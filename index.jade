@@ -86,7 +86,7 @@ html(lang="en")
 
         #editor-detail
           .colorblocks
-            h3.title
+            h3.title.btns
               span#name(contenteditable="true")
                 | Your Palette
                 //-input#palette-name(type="text",value="Your Palette",style="border:none")
@@ -167,5 +167,7 @@ html(lang="en")
       hr 
       h3 Famous Palette
       +paletteList('famousPals')
-      h3 Random Palettes
+      h3.btns 
+        | Random Palettes
+        .btn.btn-xs.btn-default(ng-click="makeRandomPalettes()"): i.glyphicon.glyphicon-random
       +paletteList('randomPals')

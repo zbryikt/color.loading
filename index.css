@@ -225,12 +225,13 @@ nav.navbar-default {
   -webkit-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out; }
-  #editor-detail h3 .btn-default {
-    border: none;
-    vertical-align: bottom; }
-  #editor-detail h3 .pull-right {
-    margin-right: 64px;
-    margin-top: 5px; }
+
+h3.btns .btn-default {
+  border: none;
+  vertical-align: bottom; }
+h3.btns .pull-right {
+  margin-right: 64px;
+  margin-top: 5px; }
 
 .palette.ref {
   width: 210px;

@@ -70,7 +70,7 @@
         </div>
         <div id="editor-detail">
           <div class="colorblocks">
-            <h3 class="title"><span id="name" contenteditable="true">Your Palette</span><small>
+            <h3 class="title btns"><span id="name" contenteditable="true">Your Palette</span><small>
                 <div class="btn btn-xs btn-default"><i onclick="$('#name').focus();" class="glyphicon glyphicon-edit"></i></div>
                 <div class="pull-right">
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i></div>
@@ -152,7 +152,9 @@
           <div class="tag">cloud,blah,qwer</div>
         </div>
       </div>
-      <h3>Random Palettes</h3>
+      <h3 class="btns">Random Palettes
+        <div ng-click="makeRandomPalettes()" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
+      </h3>
       <div class="palettes">
         <div ng-repeat="pal in randomPals" class="palette">
           <div class="name">{{pal.name}}</div>

@@ -204,6 +204,9 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
   $scope.randomRefs = function(){
     return $scope.refs = ldcRandom.palette(4);
   };
+  $scope.makeRandomPalettes = function(){
+    return $scope.randomPals = ldcRandom.palette(30);
+  };
   $scope.$watch('wheel.hue', function(){
     return $scope.updatePalette();
   });
