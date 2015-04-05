@@ -5,6 +5,19 @@ doctype html
 - var assets = "/assets"
 - var thumbnail = "thumbnail.png"
 - var favicon = "thumbnail.png"
+mixin paletteList(name)
+  .palettes
+    .palette(ng-repeat="pal in "+name)
+      .name
+        | {{pal.name}}
+      .like
+        i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
+        i.glyphicon.glyphicon-heart
+        | 5
+      .palette-color
+        .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
+      .tag cloud,blah,qwer
+
 html(lang="en")
   head(prefix="og: http://ogp.me/ns#")
     meta(charset="utf-8")
@@ -152,16 +165,7 @@ html(lang="en")
 
       .clearfix
       hr 
-
-      h3 All Palettes
-      .palettes
-        .palette(ng-repeat="pal in pals")
-          .name
-            | {{pal.name}}
-          .like
-            i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
-            i.glyphicon.glyphicon-heart
-            | 5
-          .palette-color
-            .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
-          .tag cloud,blah,qwer
+      h3 Famous Palette
+      +paletteList('famousPals')
+      h3 Random Palettes
+      +paletteList('randomPals')

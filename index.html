@@ -141,9 +141,20 @@
       </div>
       <div class="clearfix"></div>
       <hr>
-      <h3>All Palettes</h3>
+      <h3>Famous Palette</h3>
       <div class="palettes">
-        <div ng-repeat="pal in pals" class="palette">
+        <div ng-repeat="pal in famousPals" class="palette">
+          <div class="name">{{pal.name}}</div>
+          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
+          <div class="palette-color">
+            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
+          </div>
+          <div class="tag">cloud,blah,qwer</div>
+        </div>
+      </div>
+      <h3>Random Palettes</h3>
+      <div class="palettes">
+        <div ng-repeat="pal in randomPals" class="palette">
           <div class="name">{{pal.name}}</div>
           <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
           <div class="palette-color">

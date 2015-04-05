@@ -14,6 +14,18 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
       }
       return results$;
     },
+    convert: function(raw){
+      var ret, i$, ref$, len$, c, tc;
+      ret = [];
+      ret.name = raw.name;
+      for (i$ = 0, len$ = (ref$ = raw.palette).length; i$ < len$; ++i$) {
+        c = ref$[i$];
+        tc = tinycolor(c);
+        tc.width = 100 / raw.palette.length;
+        ret.push(tc);
+      }
+      return ret;
+    },
     generate: function(){
       var ret, primarySize, count, i$, i, c;
       ret = [];
@@ -36,9 +48,9 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
     }
   });
 }));
-x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldcRandom){
+x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($scope, $http, ldcRandom){
   var ref$, i, copyPalette, this$ = this;
-  $scope.pals = ldcRandom.palette(100);
+  $scope.randomPals = ldcRandom.palette(30);
   $scope.refs = ldcRandom.palette(4);
   $scope.history = [];
   $scope.featurePals = ldcRandom.palette(4);
@@ -431,6 +443,18 @@ x$.controller('ldc-editor', ['$scope', 'ldc-random'].concat(function($scope, ldc
       }
     }
   };
+  $http({
+    url: 'default.json',
+    method: 'GET'
+  }).success(function(d){
+    var i$, len$, item, results$ = [];
+    $scope.famousPals = [];
+    for (i$ = 0, len$ = d.length; i$ < len$; ++i$) {
+      item = d[i$];
+      results$.push($scope.famousPals.push(ldcRandom.convert(item)));
+    }
+    return results$;
+  });
   $scope.wheel.init();
   return $(window).scroll(function(){
     var scrollTop;

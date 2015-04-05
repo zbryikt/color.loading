@@ -4,6 +4,14 @@ angular.module \ld.color <[]>
     name: <[ Barker Stokes Rhodes Salazar Ellis Bradley Sharp Hogan Harvey Briggs ]>
     noun: <[ Cloud Community Dinghy Jump Pail Passbook Thing Wasp Century Cherry Deficit Editorial Hub Hydrogen Pelican Puppy Wave ]>
     palette: (count) -> [@generate! for i from 1 to count]
+    convert: (raw) ->
+      ret = []
+      ret.name = raw.name
+      for c in raw.palette => 
+        tc = tinycolor(c)
+        tc.width = 100 / raw.palette.length
+        ret.push tc
+      ret
     generate: ->
       ret = []
       primary-size = 20
@@ -17,8 +25,8 @@ angular.module \ld.color <[]>
       ret.name = "#{@name[parseInt(Math.random!*@name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
       ret
     
-  ..controller \ldc-editor, <[$scope ldc-random]> ++ ($scope, ldc-random) ->
-    $scope.pals = ldc-random.palette 100
+  ..controller \ldc-editor, <[$scope $http ldc-random]> ++ ($scope, $http, ldc-random) ->
+    $scope.randomPals = ldc-random.palette 30
     $scope.refs = ldc-random.palette 4
     $scope.history = []
     $scope.feature-pals = ldc-random.palette 4
@@ -211,6 +219,14 @@ angular.module \ld.color <[]>
             @hue = ang
             @sat = 180 - 180 * (r / @config.3.r1)
           @update-all!
+    $http do
+      url: \default.json
+      method: \GET
+    .success (d) ->
+      $scope.famousPals = []
+      for item in d => 
+        $scope.famousPals.push ldc-random.convert item 
+        
 
     $scope.wheel.init!
     $(window)scroll ->
