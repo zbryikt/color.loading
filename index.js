@@ -205,6 +205,7 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     if (idxTo === idxFrom || idxTo >= $scope.cc.length || idxFrom >= $scope.cc.length) {
       return;
     }
+    $scope.history.push(copyPalette($scope.cc));
     item = $scope.cc.splice(idxFrom, 1);
     before = $scope.cc.splice(0, idxTo);
     return $scope.cc = before.concat(item, $scope.cc);

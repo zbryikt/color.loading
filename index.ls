@@ -104,6 +104,7 @@ angular.module \ld.color <[]>
       idx-from = parseInt(start / (456 / $scope.cc.length)) 
       idx-to = parseInt((start + offset) / (456 / $scope.cc.length))
       if idx-to == idx-from or idx-to >= $scope.cc.length or idx-from >= $scope.cc.length => return
+      $scope.history.push(copy-palette $scope.cc) # need deep dupe and push after stable
       item = $scope.cc.splice idx-from, 1
       before = $scope.cc.splice 0, idx-to
       $scope.cc = before ++ item ++ $scope.cc
