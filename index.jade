@@ -93,15 +93,15 @@ html(lang="en")
               small
                 .btn.btn-xs.btn-default: i.glyphicon.glyphicon-edit(onclick="$('#name').focus();")
                 .pull-right
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk
+                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-link
                   .btn.btn-xs.btn-default(ng-click="randomCc()"): i.glyphicon.glyphicon-random
                   .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':history.length==0}"): i.glyphicon.glyphicon-arrow-left
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
-              .blockcontainer.palette-color(style="width:456px;display:inline-block")
+              .blockcontainer.palette-color(style="width:456px;display:inline-block;position:relative;")
                 .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",
-                       ng-click="setActive($index)",ng-class="{'active':$index==active,'dark':c.isDark()}")
+                       ng-click="setActive($index)",ng-class="{'active':$index==active,'dark':c.isDark()}",draggable="true",ondrag="drag.editor.color.drag(event)",ondragEnd="drag.editor.color.dragEnd(event)")
                   .semantic
                     i.glyphicon.glyphicon-exclamation-sign(ng-show="c.semantic.value=='warning'")
                     i.glyphicon.glyphicon-info-sign(ng-show="c.semantic.value=='info'")
@@ -121,7 +121,7 @@ html(lang="en")
             .col-sm-3
               label &nbsp;
               .btn.btn-danger.form-control(ng-click="wheel.delete()") delete
-          h3
+          h3.btns
             | References
             small
               .pull-right
@@ -165,6 +165,8 @@ html(lang="en")
 
       .clearfix
       hr 
+      h3 My Palette
+      +paletteList('myPals')
       h3 Famous Palette
       +paletteList('famousPals')
       h3.btns 

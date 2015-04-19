@@ -73,15 +73,15 @@
             <h3 class="title btns"><span id="name" contenteditable="true">Your Palette</span><small>
                 <div class="btn btn-xs btn-default"><i onclick="$('#name').focus();" class="glyphicon glyphicon-edit"></i></div>
                 <div class="pull-right">
-                  <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-floppy-disk"></i></div>
+                  <div class="btn btn-xs btn-default"><i ng-click="savePal()" class="glyphicon glyphicon-floppy-disk"></i></div>
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
                   <div ng-click="randomCc()" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
                   <div ng-click="undo()" ng-class="{'disabled':history.length==0}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-arrow-left"></i></div>
                 </div></small></h3>
             <div class="editor-palette">
               <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
-              <div style="width:456px;display:inline-block" class="blockcontainer palette-color">
-                <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-click="setActive($index)" ng-class="{'active':$index==active,'dark':c.isDark()}" class="color">
+              <div style="width:456px;display:inline-block;position:relative;" class="blockcontainer palette-color">
+                <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-click="setActive($index)" ng-class="{'active':$index==active,'dark':c.isDark()}" draggable="true" ondrag="drag.editor.color.drag(event)" ondragEnd="drag.editor.color.dragEnd(event)" class="color">
                   <div class="semantic"><i ng-show="c.semantic.value=='warning'" class="glyphicon glyphicon-exclamation-sign"></i><i ng-show="c.semantic.value=='info'" class="glyphicon glyphicon-info-sign"></i><i ng-show="c.semantic.value=='success'" class="glyphicon glyphicon-ok-sign"></i><i ng-show="c.semantic.value=='danger'" class="glyphicon glyphicon-remove-sign"></i><i ng-show="c.semantic.value=='primary'" class="glyphicon glyphicon-asterisk"></i><i ng-show="c.semantic.value=='default'" class="glyphicon glyphicon-record"></i></div>
                 </div>
               </div>
@@ -102,7 +102,7 @@
               <div ng-click="wheel.delete()" class="btn btn-danger form-control">delete</div>
             </div>
           </div>
-          <h3>References<small>
+          <h3 class="btns">References<small>
               <div class="pull-right">
                 <div class="btn btn-xs btn-default"><i ng-click="randomRefs()" class="glyphicon glyphicon-random"></i></div>
               </div></small></h3>
@@ -141,6 +141,17 @@
       </div>
       <div class="clearfix"></div>
       <hr>
+      <h3>My Palette</h3>
+      <div class="palettes">
+        <div ng-repeat="pal in myPals" class="palette">
+          <div class="name">{{pal.name}}</div>
+          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
+          <div class="palette-color">
+            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
+          </div>
+          <div class="tag">cloud,blah,qwer</div>
+        </div>
+      </div>
       <h3>Famous Palette</h3>
       <div class="palettes">
         <div ng-repeat="pal in famousPals" class="palette">

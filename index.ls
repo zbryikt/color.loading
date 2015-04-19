@@ -26,6 +26,7 @@ angular.module \ld.color <[]>
       ret
     
   ..controller \ldc-editor, <[$scope $http ldc-random]> ++ ($scope, $http, ldc-random) ->
+    $scope.myPals = []
     $scope.randomPals = ldc-random.palette 30
     $scope.refs = ldc-random.palette 4
     $scope.history = []
@@ -63,7 +64,10 @@ angular.module \ld.color <[]>
     $scope.cc = [i for i from 0 to parseInt(Math.random!*0) + 0]map ->
       tc = tinycolor r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
 
-    copy-palette = (pal) -> [(tinycolor(item.toHexString!) <<< item) for item in pal]
+    copy-palette = (pal) -> 
+      ret = [(tinycolor(item.toHexString!) <<< item) for item in pal]
+      for item in ret => if !item.width => item.width = 100 / ret.length
+      ret
 
     $scope.update-palette = ->
       w = $scope.wheel
@@ -96,6 +100,16 @@ angular.module \ld.color <[]>
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 
+    $scope.drag-palette-color = (start, offset) ->
+      idx-from = parseInt(start / (456 / $scope.cc.length)) 
+      idx-to = parseInt((start + offset) / (456 / $scope.cc.length))
+      if idx-to == idx-from or idx-to >= $scope.cc.length or idx-from >= $scope.cc.length => return
+      item = $scope.cc.splice idx-from, 1
+      before = $scope.cc.splice 0, idx-to
+      $scope.cc = before ++ item ++ $scope.cc
+
+    $scope.savePal = ->
+      $scope.myPals.push copy-palette $scope.cc
     $scope.undo = ->
       if $scope.history.length =>
         $scope.setpalette $scope.history[* - 1], true
@@ -243,3 +257,13 @@ angular.module \ld.color <[]>
 scroll = (e) ->
   s = angular.element("body").scope!
   #s.scroll e 
+
+drag = do
+  editor: do
+    color: do
+      drag: -> 
+        if !@start => 
+          @start = $(it.srcElement).width!/2 + $(it.srcElement).offset!left - $(it.srcElement.parentNode).offset!left
+      drag-end: -> 
+        angular.element("body").scope!drag-palette-color @start, it.offsetX
+        @start = null
