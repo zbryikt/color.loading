@@ -84,6 +84,14 @@ nav.navbar-default
     position: relative
     cursor: pointer
     @include transition(width 0.3s ease-in-out)
+  .color i
+    color: #000
+    opacity: 0.5
+    margin: 4px
+  .color.dark i
+    color: #fff
+  .semantic
+    position: absolute
 
 @include keyframes(jump)
   0%
@@ -111,14 +119,7 @@ nav.navbar-default
   .color.active.dark
     &:after
       color: #ddd
-  .semantic
-    position: absolute
-  .color i
-    color: #000
-    opacity: 0.5
-    margin: 4px
-  .color.dark i
-    color: #fff
+
   .cursor
     position: absolute
     width: 100px

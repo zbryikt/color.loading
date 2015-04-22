@@ -39,6 +39,7 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
           l: parseInt(Math.random() * 100)
         };
         c = tinycolor(c);
+        (c.semantic || (c.semantic = {})).value = 'none';
         c.width = (100 - primarySize) / count;
         ret.push(c);
       }
@@ -48,8 +49,8 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
     }
   });
 }));
-x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($scope, $http, ldcRandom){
-  var ref$, i, copyPalette, this$ = this;
+x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat(function($scope, $http, $timeout, ldcRandom){
+  var i, copyPalette, this$ = this;
   $scope.myPals = [];
   $scope.randomPals = ldcRandom.palette(30);
   $scope.refs = ldcRandom.palette(4);
@@ -60,6 +61,9 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
   $scope.semantic = {
     options: [
       {
+        label: 'none',
+        value: 'none'
+      }, {
         label: 'danger',
         value: 'danger'
       }, {
@@ -77,9 +81,6 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
       }, {
         label: 'default',
         value: 'default'
-      }, {
-        label: 'none',
-        value: 'none'
       }
     ],
     watch: function(){
@@ -94,13 +95,45 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
       return c.semantic = s;
     }
   };
-  $scope.semantic.value = (ref$ = $scope.semantic.options)[ref$.length - 1];
+  $scope.editor = {
+    history: {
+      data: [],
+      isEmpty: true,
+      push: function(it){
+        console.log('okok');
+        this.isEmpty = false;
+        return this.data.push(copyPalette($scope.cc));
+      },
+      pop: function(){
+        var ret;
+        if (!this.data.length) {
+          return;
+        }
+        ret = this.data.splice(this.data.length - 1, 1)[0];
+        $scope.setpalette(ret, true);
+        if (!this.data.length) {
+          return this.isEmpty = true;
+        }
+      }
+    }
+  };
+  $scope.color = {
+    create: function(colorOption, config){
+      var ref$;
+      config == null && (config = {});
+      return import$((ref$ = tinycolor(colorOption), ref$.semantic = $scope.semantic.options[0], ref$), config);
+    },
+    update: function(tc, value, config){
+      return import$(import$(tc, value), config);
+    }
+  };
+  $scope.semantic.value = $scope.semantic.options[0];
   $scope.$watch('semantic.value', $scope.semantic.watch);
   $scope.curpos = parseInt((456 / ($scope.cc || [1]).length) * 0.5);
   $scope.setActive = function(it){
-    var ref$, tc;
+    var tc, ref$;
     $scope.active = it;
-    $scope.semantic.value = $scope.cc[$scope.active].semantic || (ref$ = $scope.semantic.options)[ref$.length - 1];
+    $scope.semantic.value = $scope.cc[$scope.active].semantic || $scope.semantic.options[0];
     $scope.curpos = parseInt((456 / $scope.cc.length) * (it + 0.5));
     tc = $scope.cc[$scope.active].toHsl();
     ref$ = $scope.wheel;
@@ -118,7 +151,7 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     return results$;
   }()).map(function(){
     var tc;
-    return tc = tinycolor({
+    return tc = $scope.color.create({
       r: parseInt(Math.random() * 256),
       g: parseInt(Math.random() * 256),
       b: parseInt(Math.random() * 256)
@@ -129,7 +162,7 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     res$ = [];
     for (i$ = 0, len$ = pal.length; i$ < len$; ++i$) {
       item = pal[i$];
-      res$.push(import$(tinycolor(item.toHexString()), item));
+      res$.push(import$($scope.color.create(item.toHexString()), item));
     }
     ret = res$;
     for (i$ = 0, len$ = ret.length; i$ < len$; ++i$) {
@@ -140,14 +173,29 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     }
     return ret;
   };
+  $scope.showPaletteStringDialog = function(){
+    return setTimeout(function(){
+      $scope.paletteString = JSON.stringify({
+        name: $scope.cc.name || 'untitled',
+        palette: $scope.cc.map(function(it, idx){
+          return {
+            id: idx,
+            code: it.toHexString(),
+            type: (it.semantic || (it.semantic = {})).value || 'none'
+          };
+        })
+      });
+      return $('#palette-string-dialog').modal('show');
+    }, 0);
+  };
   $scope.updatePalette = function(){
     var w;
     w = $scope.wheel;
-    import$($scope.cc[$scope.active], tinycolor({
+    $scope.color.update($scope.cc[$scope.active], {
       h: w.hue,
       s: w.r2l(w.sat),
       l: w.r2l(w.lit)
-    }));
+    });
     $scope.wheel.updatePtr();
     return $scope.colorcode = $scope.cc[$scope.active].toHexString();
   };
@@ -155,8 +203,8 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     var ret, tc, ref$;
     ret = /^#[a-fA-F0-9]{6}$/.exec($scope.colorcode);
     if (ret && $scope.cc[$scope.active].toHexString() !== $scope.colorcode) {
-      $scope.history.push(copyPalette($scope.cc));
-      import$($scope.cc[$scope.active], tinycolor($scope.colorcode));
+      $scope.editor.history.push($scope.cc);
+      import$($scope.cc[$scope.active], $scope.color.create($scope.colorcode));
       tc = $scope.cc[$scope.active].toHsl();
       ref$ = $scope.wheel;
       ref$.hue = tc.h;
@@ -177,7 +225,7 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     var i$, to$, i;
     isUndo == null && (isUndo = false);
     if (!isUndo) {
-      $scope.history.push(copyPalette($scope.cc));
+      $scope.editor.history.push($scope.cc);
       if (pal && $scope.refs.indexOf(pal) === -1) {
         $scope.refs.splice(0, 1);
         $scope.refs.push(pal);
@@ -186,9 +234,9 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     for (i$ = 0, to$ = pal.length; i$ < to$; ++i$) {
       i = i$;
       if ($scope.cc.length <= i) {
-        $scope.cc.push(tinycolor(pal[i].toHexString()));
+        $scope.cc.push($scope.color.create(pal[i].toHexString()));
       } else {
-        import$($scope.cc[i], tinycolor(pal[i].toHexString()));
+        import$($scope.cc[i], $scope.color.create(pal[i].toHexString()));
       }
     }
     if ($scope.cc.length > pal.length) {
@@ -205,7 +253,7 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     if (idxTo === idxFrom || idxTo >= $scope.cc.length || idxFrom >= $scope.cc.length) {
       return;
     }
-    $scope.history.push(copyPalette($scope.cc));
+    $scope.editor.history.push($scope.cc);
     item = $scope.cc.splice(idxFrom, 1);
     before = $scope.cc.splice(0, idxTo);
     return $scope.cc = before.concat(item, $scope.cc);
@@ -214,11 +262,7 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
     return $scope.myPals.push(copyPalette($scope.cc));
   };
   $scope.undo = function(){
-    var ref$;
-    if ($scope.history.length) {
-      $scope.setpalette((ref$ = $scope.history)[ref$.length - 1], true);
-      return $scope.history.splice($scope.history.length - 1, 1);
-    }
+    return $scope.editor.history.pop();
   };
   $scope.randomCc = function(){
     var randomPalette;
@@ -263,27 +307,23 @@ x$.controller('ldc-editor', ['$scope', '$http', 'ldc-random'].concat(function($s
       return this.updatePtr();
     },
     add: function(rand){
-      var c;
       rand == null && (rand = false);
+      $scope.editor.history.push($scope.cc);
       if (rand) {
-        c = tinycolor({
+        $scope.cc.push($scope.color.create({
           h: parseInt(Math.random() * 360),
           s: parseInt(Math.random() * 100),
           l: parseInt(Math.random() * 100)
-        });
-        $scope.cc.push(c);
+        }));
         return $scope.setActive($scope.cc.length - 1);
-      } else {
-        c = tinycolor({
+      } else if ($scope.cc.map(function(it){
+        return it.toHexString();
+      }).indexOf(c.toHexString()) === -1) {
+        return $scope.cc.push($scope.color.create({
           h: this.hue,
           s: this.r2l(this.sat),
           l: this.r2l(this.lit)
-        });
-        if ($scope.cc.map(function(it){
-          return it.toHexString();
-        }).indexOf(c.toHexString()) === -1) {
-          return $scope.cc.push(c);
-        }
+        }));
       }
     },
     'delete': function(idx){

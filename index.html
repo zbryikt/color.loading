@@ -40,6 +40,29 @@
       </nav>
     </div>
     <div id="root">
+      <div id="palette-string-dialog" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span>&times;</span></button>
+              <h4 class="modal-title">title</h4>
+            </div>
+            <div class="modal-body">
+              <h5>Your Palettes "{{name}}"</h5>
+              <div style="width:100%;display:inline-block" class="blockcontainer palette-color">
+                <div ng-repeat="c in cc" ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;" ng-class="{'active':$index==active,'dark':c.isDark()}" class="color">
+                  <div class="semantic"><i ng-show="c.semantic.value=='warning'" class="glyphicon glyphicon-exclamation-sign"></i><i ng-show="c.semantic.value=='info'" class="glyphicon glyphicon-info-sign"></i><i ng-show="c.semantic.value=='success'" class="glyphicon glyphicon-ok-sign"></i><i ng-show="c.semantic.value=='danger'" class="glyphicon glyphicon-remove-sign"></i><i ng-show="c.semantic.value=='primary'" class="glyphicon glyphicon-asterisk"></i><i ng-show="c.semantic.value=='default'" class="glyphicon glyphicon-record"></i></div>
+                </div>
+              </div>
+              <h5>JSON Code</h5>
+              <textarea ng-model="paletteString" rows="6" onclick="this.select()" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="landing"><br>
         <h2>Semantic Colors, Programmable Palettes.</h2>
         <p>Color wheel, code codes, palette... We use them all the day. But we never make them ease to use. It's not true from now on.</p><br><br>
@@ -74,9 +97,10 @@
                 <div class="btn btn-xs btn-default"><i onclick="$('#name').focus();" class="glyphicon glyphicon-edit"></i></div>
                 <div class="pull-right">
                   <div class="btn btn-xs btn-default"><i ng-click="savePal()" class="glyphicon glyphicon-floppy-disk"></i></div>
+                  <div class="btn btn-xs btn-default"><i ng-click="showPaletteStringDialog()" class="glyphicon glyphicon-info-sign"></i></div>
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
                   <div ng-click="randomCc()" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
-                  <div ng-click="undo()" ng-class="{'disabled':history.length==0}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-arrow-left"></i></div>
+                  <div ng-click="undo()" ng-class="{'disabled':editor.history.isEmpty}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-arrow-left"></i></div>
                 </div></small></h3>
             <div class="editor-palette">
               <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>

@@ -19,13 +19,14 @@ angular.module \ld.color <[]>
       for i from 1 to count
         c = {h: parseInt(Math.random!*360), s: parseInt(Math.random!*100), l: parseInt(Math.random!*100)}
         c = tinycolor(c)
+        c.{}semantic.value = \none
         c.width = (100 - primary-size)/count
         ret.push c
       ret[parseInt(Math.random!*ret.length)].width = 20 + ((100 - primary-size) / count)
       ret.name = "#{@name[parseInt(Math.random!*@name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
       ret
     
-  ..controller \ldc-editor, <[$scope $http ldc-random]> ++ ($scope, $http, ldc-random) ->
+  ..controller \ldc-editor, <[$scope $http $timeout ldc-random]> ++ ($scope, $http, $timeout, ldc-random) ->
     $scope.myPals = []
     $scope.randomPals = ldc-random.palette 30
     $scope.refs = ldc-random.palette 4
@@ -35,13 +36,13 @@ angular.module \ld.color <[]>
     $scope.colorcode = null
     $scope.semantic = do
       options: 
+        * label: \none, value: \none
         * label: \danger, value: \danger
         * label: \warning, value: \warning
         * label: \info, value: \info
         * label: \success, value: \success
         * label: \primary, value: \primary
         * label: \default, value: \default
-        * label: \none, value: \none
       watch: ->
         c = $scope.cc[$scope.active]
         s = $scope.semantic.value
@@ -51,34 +52,62 @@ angular.module \ld.color <[]>
         u.target = null
         s.target = c
         c.semantic = s
-    $scope.semantic.value = $scope.semantic.options[* - 1]
+
+    $scope.editor = do
+      history: do
+        data: []
+        isEmpty: true
+        push: (it) -> 
+          console.log \okok
+          @isEmpty = false
+          @data.push copy-palette $scope.cc
+        pop: ->
+          if !@data.length => return
+          ret = @data.splice((@data.length - 1), 1).0
+          $scope.setpalette ret, true
+          if !@data.length => @isEmpty = true
+    $scope.color = do
+      create: (color-option, config = {}) ->
+        tinycolor(color-option) <<< {semantic: $scope.semantic.options.0} <<< config
+      update: (tc, value, config) ->
+        tc <<< value <<< config
+
+    $scope.semantic.value = $scope.semantic.options.0
     $scope.$watch 'semantic.value', $scope.semantic.watch
     $scope.curpos = parseInt((456 / ($scope.cc or [1]).length) * (0.5))
-    $scope.setActive = ->
+    $scope.set-active = ->
       $scope.active = it
-      $scope.semantic.value = $scope.cc[$scope.active].semantic or $scope.semantic.options[* - 1]
+      $scope.semantic.value = $scope.cc[$scope.active].semantic or $scope.semantic.options.0
       $scope.curpos = parseInt((456 / $scope.cc.length) * (it + 0.5))
       tc = $scope.cc[$scope.active].toHsl!
       $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
       $scope.wheel.update-all!
     $scope.cc = [i for i from 0 to parseInt(Math.random!*0) + 0]map ->
-      tc = tinycolor r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
+      tc = $scope.color.create r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
 
     copy-palette = (pal) -> 
-      ret = [(tinycolor(item.toHexString!) <<< item) for item in pal]
+      ret = [($scope.color.create(item.toHexString!) <<< item) for item in pal]
       for item in ret => if !item.width => item.width = 100 / ret.length
       ret
 
+    $scope.show-palette-string-dialog = -> setTimeout (->
+      $scope.palette-string = JSON.stringify({
+        name: $scope.cc.name or \untitled
+        palette: $scope.cc.map((it, idx) -> {id: idx, code: it.toHexString!, type: it.{}semantic.value or \none})
+      })
+      $(\#palette-string-dialog).modal \show
+      ), 0 
+
     $scope.update-palette = ->
       w = $scope.wheel
-      $scope.cc[$scope.active] <<< tinycolor h: w.hue, s: w.r2l(w.sat), l: w.r2l(w.lit)
+      $scope.color.update $scope.cc[$scope.active], {h: w.hue, s: w.r2l(w.sat), l: w.r2l(w.lit)}
       $scope.wheel.update-ptr!
       $scope.colorcode = $scope.cc[$scope.active].toHexString!
     $scope.$watch 'colorcode' ->
       ret = /^#[a-fA-F0-9]{6}$/.exec $scope.colorcode
       if ret and $scope.cc[$scope.active].toHexString! != $scope.colorcode =>
-        $scope.history.push(copy-palette $scope.cc) # need deep dupe and push after stable
-        $scope.cc[$scope.active] <<< tinycolor $scope.colorcode
+        $scope.editor.history.push $scope.cc
+        $scope.cc[$scope.active] <<< $scope.color.create $scope.colorcode
         tc = $scope.cc[$scope.active].toHsl!
         $scope.wheel <<< {hue: tc.h, sat: $scope.wheel.l2r(tc.s * 100), lit: $scope.wheel.l2r(tc.l * 100)}
         $scope.wheel.update-all!
@@ -89,14 +118,14 @@ angular.module \ld.color <[]>
         $scope.refs.push pal
     $scope.setpalette = (pal, isUndo = false) -> 
       if !isUndo => 
-        $scope.history.push(copy-palette $scope.cc) # need deep dupe
+        $scope.editor.history.push $scope.cc
         if pal and $scope.refs.indexOf(pal)== -1 => 
           $scope.refs.splice 0,1
           $scope.refs.push pal
       for i from 0 til pal.length
         if $scope.cc.length <= i => 
-          $scope.cc.push tinycolor pal[i].toHexString!
-        else $scope.cc[i] <<< tinycolor pal[i].toHexString!
+          $scope.cc.push $scope.color.create pal[i].toHexString!
+        else $scope.cc[i] <<< $scope.color.create pal[i].toHexString!
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 
@@ -104,17 +133,15 @@ angular.module \ld.color <[]>
       idx-from = parseInt(start / (456 / $scope.cc.length)) 
       idx-to = parseInt((start + offset) / (456 / $scope.cc.length))
       if idx-to == idx-from or idx-to >= $scope.cc.length or idx-from >= $scope.cc.length => return
-      $scope.history.push(copy-palette $scope.cc) # need deep dupe and push after stable
+      $scope.editor.history.push $scope.cc
       item = $scope.cc.splice idx-from, 1
       before = $scope.cc.splice 0, idx-to
       $scope.cc = before ++ item ++ $scope.cc
 
     $scope.savePal = ->
       $scope.myPals.push copy-palette $scope.cc
-    $scope.undo = ->
-      if $scope.history.length =>
-        $scope.setpalette $scope.history[* - 1], true
-        $scope.history.splice ($scope.history.length - 1), 1
+    $scope.undo = -> $scope.editor.history.pop!
+
     $scope.random-cc = ->
       random-palette = ldc-random.palette 1
       $scope.setpalette random-palette.0
@@ -139,16 +166,15 @@ angular.module \ld.color <[]>
           @update it
         @update-ptr!
       add: (rand = false)-> 
+        $scope.editor.history.push $scope.cc
         if rand =>
-          c = tinycolor {h: parseInt(Math.random!*360), s: parseInt(Math.random!*100), l: parseInt(Math.random!*100)}
-          $scope.cc.push c
-          $scope.setActive $scope.cc.length - 1
-        else
-          c = tinycolor({h: @hue, s: @r2l(@sat), l: @r2l(@lit)})
-          if $scope.cc.map(-> it.toHexString!).indexOf( c.toHexString! ) == -1 => $scope.cc.push c
+          $scope.cc.push $scope.color.create {h: parseInt(Math.random!*360), s: parseInt(Math.random!*100), l: parseInt(Math.random!*100)}
+          $scope.set-active $scope.cc.length - 1
+        else if $scope.cc.map(-> it.toHexString!).indexOf( c.toHexString! ) == -1 =>
+          $scope.cc.push $scope.color.create({h: @hue, s: @r2l(@sat), l: @r2l(@lit)})
       delete: (idx = -1) -> if $scope.cc.length > 1 =>
         $scope.cc.splice ( if idx >= 0 => idx else $scope.active ), 1
-        $scope.setActive if $scope.active < $scope.cc.length - 1 => $scope.active else $scope.cc.length - 1
+        $scope.set-active if $scope.active < $scope.cc.length - 1 => $scope.active else $scope.cc.length - 1
 
       update: ->
         d3.select "\#svg g.#{it.name}" .selectAll "path.#{it.name}" .attr do

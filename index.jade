@@ -54,6 +54,29 @@ html(lang="en")
                 li.logon.ng-hide(ng-show="accessToken"): a(href="#",ng-click="logout()") LOGOUT
 
     #root
+      #palette-string-dialog.modal.fade
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close(type="button",data-dismiss="modal",aria-label="Close"): span &times;
+              h4.modal-title title
+            .modal-body
+              h5 Your Palettes "{{name}}"
+              .blockcontainer.palette-color(style="width:100%;display:inline-block")
+                .color(ng-repeat="c in cc",ng-attr-style="background:{{c.toHexString()}};width:{{100/cc.length}}%;",
+                       ng-class="{'active':$index==active,'dark':c.isDark()}")
+                  .semantic
+                    i.glyphicon.glyphicon-exclamation-sign(ng-show="c.semantic.value=='warning'")
+                    i.glyphicon.glyphicon-info-sign(ng-show="c.semantic.value=='info'")
+                    i.glyphicon.glyphicon-ok-sign(ng-show="c.semantic.value=='success'")
+                    i.glyphicon.glyphicon-remove-sign(ng-show="c.semantic.value=='danger'")
+                    i.glyphicon.glyphicon-asterisk(ng-show="c.semantic.value=='primary'")
+                    i.glyphicon.glyphicon-record(ng-show="c.semantic.value=='default'")
+              h5 JSON Code
+              textarea.form-control(ng-model="paletteString",rows="6",onclick="this.select()")
+            .modal-footer
+              button.btn.btn-default(type="button",data-dismiss="modal") Close
+
       #landing
         br
         h2 Semantic Colors, Programmable Palettes.
@@ -94,9 +117,10 @@ html(lang="en")
                 .btn.btn-xs.btn-default: i.glyphicon.glyphicon-edit(onclick="$('#name').focus();")
                 .pull-right
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
+                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-info-sign(ng-click="showPaletteStringDialog()")
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-link
                   .btn.btn-xs.btn-default(ng-click="randomCc()"): i.glyphicon.glyphicon-random
-                  .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':history.length==0}"): i.glyphicon.glyphicon-arrow-left
+                  .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':editor.history.isEmpty}"): i.glyphicon.glyphicon-arrow-left
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
               .blockcontainer.palette-color(style="width:456px;display:inline-block;position:relative;")

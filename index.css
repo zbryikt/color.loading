@@ -96,6 +96,14 @@ nav.navbar-default {
     -webkit-transition: width 0.3s ease-in-out;
     -o-transition: width 0.3s ease-in-out;
     transition: width 0.3s ease-in-out; }
+  .palette-color .color i {
+    color: #000;
+    opacity: 0.5;
+    margin: 4px; }
+  .palette-color .color.dark i {
+    color: #fff; }
+  .palette-color .semantic {
+    position: absolute; }
 
 @-webkit-keyframes jump {
   0% {
@@ -149,14 +157,6 @@ nav.navbar-default {
     animation: jump 1s infinite ease-in-out; }
   .editor-palette .color.active.dark:after {
     color: #ddd; }
-  .editor-palette .semantic {
-    position: absolute; }
-  .editor-palette .color i {
-    color: #000;
-    opacity: 0.5;
-    margin: 4px; }
-  .editor-palette .color.dark i {
-    color: #fff; }
   .editor-palette .cursor {
     position: absolute;
     width: 100px;
