@@ -237,7 +237,7 @@ h3.btns .btn-default {
   vertical-align: bottom; }
 h3.btns .pull-right {
   margin-right: 64px;
-  margin-top: 5px; }
+  margin-top: 7px; }
 
 .palette.ref {
   width: 210px;
@@ -334,3 +334,15 @@ g.color-btns {
   #editor-float .editor-palette .add-color, #editor-float .editor-palette .palette-color {
     height: 32px;
     line-height: 32px; }
+
+#name, #name-input {
+  max-width: 280px;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top; }
+
+#name-input {
+  line-height: 18px;
+  font-size: 18px; }

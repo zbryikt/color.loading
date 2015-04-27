@@ -48,17 +48,20 @@ angular.module \ld.color <[]>
         s = $scope.semantic.value
         v = ((s or {}).target or {})
         u = ((c or {}).semantic or {})
+        if s !== u => 
+          console.log \123
+          $scope.editor.history.push $scope.cc[$scope.active]
         v.semantic = null
         u.target = null
         s.target = c
         c.semantic = s
 
     $scope.editor = do
+      toggle-edit-name: -> @edit-name-toggled = !!!@edit-name-toggled
       history: do
         data: []
         isEmpty: true
         push: (it) -> 
-          console.log \okok
           @isEmpty = false
           @data.push copy-palette $scope.cc
         pop: ->
@@ -70,7 +73,7 @@ angular.module \ld.color <[]>
       create: (color-option, config = {}) ->
         tinycolor(color-option) <<< {semantic: $scope.semantic.options.0} <<< config
       update: (tc, value, config) ->
-        tc <<< value <<< config
+        tc <<< tinycolor(value) <<< config
 
     $scope.semantic.value = $scope.semantic.options.0
     $scope.$watch 'semantic.value', $scope.semantic.watch
@@ -84,10 +87,13 @@ angular.module \ld.color <[]>
       $scope.wheel.update-all!
     $scope.cc = [i for i from 0 to parseInt(Math.random!*0) + 0]map ->
       tc = $scope.color.create r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
+    $scope.cc.name = "My Palette"
 
     copy-palette = (pal) -> 
+      console.log pal.name
       ret = [($scope.color.create(item.toHexString!) <<< item) for item in pal]
       for item in ret => if !item.width => item.width = 100 / ret.length
+      ret.name = pal.name
       ret
 
     $scope.show-palette-string-dialog = -> setTimeout (->
@@ -124,8 +130,8 @@ angular.module \ld.color <[]>
           $scope.refs.push pal
       for i from 0 til pal.length
         if $scope.cc.length <= i => 
-          $scope.cc.push $scope.color.create pal[i].toHexString!
-        else $scope.cc[i] <<< $scope.color.create pal[i].toHexString!
+          $scope.cc.push $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
+        else $scope.cc[i] <<< $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 

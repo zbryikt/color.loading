@@ -101,7 +101,6 @@ html(lang="en")
               circle#lit.ptr
             g.color-btns(ng-click="wheel.add()")
               circle(cx="200",cy="200",r="60",fill="#999")
-              text(X="200",Y="200",dominant-baseline="middle",text-anchor="middle") ADD
           //-.pull-right
             | or, input directly:
             br
@@ -110,11 +109,15 @@ html(lang="en")
         #editor-detail
           .colorblocks
             h3.title.btns
-              span#name(contenteditable="true")
-                | Your Palette
+              span#name(ng-show="!editor.editNameToggled")
+                | {{cc.name}}
                 //-input#palette-name(type="text",value="Your Palette",style="border:none")
+              input#name-input.form-control.input-sm(style="",ng-model="cc.name",ng-show="editor.editNameToggled")
               small
-                .btn.btn-xs.btn-default: i.glyphicon.glyphicon-edit(onclick="$('#name').focus();")
+                .btn.btn-xs.btn-default(style="vertical-align:middle",ng-click="editor.toggleEditName()",ng-show="!editor.editNameToggled")
+                  i.glyphicon.glyphicon-edit(style="vertical-align:top")
+                .btn.btn-xs.btn-default(style="vertical-align:middle",ng-click="editor.toggleEditName()",ng-show="editor.editNameToggled")
+                  i.glyphicon.glyphicon-ok-sign(style="vertical-align:top")
                 .pull-right
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-info-sign(ng-click="showPaletteStringDialog()")

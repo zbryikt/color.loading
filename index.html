@@ -87,21 +87,23 @@
             </g>
             <g ng-click="wheel.add()" class="color-btns">
               <circle cx="200" cy="200" r="60" fill="#999"></circle>
-              <text X="200" Y="200" dominant-baseline="middle" text-anchor="middle">ADD</text>
             </g>
           </svg>
         </div>
         <div id="editor-detail">
           <div class="colorblocks">
-            <h3 class="title btns"><span id="name" contenteditable="true">Your Palette</span><small>
-                <div class="btn btn-xs btn-default"><i onclick="$('#name').focus();" class="glyphicon glyphicon-edit"></i></div>
+            <h3 class="title btns"><span id="name" ng-show="!editor.editNameToggled">{{cc.name}}</span>
+              <input id="name-input" style="" ng-model="cc.name" ng-show="editor.editNameToggled" class="form-control input-sm"><small>
+                <div style="vertical-align:middle" ng-click="editor.toggleEditName()" ng-show="!editor.editNameToggled" class="btn btn-xs btn-default"><i style="vertical-align:top" class="glyphicon glyphicon-edit"></i></div>
+                <div style="vertical-align:middle" ng-click="editor.toggleEditName()" ng-show="editor.editNameToggled" class="btn btn-xs btn-default"><i style="vertical-align:top" class="glyphicon glyphicon-ok-sign"></i></div>
                 <div class="pull-right">
                   <div class="btn btn-xs btn-default"><i ng-click="savePal()" class="glyphicon glyphicon-floppy-disk"></i></div>
                   <div class="btn btn-xs btn-default"><i ng-click="showPaletteStringDialog()" class="glyphicon glyphicon-info-sign"></i></div>
                   <div class="btn btn-xs btn-default"><i class="glyphicon glyphicon-link"></i></div>
                   <div ng-click="randomCc()" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
                   <div ng-click="undo()" ng-class="{'disabled':editor.history.isEmpty}" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-arrow-left"></i></div>
-                </div></small></h3>
+                </div></small>
+            </h3>
             <div class="editor-palette">
               <div ng-click="wheel.add(true)" class="add-color"><i class="glyphicon glyphicon-plus"></i></div>
               <div style="width:456px;display:inline-block;position:relative;" class="blockcontainer palette-color">

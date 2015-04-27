@@ -89,6 +89,10 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       s = $scope.semantic.value;
       v = (s || {}).target || {};
       u = (c || {}).semantic || {};
+      if (!deepEq$(s, u, '===')) {
+        console.log('123');
+        $scope.editor.history.push($scope.cc[$scope.active]);
+      }
       v.semantic = null;
       u.target = null;
       s.target = c;
@@ -96,11 +100,13 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     }
   };
   $scope.editor = {
+    toggleEditName: function(){
+      return this.editNameToggled = !this.editNameToggled;
+    },
     history: {
       data: [],
       isEmpty: true,
       push: function(it){
-        console.log('okok');
         this.isEmpty = false;
         return this.data.push(copyPalette($scope.cc));
       },
@@ -124,7 +130,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       return import$((ref$ = tinycolor(colorOption), ref$.semantic = $scope.semantic.options[0], ref$), config);
     },
     update: function(tc, value, config){
-      return import$(import$(tc, value), config);
+      return import$(import$(tc, tinycolor(value)), config);
     }
   };
   $scope.semantic.value = $scope.semantic.options[0];
@@ -157,8 +163,10 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       b: parseInt(Math.random() * 256)
     });
   });
+  $scope.cc.name = "My Palette";
   copyPalette = function(pal){
     var ret, res$, i$, len$, item;
+    console.log(pal.name);
     res$ = [];
     for (i$ = 0, len$ = pal.length; i$ < len$; ++i$) {
       item = pal[i$];
@@ -171,6 +179,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
         item.width = 100 / ret.length;
       }
     }
+    ret.name = pal.name;
     return ret;
   };
   $scope.showPaletteStringDialog = function(){
@@ -234,9 +243,13 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     for (i$ = 0, to$ = pal.length; i$ < to$; ++i$) {
       i = i$;
       if ($scope.cc.length <= i) {
-        $scope.cc.push($scope.color.create(pal[i].toHexString()));
+        $scope.cc.push($scope.color.create(pal[i].toHexString(), {
+          semantic: pal[i].semantic
+        }));
       } else {
-        import$($scope.cc[i], $scope.color.create(pal[i].toHexString()));
+        import$($scope.cc[i], $scope.color.create(pal[i].toHexString(), {
+          semantic: pal[i].semantic
+        }));
       }
     }
     if ($scope.cc.length > pal.length) {
@@ -566,4 +579,88 @@ function import$(obj, src){
   var own = {}.hasOwnProperty;
   for (var key in src) if (own.call(src, key)) obj[key] = src[key];
   return obj;
+}
+function deepEq$(x, y, type){
+  var toString = {}.toString, hasOwnProperty = {}.hasOwnProperty,
+      has = function (obj, key) { return hasOwnProperty.call(obj, key); };
+  var first = true;
+  return eq(x, y, []);
+  function eq(a, b, stack) {
+    var className, length, size, result, alength, blength, r, key, ref, sizeB;
+    if (a == null || b == null) { return a === b; }
+    if (a.__placeholder__ || b.__placeholder__) { return true; }
+    if (a === b) { return a !== 0 || 1 / a == 1 / b; }
+    className = toString.call(a);
+    if (toString.call(b) != className) { return false; }
+    switch (className) {
+      case '[object String]': return a == String(b);
+      case '[object Number]':
+        return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
+      case '[object Date]':
+      case '[object Boolean]':
+        return +a == +b;
+      case '[object RegExp]':
+        return a.source == b.source &&
+               a.global == b.global &&
+               a.multiline == b.multiline &&
+               a.ignoreCase == b.ignoreCase;
+    }
+    if (typeof a != 'object' || typeof b != 'object') { return false; }
+    length = stack.length;
+    while (length--) { if (stack[length] == a) { return true; } }
+    stack.push(a);
+    size = 0;
+    result = true;
+    if (className == '[object Array]') {
+      alength = a.length;
+      blength = b.length;
+      if (first) { 
+        switch (type) {
+        case '===': result = alength === blength; break;
+        case '<==': result = alength <= blength; break;
+        case '<<=': result = alength < blength; break;
+        }
+        size = alength;
+        first = false;
+      } else {
+        result = alength === blength;
+        size = alength;
+      }
+      if (result) {
+        while (size--) {
+          if (!(result = size in a == size in b && eq(a[size], b[size], stack))){ break; }
+        }
+      }
+    } else {
+      if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) {
+        return false;
+      }
+      for (key in a) {
+        if (has(a, key)) {
+          size++;
+          if (!(result = has(b, key) && eq(a[key], b[key], stack))) { break; }
+        }
+      }
+      if (result) {
+        sizeB = 0;
+        for (key in b) {
+          if (has(b, key)) { ++sizeB; }
+        }
+        if (first) {
+          if (type === '<<=') {
+            result = size < sizeB;
+          } else if (type === '<==') {
+            result = size <= sizeB
+          } else {
+            result = size === sizeB;
+          }
+        } else {
+          first = false;
+          result = size === sizeB;
+        }
+      }
+    }
+    stack.pop();
+    return result;
+  }
 }
