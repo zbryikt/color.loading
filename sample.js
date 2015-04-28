@@ -45,15 +45,18 @@ x$.controller('sample', ['$scope', '$http'].concat(function($scope, $http){
     var pack, nodes, x$, y$;
     $scope.palettes = palettes;
     $scope.palette = $scope.palettes[0];
-    pack = d3.layout.pack().size([800, 400]);
+    pack = d3.layout.pack().size([800, 400]).padding(5);
     nodes = pack.nodes(data).filter(function(it){
       return it.parent;
     });
     $scope.updateColor = function(){
       $scope.color = d3.scale.ordinal().range($scope.palette.palette);
-      return d3.select('#svg').selectAll('circle').attr({
+      return d3.select('#svg').selectAll('circle').transition().duration(500).attr({
         fill: function(it){
           return $scope.color(it.name);
+        },
+        stroke: function(it){
+          return tinycolor($scope.color(it.name)).darken(20).toHexString();
         }
       });
     };
@@ -76,7 +79,9 @@ x$.controller('sample', ['$scope', '$http'].concat(function($scope, $http){
       fill: function(it){
         return $scope.color(it.name);
       },
-      stroke: '#999',
+      stroke: function(it){
+        return tinycolor($scope.color(it.name)).darken(20).toHexString();
+      },
       "stroke-width": '2'
     });
     return y$;

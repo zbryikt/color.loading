@@ -20,12 +20,13 @@ angular.module \sample, <[]>
     .success (palettes) ->
       $scope.palettes = palettes
       $scope.palette = $scope.palettes.0
-      pack = d3.layout.pack!size [800 400]
+      pack = d3.layout.pack!size [800 400] .padding 5
       nodes = pack.nodes data .filter -> it.parent
       $scope.update-color = ->
         $scope.color = d3.scale.ordinal!range $scope.palette.palette
-        d3.select \#svg .selectAll \circle .attr do
+        d3.select \#svg .selectAll \circle .transition!duration 500 .attr do
           fill: -> $scope.color it.name
+          stroke: -> tinycolor($scope.color it.name).darken 20 .toHexString!
 
       $scope.$watch 'palette', $scope.update-color
 
@@ -40,5 +41,5 @@ angular.module \sample, <[]>
           cy: -> it.y
           r: -> it.r
           fill: -> $scope.color it.name
-          stroke: \#999
+          stroke: -> tinycolor($scope.color it.name).darken 20 .toHexString!
           "stroke-width": \2
