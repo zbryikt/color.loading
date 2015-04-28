@@ -122,6 +122,7 @@ html(lang="en")
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-info-sign(ng-click="showPaletteStringDialog()")
                   .btn.btn-xs.btn-default: i.glyphicon.glyphicon-link
+                  #download-palette.btn.btn-xs.btn-default: i.glyphicon.glyphicon-download-alt(ng-click="editor.output.prepare(cc)")
                   .btn.btn-xs.btn-default(ng-click="randomCc()"): i.glyphicon.glyphicon-random
                   .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':editor.history.isEmpty}"): i.glyphicon.glyphicon-arrow-left
             .editor-palette

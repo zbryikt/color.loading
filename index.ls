@@ -57,6 +57,31 @@ angular.module \ld.color <[]>
 
     $scope.editor = do
       toggle-edit-name: -> @edit-name-toggled = !!!@edit-name-toggled
+      output: do
+        prepare: (pal) ->
+          <~ setTimeout _, 0
+          $('#download-palette .download-option:nth-of-type(1)')
+            ..attr('href', @json pal )
+            ..attr('download', "#{pal.name}.json")
+          $('#download-palette .download-option:nth-of-type(2)')
+            ..attr('href', @sass pal )
+            ..attr('download', "#{pal.name}.sass")
+        json: (pal) ->
+          ret = do
+            name: pal.name
+            palette: []
+          for c in pal =>
+            ret.palette.push({hex: c.toHexString!, isDark: c.isDark!, semantic: c.semantic.value or \none} <<< c.toRgb! <<< c.toHsl!)
+          url = URL.createObjectURL new Blob([JSON.stringify(ret)], type: "application/json")
+        sass: (pal) ->
+          ret1 = ["$color#{idx}: #{c.toHexString!}" for c,idx in pal].join '\r\n'
+          f = pal.filter -> it.semantic.value !== \none
+          ret2 = ["$color-#{c.semantic.value or \none}: #{c.toHexString!}" for c,idx in f].join '\r\n'
+          ret = ret1 + '\r\n' + ret2
+          url = URL.createObjectURL new Blob([ret], type: "plain/text")
+        less: (pal) ->
+        svg: (pal) ->
+        ase: (pal) ->
       history: do
         data: []
         isEmpty: true
@@ -288,6 +313,20 @@ angular.module \ld.color <[]>
       if scroll-top < 380 => $(\#mask)addClass \dim
       else => $(\#mask)removeClass \dim
 
+    $(\#download-palette).popover do
+      html: true
+      container: '#download-palette'
+      content: (
+        "Download via ... " +
+        "<a class='download-option'> json </div>" + 
+        "<a class='download-option'> sass </div>" + 
+        "<a class='download-option'> less </div>" + 
+        "<a class='download-option'> ase </div>" + 
+        "<a class='download-option'> svg </div>"
+
+        )
+      placement: "bottom"
+
 
 scroll = (e) ->
   s = angular.element("body").scope!
@@ -302,3 +341,8 @@ drag = do
       drag-end: -> 
         angular.element("body").scope!drag-palette-color @start, it.offsetX
         @start = null
+
+editor = do
+  output: (type) ->
+    $scope = angular.element \body .scope!
+    alert($scope.editor.output[type] $scope.cc)
