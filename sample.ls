@@ -1,16 +1,8 @@
 angular.module \sample, <[]>
-  ..controller \sample, <[$scope $http]> ++ ($scope, $http) ->
-    data = {children: [
-      * name: \China,          value: 1369460000
-      * name: \India,          value: 1270200000
-      * name: 'United States', value:  320858000
-      * name: 'Indonesia',     value:  252164800
-      * name: 'Brazil',        value:  204210000
-      * name: 'Pakistan',      value:  189598000
-      * name: 'Nigeria',       value:  173615000
-      * name: 'Bangladesh',    value:  158217000
-      * name: 'Russia',        value:  146068400
-      * name: 'Japan',         value:  127130000
+  ..controller \sample, <[$scope $http $interval]> ++ ($scope, $http, $interval) ->
+    name = <[ Barker Stokes Rhodes Salazar Ellis Bradley Sharp Hogan Harvey Briggs ]>
+    data = {children: [{
+      name: name[parseInt(Math.random!*name.length)], value: Math.random!*100 + 10 } for i from 0 to 100
     ]}
 
 
@@ -20,14 +12,16 @@ angular.module \sample, <[]>
     .success (palettes) ->
       $scope.palettes = palettes
       $scope.palette = $scope.palettes.0
-      pack = d3.layout.pack!size [800 400] .padding 5
+      pack = d3.layout.pack!size [800 400] .padding 5 .radius( -> Math.sqrt(it)*10)
       nodes = pack.nodes data .filter -> it.parent
+
       $scope.update-color = ->
         $scope.color = d3.scale.ordinal!range $scope.palette.palette
         d3.select \#svg .selectAll \circle .transition!duration 500 .attr do
           fill: -> $scope.color it.name
           stroke: -> tinycolor($scope.color it.name).darken 20 .toHexString!
-
+        d3.select \#svg .selectAll \text .transition!duration 500 .attr do
+          fill: -> if tinycolor($scope.color it.name).isDark! => \#fff else \#222
       $scope.$watch 'palette', $scope.update-color
 
 
@@ -43,3 +37,19 @@ angular.module \sample, <[]>
           fill: -> $scope.color it.name
           stroke: -> tinycolor($scope.color it.name).darken 20 .toHexString!
           "stroke-width": \2
+      d3.select \#svg .selectAll \text .data nodes
+        ..enter!append \text
+        ..exit!remove!
+      d3.select \#svg .selectAll \text
+        ..attr do
+          x: -> it.x
+          y: -> it.y
+          fill: -> if tinycolor($scope.color it.name).isDark! => \#fff else \#222
+        ..style do
+          "text-anchor": \middle
+          "dominant-baseline": \central
+          "font-size": \12
+        ..text -> it.name
+      $interval (->
+        $scope.palette = $scope.palettes[parseInt($scope.palettes.length * Math.random!)]
+      ), 1000

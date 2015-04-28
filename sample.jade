@@ -18,5 +18,6 @@ html(lang="en")
     script(type="text/javascript",src="/bower_components/tinycolor/tinycolor.js")
   body(ng-app="sample",ng-controller="sample")
     #root
+      h2 Beautiful Palettes Library
       select.form-control(ng-model="palette", ng-options="opt as opt.name for opt in palettes")
-      svg#svg(width="800px",height="400px",viewBox="0 0 800 400",preserveAspectRatio="xMidYMid")
+      svg#svg(width="100%",height="400px",viewBox="0 0 800 400",preserveAspectRatio="xMidYMid",style="margin-top:10px")

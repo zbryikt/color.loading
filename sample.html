@@ -18,8 +18,9 @@
   </head>
   <body ng-app="sample" ng-controller="sample">
     <div id="root">
+      <h2>Beautiful Palettes Library</h2>
       <select ng-model="palette" ng-options="opt as opt.name for opt in palettes" class="form-control"></select>
-      <svg id="svg" width="800px" height="400px" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid"></svg>
+      <svg id="svg" width="100%" height="400px" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid" style="margin-top:10px"></svg>
     </div>
   </body>
 </html>
