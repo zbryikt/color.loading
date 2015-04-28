@@ -90,7 +90,6 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       v = (s || {}).target || {};
       u = (c || {}).semantic || {};
       if (!deepEq$(s, u, '===')) {
-        console.log('123');
         $scope.editor.history.push($scope.cc[$scope.active]);
       }
       v.semantic = null;
@@ -166,7 +165,6 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
   $scope.cc.name = "My Palette";
   copyPalette = function(pal){
     var ret, res$, i$, len$, item;
-    console.log(pal.name);
     res$ = [];
     for (i$ = 0, len$ = pal.length; i$ < len$; ++i$) {
       item = pal[i$];
@@ -260,16 +258,18 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       : $scope.cc.length - 1);
   };
   $scope.dragPaletteColor = function(start, offset){
-    var idxFrom, idxTo, item, before;
+    var idxFrom, idxTo, name, item, before;
     idxFrom = parseInt(start / (456 / $scope.cc.length));
     idxTo = parseInt((start + offset) / (456 / $scope.cc.length));
     if (idxTo === idxFrom || idxTo >= $scope.cc.length || idxFrom >= $scope.cc.length) {
       return;
     }
     $scope.editor.history.push($scope.cc);
+    name = $scope.cc.name;
     item = $scope.cc.splice(idxFrom, 1);
     before = $scope.cc.splice(0, idxTo);
-    return $scope.cc = before.concat(item, $scope.cc);
+    $scope.cc = before.concat(item, $scope.cc);
+    return $scope.cc.name = name;
   };
   $scope.savePal = function(){
     var idx;

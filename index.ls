@@ -49,7 +49,6 @@ angular.module \ld.color <[]>
         v = ((s or {}).target or {})
         u = ((c or {}).semantic or {})
         if s !== u => 
-          console.log \123
           $scope.editor.history.push $scope.cc[$scope.active]
         v.semantic = null
         u.target = null
@@ -90,7 +89,6 @@ angular.module \ld.color <[]>
     $scope.cc.name = "My Palette"
 
     copy-palette = (pal) -> 
-      console.log pal.name
       ret = [($scope.color.create(item.toHexString!) <<< item) for item in pal]
       for item in ret => if !item.width => item.width = 100 / ret.length
       ret.name = pal.name
@@ -140,9 +138,11 @@ angular.module \ld.color <[]>
       idx-to = parseInt((start + offset) / (456 / $scope.cc.length))
       if idx-to == idx-from or idx-to >= $scope.cc.length or idx-from >= $scope.cc.length => return
       $scope.editor.history.push $scope.cc
+      name = $scope.cc.name
       item = $scope.cc.splice idx-from, 1
       before = $scope.cc.splice 0, idx-to
       $scope.cc = before ++ item ++ $scope.cc
+      $scope.cc.name = name
 
     $scope.savePal = ->
       idx = $scope.myPals.map(-> it.name).indexOf($scope.cc.name)
