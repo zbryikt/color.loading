@@ -272,7 +272,15 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     return $scope.cc = before.concat(item, $scope.cc);
   };
   $scope.savePal = function(){
-    return $scope.myPals.push(copyPalette($scope.cc));
+    var idx;
+    idx = $scope.myPals.map(function(it){
+      return it.name;
+    }).indexOf($scope.cc.name);
+    if (idx === -1) {
+      return $scope.myPals.push(copyPalette($scope.cc));
+    } else {
+      return $scope.myPals[idx] = copyPalette($scope.cc);
+    }
   };
   $scope.undo = function(){
     return $scope.editor.history.pop();

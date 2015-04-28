@@ -145,7 +145,9 @@ angular.module \ld.color <[]>
       $scope.cc = before ++ item ++ $scope.cc
 
     $scope.savePal = ->
-      $scope.myPals.push copy-palette $scope.cc
+      idx = $scope.myPals.map(-> it.name).indexOf($scope.cc.name)
+      if idx == -1 => $scope.myPals.push copy-palette $scope.cc
+      else => $scope.myPals[idx] = copy-palette $scope.cc
     $scope.undo = -> $scope.editor.history.pop!
 
     $scope.random-cc = ->
