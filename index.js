@@ -416,9 +416,11 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     return $scope.randomPals = ldcRandom.palette(30);
   };
   $scope.$watch('wheel.hue', function(){
+    $scope.wheel.updatePolar();
     return $scope.updatePalette();
   });
   $scope.$watch('wheel.sat', function(){
+    $scope.wheel.updatePolar();
     return $scope.updatePalette();
   });
   $scope.$watch('wheel.lit', function(){
@@ -429,6 +431,15 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     sat: 100,
     lit: 50,
     delta: 2,
+    x: 0,
+    y: 0,
+    updatePolar: function(){
+      var a, r;
+      a = Math.PI * this.hue / 180;
+      r = this.r2l(this.sat) * 0.6;
+      this.x = 195 + r * Math.cos(a);
+      return this.y = 195 + r * Math.sin(a);
+    },
     init: function(){
       var res$, i$, step$, to$, ridx$, this$ = this;
       res$ = [];
@@ -458,7 +469,11 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
         return $scope.setActive($scope.cc.length - 1);
       } else if ($scope.cc.map(function(it){
         return it.toHexString();
-      }).indexOf(c.toHexString()) === -1) {
+      }).indexOf(new tinycolor({
+        h: this.hue,
+        s: this.r2l(this.sat),
+        l: this.r2l(this.lit)
+      }).toHexString()) === -1) {
         return $scope.cc.push($scope.color.create({
           h: this.hue,
           s: this.r2l(this.sat),

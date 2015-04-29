@@ -85,8 +85,12 @@
               <circle id="sat" class="ptr"></circle>
               <circle id="lit" class="ptr"></circle>
             </g>
-            <g ng-click="wheel.add()" class="color-btns">
-              <circle cx="200" cy="200" r="60" fill="#999"></circle>
+            <g id="color-area" ng-click="wheel.add()">
+              <circle cx="200" cy="200" r="60" stroke="#eee" stroke-width="1" fill="#f9f9f9"></circle>
+            </g>
+            <g id="center-ptr" ng-attr-transform="translate({{wheel.x}},{{wheel.y}})">
+              <line x1="0" y1="0" x2="10" y2="10" stroke="#000" stroke-width="2"></line>
+              <line x1="10" y1="0" x2="0" y2="10" stroke="#000" stroke-width="2"></line>
             </g>
           </svg>
         </div>

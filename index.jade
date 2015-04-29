@@ -99,8 +99,11 @@ html(lang="en")
               circle#hue.ptr
               circle#sat.ptr
               circle#lit.ptr
-            g.color-btns(ng-click="wheel.add()")
-              circle(cx="200",cy="200",r="60",fill="#999")
+            g#color-area(ng-click="wheel.add()")
+              circle(cx="200",cy="200",r="60",stroke="#eee",stroke-width="1",fill="#f9f9f9")
+            g#center-ptr(ng-attr-transform="translate({{wheel.x}},{{wheel.y}})")
+              line(x1="0",y1="0",x2="10",y2="10",stroke="#000",stroke-width="2")
+              line(x1="10",y1="0",x2="0",y2="10",stroke="#000",stroke-width="2")
           //-.pull-right
             | or, input directly:
             br

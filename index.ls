@@ -190,14 +190,21 @@ angular.module \ld.color <[]>
       $scope.refs = ldc-random.palette 4
     $scope.makeRandomPalettes = -> $scope.randomPals = ldc-random.palette 30
 
-    $scope.$watch 'wheel.hue' -> $scope.update-palette!
-    $scope.$watch 'wheel.sat' -> $scope.update-palette!
+    $scope.$watch 'wheel.hue' -> $scope.wheel.update-polar!; $scope.update-palette!
+    $scope.$watch 'wheel.sat' -> $scope.wheel.update-polar!; $scope.update-palette!
     $scope.$watch 'wheel.lit' -> $scope.update-palette!
     $scope.wheel = do
       hue: 50
       sat: 100
       lit: 50
       delta: 2
+      x: 0
+      y: 0
+      update-polar: ->
+        a = Math.PI * @hue / 180
+        r = @r2l(@sat) * 0.6
+        @x = 195 + r * Math.cos a
+        @y = 195 + r * Math.sin a
       init: ->
         @point = [0 to 360 - @delta by @delta]
         @config.map ~>
@@ -211,7 +218,7 @@ angular.module \ld.color <[]>
         if rand =>
           $scope.cc.push $scope.color.create {h: parseInt(Math.random!*360), s: parseInt(Math.random!*100), l: parseInt(Math.random!*100)}
           $scope.set-active $scope.cc.length - 1
-        else if $scope.cc.map(-> it.toHexString!).indexOf( c.toHexString! ) == -1 =>
+        else if $scope.cc.map(-> it.toHexString!).indexOf( new tinycolor({h:@hue, s: @r2l(@sat), l: @r2l(@lit)}).toHexString! ) == -1 =>
           $scope.cc.push $scope.color.create({h: @hue, s: @r2l(@sat), l: @r2l(@lit)})
       delete: (idx = -1) -> if $scope.cc.length > 1 =>
         $scope.cc.splice ( if idx >= 0 => idx else $scope.active ), 1
