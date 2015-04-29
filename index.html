@@ -29,6 +29,7 @@
               <li><a id="nav-more" href="#">MORE</a></li>
             </ul>
             <ul class="nav navbar-nav pull-right">
+              <li><a id="nav-compatibility" href="#">LOGIN / SIGNUP</a></li>
               <li ng-class="{'invis':!username}" class="anim profile invis"><a href="#">
                   <div class="avatar"><img ng-src="http://graph.facebook.com/{{uid}}/picture?type=small" ng-show="uid"></div>
                   <div class="name">{{username}}</div></a></li>
@@ -140,7 +141,8 @@
           <div class="palettes ref">
             <div ng-repeat="pal in refs" class="palette sm">
               <div class="name">{{pal.name}}</div>
-              <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
+              <div class="like"><i class="glyphicon glyphicon-heart"></i>
+              </div>
               <div class="palette-color">
                 <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
               </div>
@@ -161,7 +163,8 @@
           <div class="palettes ref">
             <div ng-repeat="pal in refs" class="palette sm">
               <div class="name">{{pal.name}}</div>
-              <div class="like"><i class="glyphicon glyphicon-heart"></i>5</div>
+              <div class="like"><i class="glyphicon glyphicon-heart"></i>
+              </div>
               <div class="palette-color">
                 <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
               </div>
@@ -176,7 +179,8 @@
       <div class="palettes">
         <div ng-repeat="pal in myPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
+          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
+          </div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -187,7 +191,8 @@
       <div class="palettes">
         <div ng-repeat="pal in famousPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
+          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
+          </div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -200,7 +205,8 @@
       <div class="palettes">
         <div ng-repeat="pal in randomPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>5</div>
+          <div class="like"><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
+          </div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>

@@ -13,7 +13,7 @@ mixin paletteList(name)
       .like
         i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
         i.glyphicon.glyphicon-heart
-        | 5
+        //-| 5
       .palette-color
         .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
       .tag cloud,blah,qwer
@@ -43,6 +43,7 @@ html(lang="en")
               li: a#nav-comment(href="#comment") CONTACT
               li: a#nav-more(href="#") MORE
             ul.nav.navbar-nav.pull-right
+              li: a#nav-compatibility(href="#") LOGIN / SIGNUP
               li.anim.profile.invis(ng-class="{'invis':!username}"): a(href="#")
                 .avatar
                   img(ng-src="http://graph.facebook.com/{{uid}}/picture?type=small",ng-show="uid")
@@ -164,7 +165,7 @@ html(lang="en")
                 | {{pal.name}}
               .like
                 i.glyphicon.glyphicon-heart
-                | 5
+                //-| 5
               .palette-color
                 .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
               .tag cloud,blah,qwer
@@ -189,7 +190,7 @@ html(lang="en")
                 | {{pal.name}}
               .like
                 i.glyphicon.glyphicon-heart
-                | 5
+                //-| 5
               .palette-color
                 .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
               .tag cloud,blah,qwer
