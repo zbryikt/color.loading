@@ -60,12 +60,10 @@ angular.module \ld.color <[]>
       output: do
         prepare: (pal) ->
           <~ setTimeout _, 0
-          $('#download-palette .download-option:nth-of-type(1)')
-            ..attr('href', @json pal )
-            ..attr('download', "#{pal.name}.json")
-          $('#download-palette .download-option:nth-of-type(2)')
-            ..attr('href', @sass pal )
-            ..attr('download', "#{pal.name}.sass")
+          for name in <[json sass less svg]> =>
+            $("\#download-palette .download-option.download-option-#{name}")
+              ..attr('href', @[name] pal )
+              ..attr('download', "#{pal.name}.#{name}")
         json: (pal) ->
           ret = do
             name: pal.name
@@ -80,7 +78,17 @@ angular.module \ld.color <[]>
           ret = ret1 + '\r\n' + ret2
           url = URL.createObjectURL new Blob([ret], type: "plain/text")
         less: (pal) ->
+          ret1 = ["@color#{idx}: #{c.toHexString!}" for c,idx in pal].join '\r\n'
+          f = pal.filter -> it.semantic.value !== \none
+          ret2 = ["@color-#{c.semantic.value or \none}: #{c.toHexString!}" for c,idx in f].join '\r\n'
+          ret = ret1 + '\r\n' + ret2
+          url = URL.createObjectURL new Blob([ret], type: "plain/text")
         svg: (pal) ->
+          ret1 = ["<linearGradient id='color#{idx}'><stop stop-color='#{c.toHexString!}'/></linearGradient>" for c,idx in pal].join '\r\n'
+          f = pal.filter -> it.semantic.value !== \none
+          ret2 = ["<linearGradient id='color#{c.semantic.value or \none}'><stop stop-color='#{c.toHexString!}'/></linearGradient>" for c,idx in f].join '\r\n'
+          ret = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"><svg xmlns:svg=\"http://www.w3.org/2000/svg\"><defs>#ret1#ret2</defs></svg>"
+          url = URL.createObjectURL new Blob([ret], type: "image/svg+xml")
         ase: (pal) ->
       history: do
         data: []
@@ -318,11 +326,11 @@ angular.module \ld.color <[]>
       container: '#download-palette'
       content: (
         "Download via ... " +
-        "<a class='download-option'> json </div>" + 
-        "<a class='download-option'> sass </div>" + 
-        "<a class='download-option'> less </div>" + 
-        "<a class='download-option'> ase </div>" + 
-        "<a class='download-option'> svg </div>"
+        "<a class='download-option download-option-json'> json </div>" + 
+        "<a class='download-option download-option-sass'> sass </div>" + 
+        "<a class='download-option download-option-less'> less </div>" + 
+        "<a class='download-option download-option-ase'> ase </div>" + 
+        "<a class='download-option download-option-svg'> svg </div>"
 
         )
       placement: "bottom"

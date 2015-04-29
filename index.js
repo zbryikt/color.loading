@@ -106,14 +106,15 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       prepare: function(pal){
         var this$ = this;
         return setTimeout(function(){
-          var x$, y$;
-          x$ = $('#download-palette .download-option:nth-of-type(1)');
-          x$.attr('href', this$.json(pal));
-          x$.attr('download', pal.name + ".json");
-          y$ = $('#download-palette .download-option:nth-of-type(2)');
-          y$.attr('href', this$.sass(pal));
-          y$.attr('download', pal.name + ".sass");
-          return y$;
+          var i$, ref$, len$, name, x$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = ['json', 'sass', 'less', 'svg']).length; i$ < len$; ++i$) {
+            name = ref$[i$];
+            x$ = $("#download-palette .download-option.download-option-" + name);
+            x$.attr('href', this$[name](pal));
+            x$.attr('download', pal.name + "." + name);
+            results$.push(x$);
+          }
+          return results$;
         }, 0);
       },
       json: function(pal){
@@ -162,8 +163,62 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
           type: "plain/text"
         }));
       },
-      less: function(pal){},
-      svg: function(pal){},
+      less: function(pal){
+        var ret1, idx, c, f, ret2, ret, url;
+        ret1 = (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = pal).length; i$ < len$; ++i$) {
+            idx = i$;
+            c = ref$[i$];
+            results$.push("@color" + idx + ": " + c.toHexString());
+          }
+          return results$;
+        }()).join('\r\n');
+        f = pal.filter(function(it){
+          return !deepEq$(it.semantic.value, 'none', '===');
+        });
+        ret2 = (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = f).length; i$ < len$; ++i$) {
+            idx = i$;
+            c = ref$[i$];
+            results$.push("@color-" + (c.semantic.value || 'none') + ": " + c.toHexString());
+          }
+          return results$;
+        }()).join('\r\n');
+        ret = ret1 + '\r\n' + ret2;
+        return url = URL.createObjectURL(new Blob([ret], {
+          type: "plain/text"
+        }));
+      },
+      svg: function(pal){
+        var ret1, idx, c, f, ret2, ret, url;
+        ret1 = (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = pal).length; i$ < len$; ++i$) {
+            idx = i$;
+            c = ref$[i$];
+            results$.push("<linearGradient id='color" + idx + "'><stop stop-color='" + c.toHexString() + "'/></linearGradient>");
+          }
+          return results$;
+        }()).join('\r\n');
+        f = pal.filter(function(it){
+          return !deepEq$(it.semantic.value, 'none', '===');
+        });
+        ret2 = (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = f).length; i$ < len$; ++i$) {
+            idx = i$;
+            c = ref$[i$];
+            results$.push("<linearGradient id='color" + (c.semantic.value || 'none') + "'><stop stop-color='" + c.toHexString() + "'/></linearGradient>");
+          }
+          return results$;
+        }()).join('\r\n');
+        ret = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"><svg xmlns:svg=\"http://www.w3.org/2000/svg\"><defs>" + ret1 + ret2 + "</defs></svg>";
+        return url = URL.createObjectURL(new Blob([ret], {
+          type: "image/svg+xml"
+        }));
+      },
       ase: function(pal){}
     },
     history: {
@@ -630,7 +685,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
   return $('#download-palette').popover({
     html: true,
     container: '#download-palette',
-    content: "Download via ... " + "<a class='download-option'> json </div>" + "<a class='download-option'> sass </div>" + "<a class='download-option'> less </div>" + "<a class='download-option'> ase </div>" + "<a class='download-option'> svg </div>",
+    content: "Download via ... " + "<a class='download-option download-option-json'> json </div>" + "<a class='download-option download-option-sass'> sass </div>" + "<a class='download-option download-option-less'> less </div>" + "<a class='download-option download-option-ase'> ase </div>" + "<a class='download-option download-option-svg'> svg </div>",
     placement: "bottom"
   });
 }));
