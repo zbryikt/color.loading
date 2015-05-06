@@ -128,7 +128,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
           ret.palette.push(import$(import$({
             hex: c.toHexString(),
             isDark: c.isDark(),
-            semantic: c.semantic.value || 'none'
+            semantic: (c.semantic || (c.semantic = {})).value || 'none'
           }, c.toRgb()), c.toHsl()));
         }
         return url = URL.createObjectURL(new Blob([JSON.stringify(ret)], {
@@ -297,6 +297,8 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       }
     }
     ret.name = pal.name;
+    ret.category = pal.category;
+    ret.key = pal.key;
     return ret;
   };
   $scope.showPaletteStringDialog = function(){
@@ -391,15 +393,37 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     return $scope.cc.name = name;
   };
   $scope.savePal = function(){
-    var idx;
+    var idx, pal, payload, item;
     idx = $scope.myPals.map(function(it){
-      return it.name;
-    }).indexOf($scope.cc.name);
+      return it.key;
+    }).indexOf($scope.cc.key);
     if (idx === -1) {
-      return $scope.myPals.push(copyPalette($scope.cc));
+      $scope.myPals.push(pal = copyPalette($scope.cc));
     } else {
-      return $scope.myPals[idx] = copyPalette($scope.cc);
+      $scope.myPals[idx] = pal = copyPalette($scope.cc);
     }
+    payload = {
+      name: pal.name,
+      colors: (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = pal).length; i$ < len$; ++i$) {
+          item = ref$[i$];
+          results$.push({
+            hex: item.toHexString(),
+            semantic: item.semantic.value
+          });
+        }
+        return results$;
+      }())
+    };
+    return $http({
+      url: pal.key ? "/palette/" + pal.key : "/palette/",
+      method: pal.key ? 'PUT' : 'POST',
+      data: payload
+    }).success(function(d){
+      console.log("saved.", d);
+      return pal.key = d.key;
+    });
   };
   $scope.undo = function(){
     return $scope.editor.history.pop();
@@ -676,6 +700,32 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       results$.push($scope.famousPals.push(ldcRandom.convert(item)));
     }
     return results$;
+  });
+  $http({
+    url: '/palette/?user=tkirby',
+    method: 'GET'
+  }).success(function(data){
+    var list, i$, len$, item, obj, j$, ref$, len1$, c, tc;
+    list = [];
+    for (i$ = 0, len$ = data.length; i$ < len$; ++i$) {
+      item = data[i$];
+      obj = [];
+      obj.name = item.name;
+      obj.cateogry = item.cateogry;
+      obj.key = item.key;
+      for (j$ = 0, len1$ = (ref$ = item.colors).length; j$ < len1$; ++j$) {
+        c = ref$[j$];
+        tc = tinycolor(c.hex);
+        tc.semantic = $scope.semantic.options.filter(fn$)[0] || $scope.semantic.options[0];
+        tc.width = 100 / item.colors.length;
+        obj.push(tc);
+      }
+      list.push(obj);
+    }
+    return $scope.myPals = list;
+    function fn$(it){
+      return it.value === c.semantic;
+    }
   });
   $scope.wheel.init();
   $(window).scroll(function(){

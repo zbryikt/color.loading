@@ -69,7 +69,7 @@ angular.module \ld.color <[]>
             name: pal.name
             palette: []
           for c in pal =>
-            ret.palette.push({hex: c.toHexString!, isDark: c.isDark!, semantic: c.semantic.value or \none} <<< c.toRgb! <<< c.toHsl!)
+            ret.palette.push({hex: c.toHexString!, isDark: c.isDark!, semantic: c.{}semantic.value or \none} <<< c.toRgb! <<< c.toHsl!)
           url = URL.createObjectURL new Blob([JSON.stringify(ret)], type: "application/json")
         sass: (pal) ->
           ret1 = ["$color#{idx}: #{c.toHexString!}" for c,idx in pal].join '\r\n'
@@ -124,7 +124,7 @@ angular.module \ld.color <[]>
     copy-palette = (pal) -> 
       ret = [($scope.color.create(item.toHexString!) <<< item) for item in pal]
       for item in ret => if !item.width => item.width = 100 / ret.length
-      ret.name = pal.name
+      ret <<< pal{name, category, key}
       ret
 
     $scope.show-palette-string-dialog = -> setTimeout (->
@@ -178,9 +178,17 @@ angular.module \ld.color <[]>
       $scope.cc.name = name
 
     $scope.savePal = ->
-      idx = $scope.myPals.map(-> it.name).indexOf($scope.cc.name)
-      if idx == -1 => $scope.myPals.push copy-palette $scope.cc
-      else => $scope.myPals[idx] = copy-palette $scope.cc
+      idx = $scope.myPals.map(-> it.key).indexOf($scope.cc.key)
+      if idx == -1 => $scope.myPals.push pal = copy-palette $scope.cc
+      else => $scope.myPals[idx] = pal = copy-palette $scope.cc
+      payload = {name: pal.name, colors: [{hex: item.toHexString!, semantic: item.semantic.value} for item in pal]}
+      $http do
+        url: if pal.key => "/palette/#{pal.key}" else "/palette/"
+        method: if pal.key => \PUT else \POST
+        data: payload
+      .success (d) -> 
+        console.log "saved.", d
+        pal.key = d.key
     $scope.undo = -> $scope.editor.history.pop!
 
     $scope.random-cc = ->
@@ -316,6 +324,21 @@ angular.module \ld.color <[]>
       $scope.famousPals = []
       for item in d => 
         $scope.famousPals.push ldc-random.convert item 
+    $http do
+      url: \/palette/?user=tkirby
+      method: \GET
+    .success (data) ->
+      list = []
+      for item in data
+        obj = []
+        obj <<< item{name, cateogry, key}
+        for c in item.colors => 
+          tc = tinycolor(c.hex)
+          tc.semantic = ($scope.semantic.options.filter(-> it.value == c.semantic)[0] or $scope.semantic.options.0)
+          tc.width = 100 / item.colors.length
+          obj.push tc
+        list.push obj
+      $scope.myPals = list
         
 
     $scope.wheel.init!
