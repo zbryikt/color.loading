@@ -163,6 +163,7 @@ angular.module \ld.color <[]>
         if $scope.cc.length <= i => 
           $scope.cc.push $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
         else $scope.cc[i] <<< $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
+        $scope.cc <<< pal{name, category, key}
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 
@@ -188,7 +189,7 @@ angular.module \ld.color <[]>
         data: payload
       .success (d) -> 
         console.log "saved.", d
-        pal.key = d.key
+        $scope.cc.key = pal.key = d.key
     $scope.undo = -> $scope.editor.history.pop!
 
     $scope.random-cc = ->

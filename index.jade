@@ -113,7 +113,7 @@ html(lang="en")
         #editor-detail
           .colorblocks
             h3.title.btns
-              span#name(ng-show="!editor.editNameToggled")
+              span#name(ng-show="!editor.editNameToggled",ng-click="editor.toggleEditName()")
                 | {{cc.name}}
                 //-input#palette-name(type="text",value="Your Palette",style="border:none")
               input#name-input.form-control.input-sm(style="",ng-model="cc.name",ng-show="editor.editNameToggled")

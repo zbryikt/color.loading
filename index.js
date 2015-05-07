@@ -350,7 +350,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     }
   };
   $scope.setpalette = function(pal, isUndo){
-    var i$, to$, i;
+    var i$, to$, i, ref$;
     isUndo == null && (isUndo = false);
     if (!isUndo) {
       $scope.editor.history.push($scope.cc);
@@ -370,6 +370,10 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
           semantic: pal[i].semantic
         }));
       }
+      ref$ = $scope.cc;
+      ref$.name = pal.name;
+      ref$.category = pal.category;
+      ref$.key = pal.key;
     }
     if ($scope.cc.length > pal.length) {
       $scope.cc.splice(pal.length);
@@ -422,7 +426,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
       data: payload
     }).success(function(d){
       console.log("saved.", d);
-      return pal.key = d.key;
+      return $scope.cc.key = pal.key = d.key;
     });
   };
   $scope.undo = function(){

@@ -97,7 +97,7 @@
         </div>
         <div id="editor-detail">
           <div class="colorblocks">
-            <h3 class="title btns"><span id="name" ng-show="!editor.editNameToggled">{{cc.name}}</span>
+            <h3 class="title btns"><span id="name" ng-show="!editor.editNameToggled" ng-click="editor.toggleEditName()">{{cc.name}}</span>
               <input id="name-input" style="" ng-model="cc.name" ng-show="editor.editNameToggled" class="form-control input-sm"><small>
                 <div style="vertical-align:middle" ng-click="editor.toggleEditName()" ng-show="!editor.editNameToggled" class="btn btn-xs btn-default"><i style="vertical-align:top" class="glyphicon glyphicon-edit"></i></div>
                 <div style="vertical-align:middle" ng-click="editor.toggleEditName()" ng-show="editor.editNameToggled" class="btn btn-xs btn-default"><i style="vertical-align:top" class="glyphicon glyphicon-ok-sign"></i></div>
