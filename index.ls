@@ -178,6 +178,17 @@ angular.module \ld.color <[]>
       $scope.cc = before ++ item ++ $scope.cc
       $scope.cc.name = name
 
+    $scope.delPal = (pal) ->
+      if !pal.key => return
+      $http do
+        url: "/palette/#{pal.key}"
+        method: \DELETE
+      .success (d) ->
+        $scope.myPals = $scope.myPals.filter(->it.key != pal.key)
+        if $scope.cc = pal.key =>
+          $scope.cc = [i for i from 0 to parseInt(Math.random!*0) + 0]map ->
+            tc = $scope.color.create r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
+          $scope.cc.name = "My Palette"
     $scope.savePal = ->
       idx = $scope.myPals.map(-> it.key).indexOf($scope.cc.key)
       if idx == -1 => $scope.myPals.push pal = copy-palette $scope.cc

@@ -11,6 +11,7 @@ mixin paletteList(name)
       .name
         | {{pal.name}}
       .like
+        i.glyphicon.glyphicon-remove(ng-show="pal.key",ng-click="delPal(pal)")
         i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
         i.glyphicon.glyphicon-heart
         //-| 5
@@ -129,6 +130,7 @@ html(lang="en")
                   #download-palette.btn.btn-xs.btn-default: i.glyphicon.glyphicon-download-alt(ng-click="editor.output.prepare(cc)")
                   .btn.btn-xs.btn-default(ng-click="randomCc()"): i.glyphicon.glyphicon-random
                   .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':editor.history.isEmpty}"): i.glyphicon.glyphicon-arrow-left
+                  .btn.btn-xs.btn-default(ng-click="delPal(cc)", ng-disabled="!cc.key"): i.glyphicon.glyphicon-remove
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
               .blockcontainer.palette-color(style="width:456px;display:inline-block;position:relative;")
@@ -152,7 +154,8 @@ html(lang="en")
               select.form-control(ng-model="semantic.value",ng-options="opt as opt.label for opt in semantic.options")
             .col-sm-3
               label &nbsp;
-              .btn.btn-danger.form-control(ng-click="wheel.delete()") delete
+              .btn.btn-danger.form-control(ng-click="wheel.delete()",ng-disabled="cc.length<=1")
+                | remove
           h3.btns
             | References
             small

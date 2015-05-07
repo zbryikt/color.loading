@@ -396,6 +396,38 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
     $scope.cc = before.concat(item, $scope.cc);
     return $scope.cc.name = name;
   };
+  $scope.delPal = function(pal){
+    if (!pal.key) {
+      return;
+    }
+    return $http({
+      url: "/palette/" + pal.key,
+      method: 'DELETE'
+    }).success(function(d){
+      var i;
+      $scope.myPals = $scope.myPals.filter(function(it){
+        return it.key !== pal.key;
+      });
+      if ($scope.cc = pal.key) {
+        $scope.cc = (function(){
+          var i$, to$, results$ = [];
+          for (i$ = 0, to$ = parseInt(Math.random() * 0) + 0; i$ <= to$; ++i$) {
+            i = i$;
+            results$.push(i);
+          }
+          return results$;
+        }()).map(function(){
+          var tc;
+          return tc = $scope.color.create({
+            r: parseInt(Math.random() * 256),
+            g: parseInt(Math.random() * 256),
+            b: parseInt(Math.random() * 256)
+          });
+        });
+        return $scope.cc.name = "My Palette";
+      }
+    });
+  };
   $scope.savePal = function(){
     var idx, pal, payload, item;
     idx = $scope.myPals.map(function(it){

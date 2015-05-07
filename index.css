@@ -363,3 +363,8 @@ g#color-area {
 #center-ptr {
   cursor: pointer;
   opacity: 0.5; }
+
+.double-line {
+  font-size: 12px;
+  line-height: 12px;
+  padding: 4px; }
