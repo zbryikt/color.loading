@@ -193,7 +193,7 @@ angular.module \ld.color <[]>
       idx = $scope.myPals.map(-> it.key).indexOf($scope.cc.key)
       if idx == -1 => $scope.myPals.push pal = copy-palette $scope.cc
       else => $scope.myPals[idx] = pal = copy-palette $scope.cc
-      payload = {name: pal.name, colors: [{hex: item.toHexString!, semantic: item.semantic.value} for item in pal]}
+      payload = {name: pal.name, colors: [{hex: item.toHexString!, semantic: item.{}semantic.value or \none} for item in pal]}
       $http do
         url: if pal.key => "/palette/#{pal.key}" else "/palette/"
         method: if pal.key => \PUT else \POST

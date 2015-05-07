@@ -446,7 +446,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
           item = ref$[i$];
           results$.push({
             hex: item.toHexString(),
-            semantic: item.semantic.value
+            semantic: (item.semantic || (item.semantic = {})).value || 'none'
           });
         }
         return results$;
