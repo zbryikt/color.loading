@@ -6,7 +6,7 @@ doctype html
 - var thumbnail = "thumbnail.png"
 - var favicon = "thumbnail.png"
 mixin paletteList(name)
-  .palettes
+  .palettes(id="palette-"+name)
     .palette(ng-repeat="pal in "+name)
       .name
         | {{pal.name}}
@@ -31,6 +31,7 @@ html(lang="en")
     script(type="text/javascript",src="/global")
     script(type="text/javascript",src="index.js")
     script(type="text/javascript",src="bower_components/tinycolor/tinycolor.js")
+    script(type="text/javascript",src="scrollto.js")
   body(ng-app="ld.color",ng-controller="ldc-editor",ng-mousemove="wheel.move($event)",onmousewheel="scroll(event)")
     #nav-top
       nav.navbar.navbar-default(role="navigation")
@@ -235,8 +236,15 @@ html(lang="en")
 
       .clearfix
       hr 
+      #section-indicator
+        div#tab-randomPals(ng-click="scrollto('palette-randomPals')") Random
+        div#tab-famousPals(ng-click="scrollto('palette-famousPals')") Famous
+        div#tab-myFavs(ng-click="scrollto('palette-myFavs')") Favorite
+        div#tab-myPals(ng-click="scrollto('palette-myPals')") My Palette
       h3 My Palette
       +paletteList('myPals')
+      h3 Favorite Palette
+      +paletteList('myFavs')
       h3 Famous Palette
       +paletteList('famousPals')
       h3.btns 

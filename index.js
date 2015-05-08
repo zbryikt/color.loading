@@ -61,6 +61,13 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
   $scope.user = {
     data: global.user
   };
+  $scope.scrollto = function(id){
+    return setTimeout(function(){
+      return $('body').scrollTo('#' + id, {
+        offsetTop: 230
+      });
+    }, 0);
+  };
   $scope.login = {
     show: false,
     logout: function(){
@@ -580,6 +587,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
     'delete': function(idx){
       idx == null && (idx = -1);
       if ($scope.cc.length > 1) {
+        $scope.editor.history.push($scope.cc);
         $scope.cc.splice(idx >= 0
           ? idx
           : $scope.active, 1);
@@ -803,7 +811,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
   }
   $scope.wheel.init();
   $(window).scroll(function(){
-    var scrollTop;
+    var scrollTop, i$, ref$, len$, id, results$ = [];
     scrollTop = $(document.body).scrollTop();
     if (scrollTop < 60) {
       $('#nav-top').removeClass('dim');
@@ -816,10 +824,22 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
       $('#editor-float').removeClass('dim');
     }
     if (scrollTop < 380) {
-      return $('#mask').addClass('dim');
+      $('#mask').addClass('dim');
     } else {
-      return $('#mask').removeClass('dim');
+      $('#mask').removeClass('dim');
     }
+    for (i$ = 0, len$ = (ref$ = ['myPals', 'myFavs', 'famousPals', 'randomPals']).length; i$ < len$; ++i$) {
+      id = ref$[i$];
+      $("#tab-" + id).removeClass('active');
+    }
+    for (i$ = 0, len$ = (ref$ = ['randomPals', 'famousPals', 'myFavs', 'myPals']).length; i$ < len$; ++i$) {
+      id = ref$[i$];
+      if ($("#palette-" + id).offset().top < scrollTop + 231) {
+        $("#tab-" + id).addClass('active');
+        break;
+      }
+    }
+    return results$;
   });
   return $('#download-palette').popover({
     html: true,

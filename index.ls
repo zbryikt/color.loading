@@ -35,6 +35,7 @@ angular.module \ld.color, <[backend]>
     $scope.active = 0
     $scope.colorcode = null
     $scope.user = data: global.user
+    $scope.scrollto = (id) -> setTimeout( (-> $('body').scrollTo('#' + id, {offsetTop: 230})), 0)
     $scope.login = do
       show: false
       logout: ->
@@ -264,6 +265,7 @@ angular.module \ld.color, <[backend]>
         else if $scope.cc.map(-> it.toHexString!).indexOf( new tinycolor({h:@hue, s: @r2l(@sat), l: @r2l(@lit)}).toHexString! ) == -1 =>
           $scope.cc.push $scope.color.create({h: @hue, s: @r2l(@sat), l: @r2l(@lit)})
       delete: (idx = -1) -> if $scope.cc.length > 1 =>
+        $scope.editor.history.push $scope.cc
         $scope.cc.splice ( if idx >= 0 => idx else $scope.active ), 1
         $scope.set-active if $scope.active < $scope.cc.length - 1 => $scope.active else $scope.cc.length - 1
 
@@ -385,6 +387,11 @@ angular.module \ld.color, <[backend]>
       else => $(\#editor-float)removeClass \dim
       if scroll-top < 380 => $(\#mask)addClass \dim
       else => $(\#mask)removeClass \dim
+      for id in <[myPals myFavs famousPals randomPals]> => $("\#tab-#id").remove-class \active
+      for id in <[randomPals famousPals myFavs myPals]>
+        if $("\#palette-#id").offset!top < scroll-top + 231 =>
+          $("\#tab-#id").add-class \active
+          break
 
     $(\#download-palette).popover do
       html: true

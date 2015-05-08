@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/global"></script>
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript" src="bower_components/tinycolor/tinycolor.js"></script>
+    <script type="text/javascript" src="scrollto.js"></script>
   </head>
   <body ng-app="ld.color" ng-controller="ldc-editor" ng-mousemove="wheel.move($event)" onmousewheel="scroll(event)">
     <div id="nav-top">
@@ -204,8 +205,14 @@
       </div>
       <div class="clearfix"></div>
       <hr>
+      <div id="section-indicator">
+        <div id="tab-randomPals" ng-click="scrollto('palette-randomPals')">Random</div>
+        <div id="tab-famousPals" ng-click="scrollto('palette-famousPals')">Famous</div>
+        <div id="tab-myFavs" ng-click="scrollto('palette-myFavs')">Favorite</div>
+        <div id="tab-myPals" ng-click="scrollto('palette-myPals')">My Palette</div>
+      </div>
       <h3>My Palette</h3>
-      <div class="palettes">
+      <div id="palette-myPals" class="palettes">
         <div ng-repeat="pal in myPals" class="palette">
           <div class="name">{{pal.name}}</div>
           <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
@@ -216,8 +223,20 @@
           <div class="tag">cloud,blah,qwer</div>
         </div>
       </div>
+      <h3>Favorite Palette</h3>
+      <div id="palette-myFavs" class="palettes">
+        <div ng-repeat="pal in myFavs" class="palette">
+          <div class="name">{{pal.name}}</div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
+          </div>
+          <div class="palette-color">
+            <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
+          </div>
+          <div class="tag">cloud,blah,qwer</div>
+        </div>
+      </div>
       <h3>Famous Palette</h3>
-      <div class="palettes">
+      <div id="palette-famousPals" class="palettes">
         <div ng-repeat="pal in famousPals" class="palette">
           <div class="name">{{pal.name}}</div>
           <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
@@ -231,7 +250,7 @@
       <h3 class="btns">Random Palettes
         <div ng-click="makeRandomPalettes()" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
       </h3>
-      <div class="palettes">
+      <div id="palette-randomPals" class="palettes">
         <div ng-repeat="pal in randomPals" class="palette">
           <div class="name">{{pal.name}}</div>
           <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
