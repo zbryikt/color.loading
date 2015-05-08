@@ -63,6 +63,15 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
   };
   $scope.login = {
     show: false,
+    logout: function(){
+      return $http({
+        url: '/u/logout',
+        method: 'GET'
+      }).success(function(d){
+        $scope.user.data = null;
+        return window.location.reload();
+      }).error(function(d){});
+    },
     login: function(){
       var this$ = this;
       $http({
@@ -77,7 +86,8 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
         }
       }).success(function(d){
         $scope.user.data = d;
-        return this$.show = false;
+        this$.show = false;
+        return window.location.reload();
       }).error(function(d){
         return console.log('failed', d);
       });
@@ -763,32 +773,34 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
     }
     return results$;
   });
-  $http({
-    url: '/palette/?user=tkirby',
-    method: 'GET'
-  }).success(function(data){
-    var list, i$, len$, item, obj, j$, ref$, len1$, c, tc;
-    list = [];
-    for (i$ = 0, len$ = data.length; i$ < len$; ++i$) {
-      item = data[i$];
-      obj = [];
-      obj.name = item.name;
-      obj.cateogry = item.cateogry;
-      obj.key = item.key;
-      for (j$ = 0, len1$ = (ref$ = item.colors).length; j$ < len1$; ++j$) {
-        c = ref$[j$];
-        tc = tinycolor(c.hex);
-        tc.semantic = $scope.semantic.options.filter(fn$)[0] || $scope.semantic.options[0];
-        tc.width = 100 / item.colors.length;
-        obj.push(tc);
+  if ($scope.user.data) {
+    $http({
+      url: "/palette/?user=" + $scope.user.data.username,
+      method: 'GET'
+    }).success(function(data){
+      var list, i$, len$, item, obj, j$, ref$, len1$, c, tc;
+      list = [];
+      for (i$ = 0, len$ = data.length; i$ < len$; ++i$) {
+        item = data[i$];
+        obj = [];
+        obj.name = item.name;
+        obj.cateogry = item.cateogry;
+        obj.key = item.key;
+        for (j$ = 0, len1$ = (ref$ = item.colors).length; j$ < len1$; ++j$) {
+          c = ref$[j$];
+          tc = tinycolor(c.hex);
+          tc.semantic = $scope.semantic.options.filter(fn$)[0] || $scope.semantic.options[0];
+          tc.width = 100 / item.colors.length;
+          obj.push(tc);
+        }
+        list.push(obj);
       }
-      list.push(obj);
-    }
-    return $scope.myPals = list;
-    function fn$(it){
-      return it.value === c.semantic;
-    }
-  });
+      return $scope.myPals = list;
+      function fn$(it){
+        return it.value === c.semantic;
+      }
+    });
+  }
   $scope.wheel.init();
   $(window).scroll(function(){
     var scrollTop;

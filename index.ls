@@ -7,7 +7,7 @@ angular.module \ld.color, <[backend]>
     convert: (raw) ->
       ret = []
       ret.name = raw.name
-      for c in raw.palette => 
+      for c in raw.palette =>
         tc = tinycolor(c)
         tc.width = 100 / raw.palette.length
         ret.push tc
@@ -25,7 +25,7 @@ angular.module \ld.color, <[backend]>
       ret[parseInt(Math.random!*ret.length)].width = 20 + ((100 - primary-size) / count)
       ret.name = "#{@name[parseInt(Math.random!*@name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
       ret
-    
+
   ..controller \ldc-editor, <[$scope $http $timeout ldc-random global]> ++ ($scope, $http, $timeout, ldc-random, global) ->
     $scope.myPals = []
     $scope.randomPals = ldc-random.palette 30
@@ -34,22 +34,31 @@ angular.module \ld.color, <[backend]>
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
     $scope.colorcode = null
-    $scope.user = data: global.user #null
+    $scope.user = data: global.user
     $scope.login = do
       show: false
+      logout: ->
+        $http do
+          url: \/u/logout
+          method: \GET
+        .success (d) ->
+          $scope.user.data = null
+          window.location.reload!
+        .error (d) ->
       login: ->
         $http do
           url: \/u/login
           method: \POST
           data: $.param( { email: @email, passwd: @passwd } )
           headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
-        .success (d) ~> 
+        .success (d) ~>
           $scope.user.data = d
           @show = false
+          window.location.reload!
         .error (d) -> console.log \failed, d
         @passwd = ""
     $scope.semantic = do
-      options: 
+      options:
         * label: \none, value: \none
         * label: \danger, value: \danger
         * label: \warning, value: \warning
@@ -62,7 +71,7 @@ angular.module \ld.color, <[backend]>
         s = $scope.semantic.value
         v = ((s or {}).target or {})
         u = ((c or {}).semantic or {})
-        if s !== u => 
+        if s !== u =>
           $scope.editor.history.push $scope.cc[$scope.active]
         v.semantic = null
         u.target = null
@@ -107,7 +116,7 @@ angular.module \ld.color, <[backend]>
       history: do
         data: []
         isEmpty: true
-        push: (it) -> 
+        push: (it) ->
           @isEmpty = false
           @data.push copy-palette $scope.cc
         pop: ->
@@ -135,7 +144,7 @@ angular.module \ld.color, <[backend]>
       tc = $scope.color.create r: parseInt(Math.random!*256), g: parseInt(Math.random!*256), b: parseInt(Math.random!*256)
     $scope.cc.name = "My Palette"
 
-    copy-palette = (pal) -> 
+    copy-palette = (pal) ->
       ret = [($scope.color.create(item.toHexString!) <<< item) for item in pal]
       for item in ret => if !item.width => item.width = 100 / ret.length
       ret <<< pal{name, category, key}
@@ -147,7 +156,7 @@ angular.module \ld.color, <[backend]>
         palette: $scope.cc.map((it, idx) -> {id: idx, code: it.toHexString!, type: it.{}semantic.value or \none})
       })
       $(\#palette-string-dialog).modal \show
-      ), 0 
+      ), 0
 
     $scope.update-palette = ->
       w = $scope.wheel
@@ -164,17 +173,17 @@ angular.module \ld.color, <[backend]>
         $scope.wheel.update-all!
     $scope.setcolor = (tc, pal=null) ->
       $scope.colorcode = tc.toHexString!
-      if pal and $scope.refs.indexOf(pal)== -1 => 
+      if pal and $scope.refs.indexOf(pal)== -1 =>
         $scope.refs.splice 0,1
         $scope.refs.push pal
-    $scope.setpalette = (pal, isUndo = false) -> 
-      if !isUndo => 
+    $scope.setpalette = (pal, isUndo = false) ->
+      if !isUndo =>
         $scope.editor.history.push $scope.cc
-        if pal and $scope.refs.indexOf(pal)== -1 => 
+        if pal and $scope.refs.indexOf(pal)== -1 =>
           $scope.refs.splice 0,1
           $scope.refs.push pal
       for i from 0 til pal.length
-        if $scope.cc.length <= i => 
+        if $scope.cc.length <= i =>
           $scope.cc.push $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
         else $scope.cc[i] <<< $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
         $scope.cc <<< pal{name, category, key}
@@ -182,7 +191,7 @@ angular.module \ld.color, <[backend]>
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 
     $scope.drag-palette-color = (start, offset) ->
-      idx-from = parseInt(start / (456 / $scope.cc.length)) 
+      idx-from = parseInt(start / (456 / $scope.cc.length))
       idx-to = parseInt((start + offset) / (456 / $scope.cc.length))
       if idx-to == idx-from or idx-to >= $scope.cc.length or idx-from >= $scope.cc.length => return
       $scope.editor.history.push $scope.cc
@@ -212,7 +221,7 @@ angular.module \ld.color, <[backend]>
         url: if pal.key => "/palette/#{pal.key}" else "/palette/"
         method: if pal.key => \PUT else \POST
         data: payload
-      .success (d) -> 
+      .success (d) ->
         console.log "saved.", d
         $scope.cc.key = pal.key = d.key
     $scope.undo = -> $scope.editor.history.pop!
@@ -220,7 +229,7 @@ angular.module \ld.color, <[backend]>
     $scope.random-cc = ->
       random-palette = ldc-random.palette 1
       $scope.setpalette random-palette.0
-    $scope.random-refs = -> 
+    $scope.random-refs = ->
       $scope.refs = ldc-random.palette 4
     $scope.makeRandomPalettes = -> $scope.randomPals = ldc-random.palette 30
 
@@ -247,7 +256,7 @@ angular.module \ld.color, <[backend]>
             ..exit!remove!
           @update it
         @update-ptr!
-      add: (rand = false)-> 
+      add: (rand = false)->
         $scope.editor.history.push $scope.cc
         if rand =>
           $scope.cc.push $scope.color.create {h: parseInt(Math.random!*360), s: parseInt(Math.random!*100), l: parseInt(Math.random!*100)}
@@ -264,9 +273,9 @@ angular.module \ld.color, <[backend]>
           fill: (d) ~> it.fill @, d
           stroke: (d) ~> it.stroke @, d
       rad: -> Math.PI * it / 180
-      ring: (r1, r2) -> 
+      ring: (r1, r2) ->
         [rad,delta] = [@rad, @delta]
-        return (~> 
+        return (~>
           p1x = r1 * Math.cos rad(it + delta / 2)
           p1y = r1 * Math.sin rad(it + delta / 2)
           p2x = r1 * Math.cos rad(it - delta / 2)
@@ -279,26 +288,26 @@ angular.module \ld.color, <[backend]>
         )
       r2l: -> parseInt(100 * Math.abs(((it + 3600) % 360) - 180) / 180) # radian to lit/sat
       l2r: -> (( it * 180 / 100 ) + 180) % 360
-      config: 
-        * { 
+      config:
+        * {
             name: \hue, r1: 195, r2: 175
             fill: (w,d) -> "hsl(#d,100%,50%)"
             stroke: (w,d) -> "hsl(#d,100%,50%)"
             rad: (w) ~> w.rad(w.hue)
           }
-        * { 
+        * {
             name: \sat, r1: 165, r2: 145
             fill: (w,d) ~> "hsl(#{w.hue},#{w.r2l(d - w.hue)}%,50%)"
             stroke: (w,d) -> "hsl(#{w.hue},#{w.r2l(d - w.hue)}%,50%)"
             rad: (w) ~> w.rad(w.sat + w.hue)
           }
-        * { 
+        * {
             name: \lit, r1: 135, r2: 115
             fill: (w,d) ~> "hsl(#{w.hue},#{w.r2l(w.sat)}%,#{w.r2l(d - w.hue + 90)}%)"
             stroke: (w,d) ~> "hsl(#{w.hue},#{w.r2l(w.sat)}%,#{w.r2l(d - w.hue + 90)}%)"
             rad: (w) ~> w.rad(w.lit + w.hue - 90)
           }
-        * { 
+        * {
             name: \fin, r1: 105, r2: 85
             fill: (w,d) ~> "hsl(#{w.hue},#{w.r2l(w.sat)}%,#{w.r2l(w.lit)}%)"
             stroke: (w,d) ~> "hsl(#{w.hue},#{w.r2l(w.sat)}%,#{w.r2l(w.lit)}%)"
@@ -315,7 +324,7 @@ angular.module \ld.color, <[backend]>
             cx: ~> ( cfg.r1 + cfg.r2 ) / 2 * Math.cos cfg.rad @
             cy: ~> ( cfg.r1 + cfg.r2 ) / 2 * Math.sin cfg.rad @
             fill: \none
-            stroke: ~> 
+            stroke: ~>
               if cfg.name == \lit and Math.abs(@lit - 180) < 90 => \#fff  else \#444
       pre-which: 0
       target: 0
@@ -334,7 +343,7 @@ angular.module \ld.color, <[backend]>
         target = @target
 
         @pre-which = e.which
-        if e.which == 1 => 
+        if e.which == 1 =>
           if target == 0 => @hue = ang
           else if target == 1 => @sat = ( 720 + ang - @hue ) % 360
           else if target == 2 => @lit = ( 720 + ang - @hue + 90 ) % 360
@@ -348,24 +357,24 @@ angular.module \ld.color, <[backend]>
       method: \GET
     .success (d) ->
       $scope.famousPals = []
-      for item in d => 
-        $scope.famousPals.push ldc-random.convert item 
-    $http do
-      url: \/palette/?user=tkirby
-      method: \GET
-    .success (data) ->
-      list = []
-      for item in data
-        obj = []
-        obj <<< item{name, cateogry, key}
-        for c in item.colors => 
-          tc = tinycolor(c.hex)
-          tc.semantic = ($scope.semantic.options.filter(-> it.value == c.semantic)[0] or $scope.semantic.options.0)
-          tc.width = 100 / item.colors.length
-          obj.push tc
-        list.push obj
-      $scope.myPals = list
-        
+      for item in d =>
+        $scope.famousPals.push ldc-random.convert item
+    if $scope.user.data =>
+      $http do
+        url: "/palette/?user=#{$scope.user.data.username}"
+        method: \GET
+      .success (data) ->
+        list = []
+        for item in data
+          obj = []
+          obj <<< item{name, cateogry, key}
+          for c in item.colors =>
+            tc = tinycolor(c.hex)
+            tc.semantic = ($scope.semantic.options.filter(-> it.value == c.semantic)[0] or $scope.semantic.options.0)
+            tc.width = 100 / item.colors.length
+            obj.push tc
+          list.push obj
+        $scope.myPals = list
 
     $scope.wheel.init!
     $(window)scroll ->
@@ -382,10 +391,10 @@ angular.module \ld.color, <[backend]>
       container: '#download-palette'
       content: (
         "Download via ... " +
-        "<a class='download-option download-option-json'> json </div>" + 
-        "<a class='download-option download-option-sass'> sass </div>" + 
-        "<a class='download-option download-option-less'> less </div>" + 
-        "<a class='download-option download-option-ase'> ase </div>" + 
+        "<a class='download-option download-option-json'> json </div>" +
+        "<a class='download-option download-option-sass'> sass </div>" +
+        "<a class='download-option download-option-less'> less </div>" +
+        "<a class='download-option download-option-ase'> ase </div>" +
         "<a class='download-option download-option-svg'> svg </div>"
 
         )
@@ -394,15 +403,15 @@ angular.module \ld.color, <[backend]>
 
 scroll = (e) ->
   s = angular.element("body").scope!
-  #s.scroll e 
+  #s.scroll e
 
 drag = do
   editor: do
     color: do
-      drag: -> 
-        if !@start => 
+      drag: ->
+        if !@start =>
           @start = $(it.srcElement).width!/2 + $(it.srcElement).offset!left - $(it.srcElement.parentNode).offset!left
-      drag-end: -> 
+      drag-end: ->
         angular.element("body").scope!drag-palette-color @start, it.offsetX
         @start = null
 

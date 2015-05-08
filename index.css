@@ -476,3 +476,11 @@ g#color-area {
     left: 50%;
     margin-left: -11px;
     top: -10px; }
+
+#nav-profile {
+  padding: 5px 0; }
+  #nav-profile img {
+    width: 24px;
+    margin-right: 10px; }
+  #nav-profile li {
+    text-shadow: none; }
