@@ -40,7 +40,7 @@
         </div>
       </nav>
     </div>
-    <div id="login-panel-outer" ng-show="login.show">
+    <div id="login-panel-outer" ng-class="{'active':login.show}">
       <div id="login-panel-inner">
         <div ng-click="login.show=!!!login.show" class="close-btn"><i class="glyphicon glyphicon-remove"></i></div>
         <div class="title">LOADING.IO</div>

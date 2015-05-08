@@ -54,7 +54,7 @@ html(lang="en")
               //-
                 li.logon(ng-show="!accessToken"): a(href="#",ng-click="login()") LOGIN
                 li.logon.ng-hide(ng-show="accessToken"): a(href="#",ng-click="logout()") LOGOUT
-    #login-panel-outer(ng-show="login.show"): #login-panel-inner
+    #login-panel-outer(ng-class="{'active':login.show}"): #login-panel-inner
       .close-btn(ng-click="login.show=!!!login.show"): i.glyphicon.glyphicon-remove
       .title
         | LOADING.IO
