@@ -44,8 +44,10 @@ html(lang="en")
               li: a#nav-comment(href="#comment") CONTACT
               li: a#nav-more(href="#") MORE
             ul.nav.navbar-nav.pull-right
-              li: a#nav-compatibility(href="#",ng-click="login.show=!!!login.show") LOGIN / SIGNUP
-              li.anim.profile.invis(ng-class="{'invis':!username}"): a(href="#")
+              li: a#nav-login(href="#",ng-click="login.show=!!!login.show",ng-show="!user.data") LOGIN / SIGNUP
+              li: a#nav-profile(href="#",ng-show="user.data") {{user.data.displayname}}
+              li: a#nav-logout(ng-show="user.data") LOGOUT
+              //-li.anim.profile.invis(ng-class="{'invis':!username}"): a(href="#")
                 .avatar
                   img(ng-src="http://graph.facebook.com/{{uid}}/picture?type=small",ng-show="uid")
                 .name {{username}}
@@ -65,11 +67,11 @@ html(lang="en")
         br
         .input-group
           span.input-group-addon: i.glyphicon.glyphicon-user
-          input.form-control(type="text",placeholder="email")
+          input.form-control(type="text", ng-model="login.email", placeholder="email")
         .input-group
           span.input-group-addon: i.glyphicon.glyphicon-lock
-          input.form-control(type="password", placeholder="password")
-        .btn.btn-danger.btn-block Login
+          input.form-control(type="password", ng-model="login.passwd", placeholder="password")
+        .btn.btn-danger.btn-block(ng-click="login.login()") Login
         .hint.pull-right Sign up
         .hint forgot password ?
 

@@ -29,10 +29,9 @@
               <li><a id="nav-more" href="#">MORE</a></li>
             </ul>
             <ul class="nav navbar-nav pull-right">
-              <li><a id="nav-compatibility" href="#" ng-click="login.show=!!!login.show">LOGIN / SIGNUP</a></li>
-              <li ng-class="{'invis':!username}" class="anim profile invis"><a href="#">
-                  <div class="avatar"><img ng-src="http://graph.facebook.com/{{uid}}/picture?type=small" ng-show="uid"></div>
-                  <div class="name">{{username}}</div></a></li>
+              <li><a id="nav-login" href="#" ng-click="login.show=!!!login.show" ng-show="!user.data">LOGIN / SIGNUP</a></li>
+              <li><a id="nav-profile" href="#" ng-show="user.data">{{user.data.displayname}}</a></li>
+              <li><a id="nav-logout" ng-show="user.data">LOGOUT</a></li>
               <li><a href="#">&#x2764;</a></li>
               <!--li: a(href="http://github.com/zbryikt/loading/") GITHUB-->
             </ul>
@@ -48,12 +47,12 @@
           <div class="btn btn-primary btn-block">Login With Facebook</div><br>
           <div class="or"></div><br>
           <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input type="text" placeholder="email" class="form-control">
+            <input type="text" ng-model="login.email" placeholder="email" class="form-control">
           </div>
           <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-            <input type="password" placeholder="password" class="form-control">
+            <input type="password" ng-model="login.passwd" placeholder="password" class="form-control">
           </div>
-          <div class="btn btn-danger btn-block">Login</div>
+          <div ng-click="login.login()" class="btn btn-danger btn-block">Login</div>
           <div class="hint pull-right">Sign up</div>
           <div class="hint">forgot password ?</div>
         </div>

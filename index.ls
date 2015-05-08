@@ -34,7 +34,20 @@ angular.module \ld.color <[]>
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
     $scope.colorcode = null
-    $scope.login = show: false
+    $scope.user = data: null
+    $scope.login = do
+      show: false
+      login: ->
+        $http do
+          url: \/u/login
+          method: \POST
+          data: $.param( { email: @email, passwd: @passwd } )
+          headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
+        .success (d) ~> 
+          $scope.user.data = d
+          @show = false
+        .error (d) -> console.log \failed, d
+        @passwd = ""
     $scope.semantic = do
       options: 
         * label: \none, value: \none

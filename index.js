@@ -58,8 +58,31 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
   $scope.featurePals = ldcRandom.palette(4);
   $scope.active = 0;
   $scope.colorcode = null;
+  $scope.user = {
+    data: null
+  };
   $scope.login = {
-    show: false
+    show: false,
+    login: function(){
+      var this$ = this;
+      $http({
+        url: '/u/login',
+        method: 'POST',
+        data: $.param({
+          email: this.email,
+          passwd: this.passwd
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        }
+      }).success(function(d){
+        $scope.user.data = d;
+        return this$.show = false;
+      }).error(function(d){
+        return console.log('failed', d);
+      });
+      return this.passwd = "";
+    }
   };
   $scope.semantic = {
     options: [
