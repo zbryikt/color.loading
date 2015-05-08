@@ -28,6 +28,7 @@ html(lang="en")
     include library.jade
     // custom files
     link(rel="stylesheet",type="text/css",href="index.css")
+    script(type="text/javascript",src="/global")
     script(type="text/javascript",src="index.js")
     script(type="text/javascript",src="bower_components/tinycolor/tinycolor.js")
   body(ng-app="ld.color",ng-controller="ldc-editor",ng-mousemove="wheel.move($event)",onmousewheel="scroll(event)")

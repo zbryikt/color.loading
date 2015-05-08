@@ -1,4 +1,4 @@
-angular.module \ld.color <[]>
+angular.module \ld.color, <[backend]>
   ..service 'ldc-random', <[$rootScope]> ++ ($rootScope) -> @ <<< do
     tags: <[anime nature item movie festival brand]>
     name: <[ Barker Stokes Rhodes Salazar Ellis Bradley Sharp Hogan Harvey Briggs ]>
@@ -26,7 +26,7 @@ angular.module \ld.color <[]>
       ret.name = "#{@name[parseInt(Math.random!*@name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
       ret
     
-  ..controller \ldc-editor, <[$scope $http $timeout ldc-random]> ++ ($scope, $http, $timeout, ldc-random) ->
+  ..controller \ldc-editor, <[$scope $http $timeout ldc-random global]> ++ ($scope, $http, $timeout, ldc-random, global) ->
     $scope.myPals = []
     $scope.randomPals = ldc-random.palette 30
     $scope.refs = ldc-random.palette 4
@@ -34,7 +34,7 @@ angular.module \ld.color <[]>
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
     $scope.colorcode = null
-    $scope.user = data: null
+    $scope.user = data: global.user #null
     $scope.login = do
       show: false
       login: ->
