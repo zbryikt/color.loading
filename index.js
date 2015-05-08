@@ -58,6 +58,9 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random'].concat
   $scope.featurePals = ldcRandom.palette(4);
   $scope.active = 0;
   $scope.colorcode = null;
+  $scope.login = {
+    show: false
+  };
   $scope.semantic = {
     options: [
       {

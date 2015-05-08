@@ -1,7 +1,8 @@
 @charset "UTF-8";
 html, body {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  font-family: "Hiragino Kaku Gothic Pro"; }
 
 #root {
   margin: 0px auto 20px;
@@ -20,7 +21,7 @@ html, body {
   -webkit-transition: all 0.3s ease-out;
   -o-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
-  z-index: 11; }
+  z-index: 4; }
   #nav-top nav.navbar-default {
     -ms-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
@@ -282,7 +283,7 @@ g#color-area {
   background: rgba(255, 255, 255, 0.9);
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  z-index: 9;
+  z-index: 2;
   top: 50px;
   left: 0;
   box-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
@@ -307,7 +308,7 @@ g#color-area {
   width: 520px;
   height: 111px;
   padding-top: 20px;
-  z-index: 10;
+  z-index: 3;
   opacity: 1;
   -ms-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
@@ -368,3 +369,91 @@ g#color-area {
   font-size: 12px;
   line-height: 12px;
   padding: 4px; }
+
+#login-panel-outer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5); }
+  #login-panel-outer:before {
+    display: block;
+    position: absolute;
+    z-index: 6;
+    content: " ";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(bk.jpg);
+    background-size: cover;
+    opacity: 0.7; }
+
+#login-panel-inner {
+  position: relative;
+  z-index: 7;
+  width: 400px;
+  height: 350px;
+  margin: 30px auto;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3); }
+  #login-panel-inner .title {
+    font-family: century gothic;
+    text-align: center;
+    font-size: 1.3em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #ddd;
+    padding: 20px; }
+  #login-panel-inner .form {
+    margin: 20px; }
+    #login-panel-inner .form .btn {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); }
+  #login-panel-inner .input-group {
+    margin-bottom: 5px; }
+  #login-panel-inner .hint {
+    margin-top: 10px;
+    text-decoration: underline;
+    font-size: 12px;
+    color: #333;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+  #login-panel-inner .close-btn {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    line-height: 16px;
+    font-size: 16px;
+    opacity: 0.9;
+    cursor: pointer; }
+    #login-panel-inner .close-btn:hover {
+      opacity: 1; }
+
+.or {
+  position: relative;
+  margin: 10px 0;
+  height: 1px; }
+  .or:after {
+    display: block;
+    content: "or";
+    background: #fff;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    padding: 2px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: auto;
+    right: auto;
+    line-height: 12px;
+    font-size: 12px;
+    color: #ddd;
+    left: 50%;
+    margin-left: -11px;
+    top: -10px; }

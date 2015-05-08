@@ -34,6 +34,7 @@ angular.module \ld.color <[]>
     $scope.feature-pals = ldc-random.palette 4
     $scope.active = 0
     $scope.colorcode = null
+    $scope.login = show: false
     $scope.semantic = do
       options: 
         * label: \none, value: \none

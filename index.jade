@@ -44,7 +44,7 @@ html(lang="en")
               li: a#nav-comment(href="#comment") CONTACT
               li: a#nav-more(href="#") MORE
             ul.nav.navbar-nav.pull-right
-              li: a#nav-compatibility(href="#") LOGIN / SIGNUP
+              li: a#nav-compatibility(href="#",ng-click="login.show=!!!login.show") LOGIN / SIGNUP
               li.anim.profile.invis(ng-class="{'invis':!username}"): a(href="#")
                 .avatar
                   img(ng-src="http://graph.facebook.com/{{uid}}/picture?type=small",ng-show="uid")
@@ -54,7 +54,26 @@ html(lang="en")
               //-
                 li.logon(ng-show="!accessToken"): a(href="#",ng-click="login()") LOGIN
                 li.logon.ng-hide(ng-show="accessToken"): a(href="#",ng-click="logout()") LOGOUT
+    #login-panel-outer(ng-show="login.show"): #login-panel-inner
+      .close-btn(ng-click="login.show=!!!login.show"): i.glyphicon.glyphicon-remove
+      .title
+        | LOADING.IO
+      .form
+        .btn.btn-primary.btn-block Login With Facebook
+        br
+        .or
+        br
+        .input-group
+          span.input-group-addon: i.glyphicon.glyphicon-user
+          input.form-control(type="text",placeholder="email")
+        .input-group
+          span.input-group-addon: i.glyphicon.glyphicon-lock
+          input.form-control(type="password", placeholder="password")
+        .btn.btn-danger.btn-block Login
+        .hint.pull-right Sign up
+        .hint forgot password ?
 
+      
     #root
       #palette-string-dialog.modal.fade
         .modal-dialog
