@@ -159,15 +159,20 @@ html(lang="en")
                 .btn.btn-xs.btn-default(style="vertical-align:middle",ng-click="editor.toggleEditName()",ng-show="!editor.editNameToggled")
                   i.glyphicon.glyphicon-edit(style="vertical-align:top")
                 .btn.btn-xs.btn-default(style="vertical-align:middle",ng-click="editor.toggleEditName()",ng-show="editor.editNameToggled")
-                  i.glyphicon.glyphicon-ok-sign(style="vertical-align:top")
+                  i.glyphicon.glyphicon-ok-sign(style="vertical-align:top;color:#4b4")
                 .pull-right
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-info-sign(ng-click="showPaletteStringDialog()")
-                  .btn.btn-xs.btn-default: i.glyphicon.glyphicon-link
-                  #download-palette.btn.btn-xs.btn-default: i.glyphicon.glyphicon-download-alt(ng-click="editor.output.prepare(cc)")
-                  .btn.btn-xs.btn-default(ng-click="randomCc()"): i.glyphicon.glyphicon-random
-                  .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':editor.history.isEmpty}"): i.glyphicon.glyphicon-arrow-left
-                  .btn.btn-xs.btn-default(ng-click="delPal(cc)", ng-disabled="!cc.key"): i.glyphicon.glyphicon-remove
+                  .btn.btn-xs.btn-default(data-toggle="tooltip",data-placement="top",title="save")
+                    i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
+                  .btn.btn-xs.btn-default(data-toggle="tooltip",data-placement="top",title="detail")
+                    i.glyphicon.glyphicon-info-sign(ng-click="showPaletteStringDialog()")
+                  #download-palette.btn.btn-xs.btn-default(data-toggle="tooltip",data-placemnet="top",title="download")
+                    i.glyphicon.glyphicon-download-alt(ng-click="editor.output.prepare(cc)")
+                  .btn.btn-xs.btn-default(ng-click="randomCc()",data-toggle="tooltip",data-placement="top",title="shuffle")
+                    i.glyphicon.glyphicon-random
+                  .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':editor.history.isEmpty}",
+                  data-toggle="tooltip",data-placement="top",title="undo"): i.glyphicon.glyphicon-arrow-left
+                  .btn.btn-xs.btn-default(ng-click="delPal(cc)",ng-disabled="!cc.key",style="color:#a02",
+                  data-toggle="tooltip",data-placement="top",title="delete this palette"): i.glyphicon.glyphicon-remove
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus
               .blockcontainer.palette-color(style="width:456px;display:inline-block;position:relative;")

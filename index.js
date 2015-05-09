@@ -851,12 +851,13 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
     }
     return results$;
   });
-  return $('#download-palette').popover({
+  $('#download-palette').popover({
     html: true,
     container: '#download-palette',
     content: "Download via ... " + "<a class='download-option download-option-json'> json </div>" + "<a class='download-option download-option-sass'> sass </div>" + "<a class='download-option download-option-less'> less </div>" + "<a class='download-option download-option-ase'> ase </div>" + "<a class='download-option download-option-svg'> svg </div>",
     placement: "bottom"
   });
+  return $('[data-toggle="tooltip"]').tooltip();
 }));
 scroll = function(e){
   var s;

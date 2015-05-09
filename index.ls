@@ -413,6 +413,7 @@ angular.module \ld.color, <[backend]>
         )
       placement: "bottom"
 
+    $('[data-toggle="tooltip"]').tooltip!
 
 scroll = (e) ->
   s = angular.element("body").scope!
