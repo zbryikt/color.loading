@@ -177,7 +177,7 @@ html(lang="en")
                     i.glyphicon.glyphicon-random
                   .btn.btn-xs.btn-default(ng-click="undo()",ng-class="{'disabled':editor.history.isEmpty}",
                   data-toggle="tooltip",data-placement="top",title="undo"): i.glyphicon.glyphicon-arrow-left
-                  .btn.btn-xs.btn-default(ng-click="delPal(cc)",ng-disabled="!cc.key",style="color:#a02",
+                  .btn.btn-xs.btn-default(ng-click="delPal(cc)",ng-disabled="!cc.key",
                   data-toggle="tooltip",data-placement="top",title="delete this palette"): i.glyphicon.glyphicon-remove
             .editor-palette
               .add-color(ng-click="wheel.add(true)"): i.glyphicon.glyphicon-plus

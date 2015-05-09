@@ -184,13 +184,17 @@ nav.navbar-default
   float: right
   width: 520px
   @include transition(all 0.5s ease-in-out)
-h3.btns
-  .btn-default
-    border: none
-    vertical-align: bottom
-  .pull-right
-    margin-right: 64px
-    margin-top: 7px
+  h3.btns
+    .btn-default
+      border: none
+      vertical-align: bottom
+    .pull-right
+      margin-right: 64px
+      margin-top: 7px
+    .btn[disabled='disabled']
+      color: #999
+    .btn:not([disabled='disabled']) .glyphicon-remove
+      color: #f02
 
 .palette.ref
   width: 210px

@@ -234,13 +234,16 @@ nav.navbar-default {
   -webkit-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out; }
-
-h3.btns .btn-default {
-  border: none;
-  vertical-align: bottom; }
-h3.btns .pull-right {
-  margin-right: 64px;
-  margin-top: 7px; }
+  #editor-detail h3.btns .btn-default {
+    border: none;
+    vertical-align: bottom; }
+  #editor-detail h3.btns .pull-right {
+    margin-right: 64px;
+    margin-top: 7px; }
+  #editor-detail h3.btns .btn[disabled='disabled'] {
+    color: #999; }
+  #editor-detail h3.btns .btn:not([disabled='disabled']) .glyphicon-remove {
+    color: #f02; }
 
 .palette.ref {
   width: 210px;
