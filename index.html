@@ -132,7 +132,7 @@
                 <div style="vertical-align:middle" ng-click="editor.toggleEditName()" ng-show="!editor.editNameToggled" class="btn btn-xs btn-default"><i style="vertical-align:top" class="glyphicon glyphicon-edit"></i></div>
                 <div style="vertical-align:middle" ng-click="editor.toggleEditName()" ng-show="editor.editNameToggled" class="btn btn-xs btn-default"><i style="vertical-align:top;color:#4b4" class="glyphicon glyphicon-ok-sign"></i></div>
                 <div class="pull-right">
-                  <div data-toggle="tooltip" data-placement="top" title="save" class="btn btn-xs btn-default"><i ng-click="savePal()" class="glyphicon glyphicon-floppy-disk"></i></div>
+                  <div data-toggle="tooltip" data-placement="top" title="save" ng-disabled="!user.data" class="btn btn-xs btn-default"><i ng-click="savePal()" class="glyphicon glyphicon-floppy-disk"></i></div>
                   <div data-toggle="tooltip" data-placement="top" title="detail" class="btn btn-xs btn-default"><i ng-click="showPaletteStringDialog()" class="glyphicon glyphicon-info-sign"></i></div>
                   <div id="download-palette" data-toggle="tooltip" data-placemnet="top" title="download" class="btn btn-xs btn-default"><i ng-click="editor.output.prepare(cc)" class="glyphicon glyphicon-download-alt"></i></div>
                   <div ng-click="randomCc()" data-toggle="tooltip" data-placement="top" title="shuffle" class="btn btn-xs btn-default"><i class="glyphicon glyphicon-random"></i></div>
@@ -168,11 +168,10 @@
               <div class="pull-right">
                 <div class="btn btn-xs btn-default"><i ng-click="randomRefs()" class="glyphicon glyphicon-random"></i></div>
               </div></small></h3>
-          <div class="palettes ref">
+          <div id="palette-refs" class="palettes">
             <div ng-repeat="pal in refs" class="palette sm">
               <div class="name">{{pal.name}}</div>
-              <div class="like"><i class="glyphicon glyphicon-heart"></i>
-              </div>
+              <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" ng-show="pal.key" class="glyphicon glyphicon-heart"></i><span ng-show="pal.key">{{pal.fav || 0}}</span></div>
               <div class="palette-color">
                 <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c)" class="color"></div>
               </div>
@@ -215,7 +214,7 @@
       <div id="palette-myPals" class="palettes">
         <div ng-repeat="pal in myPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" ng-show="pal.key" class="glyphicon glyphicon-heart"></i><span ng-show="pal.key">{{pal.fav || 0}}</span></div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -226,7 +225,7 @@
       <div id="palette-myFavs" class="palettes">
         <div ng-repeat="pal in myFavs" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" ng-show="pal.key" class="glyphicon glyphicon-heart"></i><span ng-show="pal.key">{{pal.fav || 0}}</span></div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -237,7 +236,7 @@
       <div id="palette-famousPals" class="palettes">
         <div ng-repeat="pal in famousPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" ng-show="pal.key" class="glyphicon glyphicon-heart"></i><span ng-show="pal.key">{{pal.fav || 0}}</span></div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -250,7 +249,7 @@
       <div id="palette-randomPals" class="palettes">
         <div ng-repeat="pal in randomPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" ng-show="pal.key" class="glyphicon glyphicon-heart"></i><span ng-show="pal.key">{{pal.fav || 0}}</span></div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>

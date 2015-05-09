@@ -5,18 +5,24 @@ doctype html
 - var assets = "/assets"
 - var thumbnail = "thumbnail.png"
 - var favicon = "thumbnail.png"
-mixin paletteList(name)
+
+mixin paletteList(name,mode)
+  if !mode
+    - mode = ""
   .palettes(id="palette-"+name)
-    .palette(ng-repeat="pal in "+name)
+    .palette(ng-repeat="pal in "+name,class=mode)
       .name
         | {{pal.name}}
       .like
         i.glyphicon.glyphicon-remove(ng-show="pal.key",ng-click="delPal(pal)")
         i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
-        i.glyphicon.glyphicon-heart(ng-class="{'active':pal.isFaved}",ng-click="favPal(pal)")
-        | {{pal.fav || 0}}
+        i.glyphicon.glyphicon-heart(ng-class="{'active':pal.isFaved}",ng-click="favPal(pal)",ng-show="pal.key")
+        span(ng-show="pal.key") {{pal.fav || 0}}
       .palette-color
-        .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
+        if name!='refs'
+          .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
+        else
+          .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
       .tag cloud,blah,qwer
 
 html(lang="en")
@@ -161,7 +167,7 @@ html(lang="en")
                 .btn.btn-xs.btn-default(style="vertical-align:middle",ng-click="editor.toggleEditName()",ng-show="editor.editNameToggled")
                   i.glyphicon.glyphicon-ok-sign(style="vertical-align:top;color:#4b4")
                 .pull-right
-                  .btn.btn-xs.btn-default(data-toggle="tooltip",data-placement="top",title="save")
+                  .btn.btn-xs.btn-default(data-toggle="tooltip",data-placement="top",title="save",ng-disabled="!user.data")
                     i.glyphicon.glyphicon-floppy-disk(ng-click="savePal()")
                   .btn.btn-xs.btn-default(data-toggle="tooltip",data-placement="top",title="detail")
                     i.glyphicon.glyphicon-info-sign(ng-click="showPaletteStringDialog()")
@@ -204,16 +210,7 @@ html(lang="en")
               .pull-right
                 .btn.btn-xs.btn-default: i.glyphicon.glyphicon-random(ng-click="randomRefs()")
 
-          .palettes.ref
-            .palette.sm(ng-repeat="pal in refs")
-              .name
-                | {{pal.name}}
-              .like
-                i.glyphicon.glyphicon-heart
-                //-| 5
-              .palette-color
-                .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c)")
-              .tag cloud,blah,qwer
+          mixin paletteList('refs','sm')
 
         #editor-float.dim
           .editor-palette
