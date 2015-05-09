@@ -26,7 +26,7 @@ angular.module \ld.color, <[backend]>
       ret.name = "#{@name[parseInt(Math.random!*@name.length)]} / #{@noun[parseInt(Math.random!*@noun.length)]}"
       ret
 
-  ..controller \ldc-editor, <[$scope $http $timeout ldc-random global]> ++ ($scope, $http, $timeout, ldc-random, global) ->
+  ..controller \ldc-editor, <[$scope $http $timeout ldc-random global myFav]> ++ ($scope, $http, $timeout, ldc-random, global, myFav) ->
     $scope.myPals = []
     $scope.randomPals = ldc-random.palette 30
     $scope.refs = ldc-random.palette 4
@@ -148,7 +148,7 @@ angular.module \ld.color, <[backend]>
     copy-palette = (pal) ->
       ret = [($scope.color.create(item.toHexString!) <<< item) for item in pal]
       for item in ret => if !item.width => item.width = 100 / ret.length
-      ret <<< pal{name, category, key}
+      ret <<< pal{name, category, key, fav}
       ret
 
     $scope.show-palette-string-dialog = -> setTimeout (->
@@ -187,7 +187,7 @@ angular.module \ld.color, <[backend]>
         if $scope.cc.length <= i =>
           $scope.cc.push $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
         else $scope.cc[i] <<< $scope.color.create pal[i].toHexString!, {semantic: pal[i].semantic}
-        $scope.cc <<< pal{name, category, key}
+        $scope.cc <<< pal{name, category, key, fav}
       if $scope.cc.length > pal.length => $scope.cc.splice pal.length
       $scope.set-active if $scope.active < $scope.cc.length => $scope.active else $scope.cc.length - 1
 
@@ -202,6 +202,13 @@ angular.module \ld.color, <[backend]>
       $scope.cc = before ++ item ++ $scope.cc
       $scope.cc.name = name
 
+    $scope.favPal = (pal) ->
+      $http do
+        url: "/palette/#{pal.key}/fav/"
+        method: \GET
+      .success (d) -> 
+        pal.isFaved = d.fav
+        pal.fav += if pal.isFaved => 1 else -1
     $scope.delPal = (pal) ->
       if !pal.key => return
       $http do
@@ -368,8 +375,7 @@ angular.module \ld.color, <[backend]>
       .success (data) ->
         list = []
         for item in data
-          obj = []
-          obj <<< item{name, cateogry, key}
+          obj = [] <<< item{name, cateogry, key, fav} <<< {isFaved: myFav.palette[item.key]}
           for c in item.colors =>
             tc = tinycolor(c.hex)
             tc.semantic = ($scope.semantic.options.filter(-> it.value == c.semantic)[0] or $scope.semantic.options.0)

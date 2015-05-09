@@ -13,8 +13,8 @@ mixin paletteList(name)
       .like
         i.glyphicon.glyphicon-remove(ng-show="pal.key",ng-click="delPal(pal)")
         i.glyphicon.glyphicon-chevron-up(ng-click="setpalette(pal)")
-        i.glyphicon.glyphicon-heart
-        //-| 5
+        i.glyphicon.glyphicon-heart(ng-class="{'active':pal.isFaved}",ng-click="favPal(pal)")
+        | {{pal.fav || 0}}
       .palette-color
         .color(ng-repeat="c in pal",ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%",ng-click="setcolor(c,pal)")
       .tag cloud,blah,qwer
@@ -29,6 +29,7 @@ html(lang="en")
     // custom files
     link(rel="stylesheet",type="text/css",href="index.css")
     script(type="text/javascript",src="/global")
+    script(type="text/javascript",src="/me/fav/palette")
     script(type="text/javascript",src="index.js")
     script(type="text/javascript",src="bower_components/tinycolor/tinycolor.js")
     script(type="text/javascript",src="scrollto.js")

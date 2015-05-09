@@ -14,6 +14,7 @@
     <!-- custom files-->
     <link rel="stylesheet" type="text/css" href="index.css">
     <script type="text/javascript" src="/global"></script>
+    <script type="text/javascript" src="/me/fav/palette"></script>
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript" src="bower_components/tinycolor/tinycolor.js"></script>
     <script type="text/javascript" src="scrollto.js"></script>
@@ -215,8 +216,7 @@
       <div id="palette-myPals" class="palettes">
         <div ng-repeat="pal in myPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
-          </div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -227,8 +227,7 @@
       <div id="palette-myFavs" class="palettes">
         <div ng-repeat="pal in myFavs" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
-          </div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -239,8 +238,7 @@
       <div id="palette-famousPals" class="palettes">
         <div ng-repeat="pal in famousPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
-          </div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>
@@ -253,8 +251,7 @@
       <div id="palette-randomPals" class="palettes">
         <div ng-repeat="pal in randomPals" class="palette">
           <div class="name">{{pal.name}}</div>
-          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i class="glyphicon glyphicon-heart"></i>
-          </div>
+          <div class="like"><i ng-show="pal.key" ng-click="delPal(pal)" class="glyphicon glyphicon-remove"></i><i ng-click="setpalette(pal)" class="glyphicon glyphicon-chevron-up"></i><i ng-class="{'active':pal.isFaved}" ng-click="favPal(pal)" class="glyphicon glyphicon-heart"></i>{{pal.fav || 0}}</div>
           <div class="palette-color">
             <div ng-repeat="c in pal" ng-attr-style="background:{{c.toHexString()}};width:{{c.width}}%" ng-click="setcolor(c,pal)" class="color"></div>
           </div>

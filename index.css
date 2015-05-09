@@ -70,6 +70,8 @@ nav.navbar-default {
     .palette .like i.glyphicon {
       vertical-align: text-top;
       margin-right: 3px; }
+    .palette .like .glyphicon-heart.active {
+      color: #f26; }
   .palette .name, .palette .tag {
     text-align: left;
     font-family: calibri; }

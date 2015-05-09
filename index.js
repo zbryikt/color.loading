@@ -49,7 +49,7 @@ x$.service('ldc-random', ['$rootScope'].concat(function($rootScope){
     }
   });
 }));
-x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'global'].concat(function($scope, $http, $timeout, ldcRandom, global){
+x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'global', 'myFav'].concat(function($scope, $http, $timeout, ldcRandom, global, myFav){
   var i, copyPalette, this$ = this;
   $scope.myPals = [];
   $scope.randomPals = ldcRandom.palette(30);
@@ -342,6 +342,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
     ret.name = pal.name;
     ret.category = pal.category;
     ret.key = pal.key;
+    ret.fav = pal.fav;
     return ret;
   };
   $scope.showPaletteStringDialog = function(){
@@ -417,6 +418,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
       ref$.name = pal.name;
       ref$.category = pal.category;
       ref$.key = pal.key;
+      ref$.fav = pal.fav;
     }
     if ($scope.cc.length > pal.length) {
       $scope.cc.splice(pal.length);
@@ -438,6 +440,17 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
     before = $scope.cc.splice(0, idxTo);
     $scope.cc = before.concat(item, $scope.cc);
     return $scope.cc.name = name;
+  };
+  $scope.favPal = function(pal){
+    return $http({
+      url: "/palette/" + pal.key + "/fav/",
+      method: 'GET'
+    }).success(function(d){
+      pal.isFaved = d.fav;
+      return pal.fav += pal.isFaved
+        ? 1
+        : -1;
+    });
   };
   $scope.delPal = function(pal){
     if (!pal.key) {
@@ -786,14 +799,11 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
       url: "/palette/?user=" + $scope.user.data.username,
       method: 'GET'
     }).success(function(data){
-      var list, i$, len$, item, obj, j$, ref$, len1$, c, tc;
+      var list, i$, len$, item, obj, ref$, ref1$, j$, len1$, c, tc;
       list = [];
       for (i$ = 0, len$ = data.length; i$ < len$; ++i$) {
         item = data[i$];
-        obj = [];
-        obj.name = item.name;
-        obj.cateogry = item.cateogry;
-        obj.key = item.key;
+        obj = (ref$ = (ref1$ = [], ref1$.name = item.name, ref1$.cateogry = item.cateogry, ref1$.key = item.key, ref1$.fav = item.fav, ref1$), ref$.isFaved = myFav.palette[item.key], ref$);
         for (j$ = 0, len1$ = (ref$ = item.colors).length; j$ < len1$; ++j$) {
           c = ref$[j$];
           tc = tinycolor(c.hex);
