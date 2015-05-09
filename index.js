@@ -834,7 +834,7 @@ x$.controller('ldc-editor', ['$scope', '$http', '$timeout', 'ldc-random', 'globa
     }
     for (i$ = 0, len$ = (ref$ = ['randomPals', 'famousPals', 'myFavs', 'myPals']).length; i$ < len$; ++i$) {
       id = ref$[i$];
-      if ($("#palette-" + id).offset().top < scrollTop + 231) {
+      if ($("#palette-" + id).offset().top < scrollTop + 261) {
         $("#tab-" + id).addClass('active');
         break;
       }

@@ -508,6 +508,16 @@ g#color-area {
     opacity: 0.7;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px; }
+    #section-indicator div:after {
+      display: block;
+      content: " ";
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: 24px;
+      border-width: 0;
+      border-style: solid;
+      border-color: transparent; }
     #section-indicator div:nth-of-type(4) {
       background: #b9260e; }
     #section-indicator div:nth-of-type(3) {
@@ -520,3 +530,13 @@ g#color-area {
       opacity: 1;
       box-shadow: none;
       color: #fff; }
+      #section-indicator div:hover:after, #section-indicator div.active:after {
+        border-width: 8px; }
+    #section-indicator div.active:nth-of-type(4):after {
+      border-top-color: #b9260e; }
+    #section-indicator div.active:nth-of-type(3):after {
+      border-top-color: #db6606; }
+    #section-indicator div.active:nth-of-type(2):after {
+      border-top-color: #e2af08; }
+    #section-indicator div.active:nth-of-type(1):after {
+      border-top-color: #097b29; }

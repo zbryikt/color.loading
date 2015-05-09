@@ -389,7 +389,7 @@ angular.module \ld.color, <[backend]>
       else => $(\#mask)removeClass \dim
       for id in <[myPals myFavs famousPals randomPals]> => $("\#tab-#id").remove-class \active
       for id in <[randomPals famousPals myFavs myPals]>
-        if $("\#palette-#id").offset!top < scroll-top + 231 =>
+        if $("\#palette-#id").offset!top < scroll-top + 261 =>
           $("\#tab-#id").add-class \active
           break
 
