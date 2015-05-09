@@ -375,6 +375,34 @@ g#color-area {
   line-height: 12px;
   padding: 4px; }
 
+@-webkit-keyframes bk-drift {
+  0% {
+    background-position: 0 0; }
+  50% {
+    background-position: 1440px 0; }
+  100% {
+    background-position: 0 0; } }
+@-moz-keyframes bk-drift {
+  0% {
+    background-position: 0 0; }
+  50% {
+    background-position: 1440px 0; }
+  100% {
+    background-position: 0 0; } }
+@-ms-keyframes bk-drift {
+  0% {
+    background-position: 0 0; }
+  50% {
+    background-position: 1440px 0; }
+  100% {
+    background-position: 0 0; } }
+@keyframes bk-drift {
+  0% {
+    background-position: 0 0; }
+  50% {
+    background-position: 1440px 0; }
+  100% {
+    background-position: 0 0; } }
 #login-panel-outer {
   position: fixed;
   z-index: 5;
@@ -409,8 +437,13 @@ g#color-area {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url(bk.jpg);
+    background: url(bk2.jpg);
     background-size: cover;
+    -ms-animation: bk-drift 120s ease-in-out infinite;
+    -moz-animation: bk-drift 120s ease-in-out infinite;
+    -webkit-animation: bk-drift 120s ease-in-out infinite;
+    -o-animation: bk-drift 120s ease-in-out infinite;
+    animation: bk-drift 120s ease-in-out infinite;
     opacity: 0.7; }
 
 #login-panel-inner {

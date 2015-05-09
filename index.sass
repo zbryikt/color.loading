@@ -318,6 +318,14 @@ g#color-area
   line-height: 12px
   padding: 4px
 
+@include keyframes(bk-drift)
+  0%
+    background-position: 0 0
+  50%
+    background-position: 1440px 0
+  100%
+    background-position: 0 0
+
 #login-panel-outer
   position: fixed
   z-index: index($order, login-panel)
@@ -344,8 +352,9 @@ g#color-area
     left: 0
     width: 100%
     height: 100%
-    background: url(bk.jpg)
+    background: url(bk2.jpg)
     background-size: cover
+    @include animation(bk-drift 120s ease-in-out infinite)
     opacity: 0.7
 
 #login-panel-inner
